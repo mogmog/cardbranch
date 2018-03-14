@@ -14,17 +14,17 @@ export default class extends Component {
 
   render() {
 
-    const { children, open } = this.props;
+    const { children, open, width } = this.props;
 
     return (
 
       <div>
 
-        <Motion style={{tween: spring(open ? 0 : 100)}}>
+        <Motion style={{tween: spring(open ? width : 0)}}>
           {
             ({tween}) => (
 
-              <div className={styles.sidebar} style={{'transform': `translateX(${tween}%)` }}>
+              <div className={styles.sidebar} style={{'width': `${tween}%` }}>
                 {children}
               </div>
             )}

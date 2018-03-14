@@ -108,7 +108,7 @@ export default class extends Component {
 
         </Map>
 
-        <LucaSideBar open={this.state.sidebaropen}>
+        <LucaSideBar open={this.state.sidebaropen} width={30}>
 
           <Row>
             <Col>
