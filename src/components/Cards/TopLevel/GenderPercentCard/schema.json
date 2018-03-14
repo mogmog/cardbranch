@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required": [
+    "gender",
+    "value",
+    "total"
+  ],
+  "properties": {
+    "gender": {
+      "type": "enum",
+      "values" : ["male", "female"]
+    },
+    "value": {
+      "type": "number"
+    },
+
+    "total": {
+      "type": "number"
+    }
+  }
+}
