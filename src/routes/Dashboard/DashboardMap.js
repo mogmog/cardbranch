@@ -7,6 +7,7 @@ import {Motion, spring} from 'react-motion';
 import {Row, Col, Button, Card } from 'antd';
 import ReactMapboxGl, {Layer, Feature, Marker} from "react-mapbox-gl";
 
+import CardShrinker from './CardShrinker';
 import LucaSideBar from './../../common/LucaSidebar/LucaSidebar';
 import StoreMarker from './../../components/Maps/StoreMap/StoreMarker';
 import styles from './DashboardMap.less';
@@ -66,12 +67,10 @@ export default class extends Component {
     return (
       <div>
 
-        <pre> {JSON.stringify(this.state.selectedMarkers)} </pre>
-
         <Map
           style="mapbox://styles/mapbox/streets-v9"
           containerStyle={{
-            height: "90vh",
+            height: "100vh",
             width: "100vw"
           }}>
 
@@ -89,14 +88,10 @@ export default class extends Component {
 
         <LucaSideBar open={this.state.sidebaropen}>
 
-          <Row gutter={24}>
+          <Row>
             <Col>
-              <a onClick={ e=> {this.setState({selectedMarkers : [], sidebaropen: false})}}><Button>x</Button></a>
-            </Col>
-          </Row>
+              <a onClick={ e=> {this.setState({selectedMarkers : [], sidebaropen: false})}}>close</a>
 
-          <Row gutter={24}>
-            <Col>
               <Transition
                 component="ul"
                 className={styles.sidebar}
@@ -104,14 +99,19 @@ export default class extends Component {
                   translateY: spring(0, {stiffness: 200, damping: 15})
                 }}
                 leave={{
-                  translateY: 500
+                  translateY: 100
                 }}
               >
                 { this.state.selectedMarkers.map((item, i) =>
                   <li key={i}>
-                    <Card style={{'background-color' : 'white', 'zIndex' : 99999}}>
-                      dfdfd
-                    </Card>
+
+                    <CardShrinker key={i} currentItem={i === this.state.selectedMarkers.length -1}>
+
+                        <Card style={{'height' : '100%'}}>
+                          dfdfd {i}
+                        </Card>
+                    </CardShrinker>
+
                   </li>
                 )
                 }

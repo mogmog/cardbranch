@@ -168,7 +168,7 @@ class BasicLayout extends React.PureComponent {
         />
         <Layout>
 
-          <LucaHeader/>
+         {/* <LucaHeader/>*/}
 
           <Content style={{ margin: '0px 0px 0 0px', height: '100%' }}>
             <Switch>
