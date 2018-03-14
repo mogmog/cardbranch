@@ -60,6 +60,8 @@ export default class extends Component {
 
   render() {
 
+    const { list } = this.props;
+
     return (
       <div>
 
@@ -94,7 +96,7 @@ export default class extends Component {
 
           <Row gutter={24}>
             <Col>
-
+              {list.length}
             </Col>
           </Row>
 
