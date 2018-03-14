@@ -74,6 +74,28 @@ export default class extends Component {
             width: "100vw"
           }}>
 
+
+          <StoreMarker
+            coordinates={[-0.2116815, 51.5723582]}
+            onClick={this.storeClick.bind(this)}
+            store={{'id': 1}}/>
+
+          <StoreMarker
+            coordinates={[-0.2179315, 51.5235182]}
+            onClick={this.storeClick.bind(this)}
+            store={{'id': 1}}/>
+
+          <StoreMarker
+            coordinates={[-0.2845815, 51.8235582]}
+            onClick={this.storeClick.bind(this)}
+            store={{'id': 1}}/>
+
+          <StoreMarker
+            coordinates={[-0.2148215, 51.5281232]}
+            onClick={this.storeClick.bind(this)}
+            store={{'id': 1}}/>
+
+
           <StoreMarker
             coordinates={[-0.2116815, 51.5285582]}
             onClick={this.storeClick.bind(this)}
@@ -92,6 +114,7 @@ export default class extends Component {
             <Col>
               <a onClick={ e=> {this.setState({selectedMarkers : [], sidebaropen: false})}}>close</a>
 
+
               <Transition
                 component="ul"
                 className={styles.sidebar}
@@ -105,9 +128,9 @@ export default class extends Component {
                 { this.state.selectedMarkers.map((item, i) =>
                   <li key={i}>
 
-                    <CardShrinker key={i} currentItem={i === this.state.selectedMarkers.length -1}>
 
-                        <Card style={{'height' : '100%'}}>
+                    <CardShrinker key={i} currentItem={i === this.state.selectedMarkers.length -1}>
+                        <Card style={{'height' : '100%', 'backgroundColor' : i === this.state.selectedMarkers.length -1 ? 'rgba(0,255,0,0.3)' : 'rgba(0,0,0,0.3)'}}>
                           dfdfd {i}
                         </Card>
                     </CardShrinker>

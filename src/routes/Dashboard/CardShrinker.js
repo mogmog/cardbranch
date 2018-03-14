@@ -13,7 +13,7 @@ export default class extends Component {
             <div style={{'height': `${height}px` }}>
               {children}
             </div>
-            )}
+          )}
       </Motion>
 
     );
