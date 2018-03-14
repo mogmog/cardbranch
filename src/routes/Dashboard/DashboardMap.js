@@ -1,20 +1,21 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 
-import {Row, Col, Button} from 'antd';
+import Transition from 'react-motion-ui-pack';
+import {Motion, spring} from 'react-motion';
+
+import {Row, Col, Button, Card } from 'antd';
 import ReactMapboxGl, {Layer, Feature, Marker} from "react-mapbox-gl";
 
+import LucaSideBar from './../../common/LucaSidebar/LucaSidebar';
 import StoreMarker from './../../components/Maps/StoreMap/StoreMarker';
+import styles from './DashboardMap.less';
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4cDIzZTcifQ.qlITXIamvfVj-NCTtAGylw"
 });
 
-import LucaSideBar from './../../common/LucaSidebar/LucaSidebar';
-import LucaGrid from './../../components/Grid/LucaGrid';
-import SmallCellFaultCard from '../../components/Cards/TopLevel/SmallCellFaultCard/SmallCellFaultCard';
-import GenderPercentCard from '../../components/Cards/TopLevel/GenderPercentCard/GenderPercentCard';
-import SVGIconComponent from './SVGIconComponent';
+
 
 /*when the api calls have finished, put the results into the props */
 @connect((namespaces) => {
@@ -30,7 +31,7 @@ export default class extends Component {
 
   storeClick(clickedonstore) {
 
-    if (undefined === this.state.selectedMarkers.find(x=> x.id === clickedonstore.id)) {
+    if (true || undefined === this.state.selectedMarkers.find(x=> x.id === clickedonstore.id)) {
       this.setState(previousState => ({
         selectedMarkers: [...previousState.selectedMarkers, clickedonstore],
       }));
@@ -96,7 +97,25 @@ export default class extends Component {
 
           <Row gutter={24}>
             <Col>
-              {list.length}
+              <Transition
+                component="ul"
+                className={styles.sidebar}
+                enter={{
+                  translateY: spring(0, {stiffness: 200, damping: 15})
+                }}
+                leave={{
+                  translateY: 500
+                }}
+              >
+                { this.state.selectedMarkers.map((item, i) =>
+                  <li key={i}>
+                    <Card style={{'background-color' : 'white', 'zIndex' : 99999}}>
+                      dfdfd
+                    </Card>
+                  </li>
+                )
+                }
+              </Transition>
             </Col>
           </Row>
 

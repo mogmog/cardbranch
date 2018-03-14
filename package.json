@@ -57,6 +57,7 @@
     "react-leaflet-heatmap-layer": "^1.0.3",
     "react-map-gl": "^3.2.4",
     "react-mapbox-gl": "^3.8.0",
+    "react-motion-ui-pack": "^0.10.3",
     "react-stonecutter": "^0.3.9",
     "react-svg": "^2.2.14",
     "react-twitter-widgets": "^1.7.1",
