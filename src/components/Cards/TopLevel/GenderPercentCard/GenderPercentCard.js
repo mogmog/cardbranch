@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Row,
   Col,
+  Card
 } from 'antd';
 
 import {addLocaleData, injectIntl, FormattedMessage } from 'react-intl';
@@ -70,13 +71,13 @@ export default class extends React.Component {
 
   render() {
 
-    const {data = sample} = this.props;
+    const {item, data = this.sample } = this.props;
 
     return (
-      <LucaCard width={300} height={280} front={this._getFront(data)}>
-
-      </LucaCard>
-    );
+      <Card style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
+        {this._getFront(data)}
+      </Card>
+    )
   }
 }
 

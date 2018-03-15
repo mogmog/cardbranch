@@ -59,6 +59,7 @@
     "react-mapbox-gl": "^3.8.0",
     "react-motion-ui-pack": "^0.10.3",
     "react-stonecutter": "^0.3.9",
+    "react-streetview": "git+https://github.com/elcsiga/react-streetview.git",
     "react-svg": "^2.2.14",
     "react-twitter-widgets": "^1.7.1",
     "url-polyfill": "^1.0.10"
