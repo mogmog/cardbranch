@@ -2,7 +2,8 @@ import React from 'react';
 import {
   Row,
   Col,
-  Card
+  Card,
+  Modal
 } from 'antd';
 
 import {addLocaleData, injectIntl, FormattedMessage } from 'react-intl';
@@ -23,7 +24,30 @@ export default class extends React.Component {
     this.schema = schema;
     this.sample = sample;
 
-    this.state = {};
+    this.state = {
+      visible : false,
+    };
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    this.setState({isFlipped: !this.state.isFlipped});
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleOk = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false, visible: false });
+    }, 3000);
+  }
+  handleCancel = () => {
+    this.setState({ visible: false });
   }
 
   _getFront(data) {
@@ -44,6 +68,12 @@ export default class extends React.Component {
           </Col>
         </Row>
 
+        <Row>
+          <Col span={24}>
+            <a onClick={(e) => this.showModal()}>More info</a>
+          </Col>
+        </Row>
+
       </div>
     );
   }
@@ -51,11 +81,33 @@ export default class extends React.Component {
   render() {
 
     const {data = sample} = this.props;
+    const { visible } = this.state;
 
     return (
-      <Card>
-        {this._getFront(data)}
-      </Card>
+      <div>
+
+        <div>
+
+          <Card>
+            {this._getFront(data)}
+          </Card>
+
+          <Modal
+            visible={visible}
+            width={1000}
+            bodyStyle={{'height' : '60vh' }}
+            title="Event"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[]}
+          >
+            <p>Diagnostics.....</p>
+
+          </Modal>
+
+        </div>
+
+      </div>
     );
   }
 }
