@@ -25,6 +25,7 @@ const Map = ReactMapboxGl({
 export default class extends Component {
 
   state = {
+    selectedCard : null,
     selectedMarkers: [],
     sidebaropen: false,
   };
@@ -32,14 +33,16 @@ export default class extends Component {
 
   storeClick(clickedonstore) {
 
-    if (true || undefined === this.state.selectedMarkers.find(x=> x.id === clickedonstore.id)) {
+    /*if store isnt already in card list, add it to selectedMarkers list*/
+    if (undefined === this.state.selectedMarkers.find(x=> x.id === clickedonstore.id)) {
       this.setState(previousState => ({
         selectedMarkers: [...previousState.selectedMarkers, clickedonstore],
+        sidebaropen: true,
       }));
-
-      this.setState({sidebaropen: true});
     }
 
+    /* set the selectedCard so we know how to colour and animate the card*/
+    this.setState({ selectedCard: clickedonstore.id });
   }
 
   componentDidMount() {
@@ -83,28 +86,28 @@ export default class extends Component {
           <StoreMarker
             coordinates={[-0.2179315, 51.5235182]}
             onClick={this.storeClick.bind(this)}
-            store={{'id': 1}}/>
+            store={{'id': 2}}/>
 
           <StoreMarker
             coordinates={[-0.2845815, 51.8235582]}
             onClick={this.storeClick.bind(this)}
-            store={{'id': 1}}/>
+            store={{'id': 3}}/>
 
           <StoreMarker
             coordinates={[-0.2148215, 51.5281232]}
             onClick={this.storeClick.bind(this)}
-            store={{'id': 1}}/>
+            store={{'id': 4}}/>
 
 
           <StoreMarker
             coordinates={[-0.2116815, 51.5285582]}
             onClick={this.storeClick.bind(this)}
-            store={{'id': 1}}/>
+            store={{'id': 5}}/>
 
           <StoreMarker
             coordinates={[-0.2416815, 51.5735582]}
             onClick={this.storeClick.bind(this)}
-            store={{'id': 2}}/>
+            store={{'id': 6}}/>
 
         </Map>
 
@@ -113,7 +116,6 @@ export default class extends Component {
           <Row>
             <Col>
               <a onClick={ e=> {this.setState({selectedMarkers : [], sidebaropen: false})}}>close</a>
-
 
               <Transition
                 component="ul"
@@ -128,9 +130,8 @@ export default class extends Component {
                 { this.state.selectedMarkers.map((item, i) =>
                   <li key={i}>
 
-
-                    <CardShrinker key={i} currentItem={i === this.state.selectedMarkers.length -1}>
-                        <Card style={{'height' : '100%', 'backgroundColor' : i === this.state.selectedMarkers.length -1 ? 'rgba(0,255,0,0.3)' : 'rgba(0,0,0,0.3)'}}>
+                    <CardShrinker key={i} currentItem={item.id === this.state.selectedCard }>
+                        <Card onClick={(e) => { this.setState({'selectedCard' : item.id}) }} style={{'height' : '100%', 'backgroundColor' : ((item.id === this.state.selectedCard )) ? 'rgba(0,255,0,0.3)' : 'rgba(0,0,0,0.3)'}}>
                           dfdfd {i}
                         </Card>
                     </CardShrinker>
