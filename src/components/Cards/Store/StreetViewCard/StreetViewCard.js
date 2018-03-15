@@ -7,6 +7,8 @@ import {
 
 import ReactStreetview from 'react-streetview';
 
+import styles from './StreetViewCard.less';
+
 export default class extends React.Component {
   constructor() {
     super();
@@ -22,7 +24,8 @@ export default class extends React.Component {
     const streetViewPanoramaOptions = {
       position: {lat: 46.9171876, lng: 17.8951832},
       pov: {heading: 100, pitch: 0},
-      zoom: 1
+      zoom: 1,
+      linksControl: false,
     };
 
 
@@ -32,7 +35,7 @@ export default class extends React.Component {
         <Row >
 
           <Col>
-            <div style={{'height' : '250px'}}>
+            <div className={styles.streetviewcard} style={{'height' : '250px'}}>
               <ReactStreetview
                 apiKey={googleMapsApiKey}
                 streetViewPanoramaOptions={streetViewPanoramaOptions}
