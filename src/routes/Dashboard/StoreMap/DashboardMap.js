@@ -138,7 +138,10 @@ export default class extends Component {
                 {this.state.selectedMarkers.map((item, i) =>
                   <li key={i}>
 
-                    <CardShrinker big={660} small={50} key={i} currentItem={item.id === this.state.selectedCard}>
+                    <StreetViewCard item={item}/>
+                    <GenderPercentCard item={item}/>
+
+                    {/*<CardShrinker big={660} small={50} key={i} currentItem={item.id === this.state.selectedCard}>
                       <div
                         onClick={(e) => {
                         this.setState({'selectedCard': item.id})
@@ -153,7 +156,7 @@ export default class extends Component {
                         </div>
 
                       </div>
-                    </CardShrinker>
+                    </CardShrinker>*/}
 
                   </li>
                 )
