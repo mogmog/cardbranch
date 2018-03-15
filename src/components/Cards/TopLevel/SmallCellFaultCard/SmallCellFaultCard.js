@@ -2,13 +2,14 @@ import React from 'react';
 import {
   Row,
   Col,
+  Card
 } from 'antd';
 
 import {addLocaleData, injectIntl, FormattedMessage } from 'react-intl';
 import localeData from './translations';
 
 import LucaCard from '../../LucaCard';
-import WarningIcon from '../../../Icons/WarningIcon/WarningIcon';
+import WarningIcon from './../../../Icons/WarningIcon/WarningIcon';
 
 const schema        = require('json-loader!./schema.json');
 const sample        = require('json-loader!./sample.json');
@@ -32,12 +33,14 @@ export default class extends React.Component {
 
         <Row>
 
-          <Col span={12}>
+          <Col span={24}>
             <FormattedMessage id='warning' defaultMessage='{warning}' values={localeData} />
           </Col>
+        </Row>
 
-          <Col span={12}>
-                <WarningIcon></WarningIcon>
+        <Row>
+          <Col span={24}>
+            <WarningIcon></WarningIcon>
           </Col>
         </Row>
 
@@ -50,9 +53,9 @@ export default class extends React.Component {
     const {data = sample} = this.props;
 
     return (
-      <LucaCard width={300} height={280} front={this._getFront(data)}>
-
-      </LucaCard>
+      <Card>
+        {this._getFront(data)}
+      </Card>
     );
   }
 }

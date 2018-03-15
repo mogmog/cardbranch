@@ -62,7 +62,7 @@ export default class extends Component {
         className={styles.lucagrid}
         component="ul"
         columns={!responsive ? columns : null}
-        columnWidth={300}
+        columnWidth={200}
         gutterWidth={gutters}
         gutterHeight={gutters}
         layout={gridLayout}

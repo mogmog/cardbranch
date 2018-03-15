@@ -234,6 +234,12 @@ export default class LucaSideMenu extends PureComponent {
             </Link>
           </Menu.Item>
 
+          <Menu.Item className={styles.menuItem}>
+            <Link to="/dashboard/eventmap">
+              <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Event Map</div>
+            </Link>
+          </Menu.Item>
+
 
          {/* <Menu.Item className={styles.menuItem}>
             <Link to="/dashboard/list">

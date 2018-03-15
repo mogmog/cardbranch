@@ -78,7 +78,11 @@ export const getRouterData = (app) => {
     },
 
     '/dashboard/storemap': {
-      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/DashboardMap')),
+      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/StoreMap/DashboardMap')),
+    },
+
+    '/dashboard/eventmap': {
+      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/EventMap/EventMap')),
     },
 
     '/exception/403': {

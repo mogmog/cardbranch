@@ -74,7 +74,7 @@ export default class extends React.Component {
     const {item, data = this.sample } = this.props;
 
     return (
-      <Card style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
+      <Card style={{'height' : '100%', 'overflow': 'hidden', 'backgroundColor' : 'rgba(255,255,255,1)'}}>
         {this._getFront(data)}
       </Card>
     )

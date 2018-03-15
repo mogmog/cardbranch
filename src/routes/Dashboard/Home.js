@@ -39,9 +39,14 @@ export default class Home extends Component {
           measured
           {...gridProps}
         >
-          <li key={1}><SmallCellFaultCard/></li>
-          <li key={2}><GenderPercentCard/></li>
-          <li key={3}><GenderPercentCard/></li>
+          <li style={{'width' : '200px'}} key={1}><SmallCellFaultCard/></li>
+          <li style={{'width' : '200px'}} key={2}><SmallCellFaultCard/></li>
+          <li style={{'width' : '200px'}} key={3}><SmallCellFaultCard/></li>
+          <li style={{'width' : '200px'}} key={4}><SmallCellFaultCard/></li>
+          <li style={{'width' : '200px'}} key={5}><SmallCellFaultCard/></li>
+
+          {/*<li key={2}><GenderPercentCard/></li>
+          <li key={3}><GenderPercentCard/></li>*/}
         </LucaGrid>
 
       </div>
