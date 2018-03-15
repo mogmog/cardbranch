@@ -24,6 +24,7 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 
 from app.ng_event_models import Card, CardTemplate
+from app.user_models import User
 
 def create_app(config_name):
 
@@ -34,6 +35,27 @@ def create_app(config_name):
     app.config.from_object(app_config[config_name])
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+
+    @app.route('/api/login/account', methods=['POST'])
+    def login():
+
+        password = request.data.get('password', '')
+        userName    = request.data.get('userName', '')
+
+        user = Card.get_all().filter(User.userName == userName).first()
+
+        print (user)
+
+        response = jsonify({'status' : 'ok', 'type' : 'account', 'currentAuthority': 'admin'})
+
+        return make_response(response), 200
+
+
+    @app.route('/api/currentUser', methods=['GET'])
+    def currentUser():
+        response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': '00000001', 'notifyCount': 3,})
+        return make_response(response), 200
+
 
     @app.route('/api/cards/create', methods=['POST'])
     def create_card():
