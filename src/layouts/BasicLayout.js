@@ -88,9 +88,9 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
-  /*  this.props.dispatch({
+    this.props.dispatch({
       type: 'user/fetchCurrent',
-    });*/
+    });
   }
   getPageTitle() {
     const { routerData, location } = this.props;
@@ -123,7 +123,7 @@ class BasicLayout extends React.PureComponent {
     });
   }
   handleNoticeClear = (type) => {
-    message.success(`清空了${type}`);
+    message.success(`Clear ${type}`);
     this.props.dispatch({
       type: 'global/clearNotices',
       payload: type,
@@ -151,6 +151,9 @@ class BasicLayout extends React.PureComponent {
     const {
       currentUser, collapsed, fetchingNotices, notices, routerData, match, location,
     } = this.props;
+
+    console.log(this.props);
+
     const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>
@@ -168,7 +171,20 @@ class BasicLayout extends React.PureComponent {
         />
         <Layout>
 
-         {/* <LucaHeader/>*/}
+          <Header style={{ padding: 0 }}>
+            <GlobalHeader
+              logo={logo}
+              currentUser={currentUser}
+              fetchingNotices={fetchingNotices}
+              notices={notices}
+              collapsed={collapsed}
+              isMobile={this.state.isMobile}
+              onNoticeClear={this.handleNoticeClear}
+              onCollapse={this.handleMenuCollapse}
+              onMenuClick={this.handleMenuClick}
+              onNoticeVisibleChange={this.handleNoticeVisibleChange}
+            />
+          </Header>
 
           <Content style={{ margin: '0px 0px 0 0px', height: '100%' }}>
             <Switch>
@@ -225,7 +241,7 @@ class BasicLayout extends React.PureComponent {
     );
 
     return (
-      <DocumentTitle title={this.getPageTitle()}>
+      <DocumentTitle title={'LUCA Card'}>
         <ContainerQuery query={query}>
           {params => <div className={classNames(params)}>{layout}</div>}
         </ContainerQuery>

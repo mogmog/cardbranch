@@ -14,9 +14,11 @@ export default class LucaHeader extends PureComponent {
 
   render() {
 
+    const { currentUser } = this.props;
+
     return (
       <Header>
-        <h2>this is at the top</h2>
+        <h2>{JSON.stringify(currentUser)}</h2>
       </Header>
     );
   }

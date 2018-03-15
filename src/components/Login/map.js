@@ -23,7 +23,7 @@ const map = {
       placeholder: '888888',
     },
     rules: [{
-      required: true, message: '请输入密码！',
+      required: true, message: 'You must enter a password.',
     }],
   },
   Mobile: {

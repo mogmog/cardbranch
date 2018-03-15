@@ -22,10 +22,10 @@ const proxy = {
       },
     },
     $body: {
-      name: 'Serati Ma',
+      name: 'Daniel Garcia',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
       userid: '00000001',
-      notifyCount: 12,
+      notifyCount: 3,
     },
   },
   // GET POST 可省略
@@ -69,7 +69,7 @@ const proxy = {
   'GET /api/profile/advanced': getProfileAdvancedData,
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
-    if(password === '888888' && userName === 'admin'){
+    if(password === '888888' && userName === 'Daniel.garcia@telefonica.com'){
       res.send({
         status: 'ok',
         type,
