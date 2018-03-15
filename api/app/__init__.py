@@ -42,13 +42,13 @@ def create_app(config_name):
         password = request.data.get('password', '')
         userName    = request.data.get('userName', '')
 
-        user = Card.get_all().filter(User.userName == userName).first()
+        user = User.get_all().filter(User.userName == userName).first()
 
-        print (user)
+        if user is not None:
+          response = jsonify({'status' : 'ok', 'type' : 'account', 'currentAuthority': 'admin'})
+          return make_response(response), 200
 
-        response = jsonify({'status' : 'ok', 'type' : 'account', 'currentAuthority': 'admin'})
-
-        return make_response(response), 200
+        return make_response(jsonify({'status': 'error', 'type' : 'account', 'currentAuthority': 'guest'})), 200
 
 
     @app.route('/api/currentUser', methods=['GET'])
