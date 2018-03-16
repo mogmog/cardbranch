@@ -30,42 +30,34 @@ const Map = ReactMapboxGl({
 export default class extends Component {
 
   state = {
-    selectedCard: null,
-    selectedMarkers: [],
+    cards : [],
     sidebaropen: false,
   };
 
 
-  storeClick(clickedonstore) {
+  markerClick(marker) {
 
-    /*if store isnt already in card list, add it to selectedMarkers list*/
-    if (undefined === this.state.selectedMarkers.find(x => x.id === clickedonstore.id)) {
+    const {dispatch} = this.props;
+
       this.setState(previousState => ({
-        selectedMarkers: [...previousState.selectedMarkers, clickedonstore],
+        selectedMarker: marker,
         sidebaropen: true,
       }));
-    }
 
-    /* set the selectedCard so we know how to colour and animate the card*/
-    this.setState({selectedCard: clickedonstore.id});
-  }
-
-  componentDidMount() {
-    const {dispatch} = this.props;
     dispatch({
-      type: 'card/fetchalerts',
+      type: 'card/fetchcards',
+      payload : {'type' : 'store' , 'store_id' : marker.id  }
     });
+
   }
 
   componentDidUpdate(preProps, prevState) {
     const {dispatch} = this.props;
 
-    if (prevState.selectedMarkers.length !== this.state.selectedMarkers.length) {
-
-      dispatch({
-        type: 'card/fetchalerts',
-      });
-    }
+     /* dispatch({
+        type: 'card/fetchcards',
+        payload : {'type' : 'store' , 'store_id' : 1  }
+      });*/
   }
 
   render() {
@@ -85,34 +77,13 @@ export default class extends Component {
 
           <StoreMarker
             coordinates={[-0.2116815, 51.5723582]}
-            onClick={this.storeClick.bind(this)}
+            onClick={this.markerClick.bind(this)}
             store={{'id': 1, 'coordinates' : [-0.2116815, 51.5285582]}}/>
 
           <StoreMarker
             coordinates={[-0.2179315, 51.5235182]}
-            onClick={this.storeClick.bind(this)}
+            onClick={this.markerClick.bind(this)}
             store={{'id': 2, 'coordinates' : [-0.2116815, 51.5285582]}}/>
-
-          <StoreMarker
-            coordinates={[-0.2845815, 51.8235582]}
-            onClick={this.storeClick.bind(this)}
-            store={{'id': 3, 'coordinates' : [-0.2116815, 51.5285582]}}/>
-
-          <StoreMarker
-            coordinates={[-0.2148215, 51.5281232]}
-            onClick={this.storeClick.bind(this)}
-            store={{'id': 4, 'coordinates' : [-0.2116815, 51.5285582]}}/>
-
-
-          <StoreMarker
-            coordinates={[-0.2116815, 51.5285582]}
-            onClick={this.storeClick.bind(this)}
-            store={{'id': 5, 'coordinates' : [-0.2116815, 51.5285582]}}/>
-
-          <StoreMarker
-            coordinates={[-0.2416815, 51.5735582]}
-            onClick={this.storeClick.bind(this)}
-            store={{'id': 6, 'coordinates' : [-0.2116815, 51.5285582]}}/>
 
         </Map>
 
@@ -123,41 +94,25 @@ export default class extends Component {
           <Row>
             <Col>
 
-              <a onClick={ e=> {this.setState({selectedMarkers : [], sidebaropen: false})}}>close</a>
+              <a onClick={ e=> {this.setState({cards : [], sidebaropen: false})}}>close</a>
+
+              {list.length}
 
               <Transition
                 component="ul"
                 className={styles.sidebar}
                 enter={{
+                  opacity: 1,
                   translateY: spring(0, {stiffness: 200, damping: 15})
                 }}
                 leave={{
-                  translateY: 100
+                  opacity: spring(0, {stiffness: 200, damping: 15}),
+                  translateY: 1000
                 }}
               >
-                {this.state.selectedMarkers.map((item, i) =>
+                {list.map((item, i) =>
                   <li key={i}>
-
                     <StreetViewCard item={item}/>
-                    <GenderPercentCard item={item}/>
-
-                    {/*<CardShrinker big={660} small={50} key={i} currentItem={item.id === this.state.selectedCard}>
-                      <div
-                        onClick={(e) => {
-                        this.setState({'selectedCard': item.id})
-                      }} style={{
-                        'height': '100%',
-                        'backgroundColor': ((item.id === this.state.selectedCard)) ? 'rgba(0,255,0,0.3)' : 'rgba(0,0,0,0.3)'
-                      }}>
-
-                        <div>
-                            <StreetViewCard item={item}/>
-                            <GenderPercentCard item={item}/>
-                        </div>
-
-                      </div>
-                    </CardShrinker>*/}
-
                   </li>
                 )
                 }

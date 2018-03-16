@@ -1,4 +1,4 @@
-import { queryAlerts } from '../services/card/api';
+import { queryCards } from '../services/card/api';
 
 export default {
   namespace: 'card',
@@ -8,18 +8,18 @@ export default {
   },
 
   effects: {
-    *fetchalerts({ payload }, { call, put }) {
-      const response = yield call(queryAlerts, payload);
 
+    * fetchcards({payload}, {call, put}) {
+      const response = yield call(queryCards, payload);
       yield put({
-        type: 'queryAlerts',
+        type: 'querycards',
         payload: response,
       });
-    },
+    }
   },
 
   reducers: {
-    queryAlerts(state, action) {
+    querycards(state, action) {
       return {
         ...state,
         list: action.payload && typeof(action.payload.list === 'Array') ? action.payload.list : [],
