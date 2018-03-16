@@ -5,6 +5,8 @@ import Transition from 'react-motion-ui-pack';
 import {Motion, spring} from 'react-motion';
 
 
+import ReactStreetview from 'react-streetview';
+
 import {Row, Col, Card, Button} from 'antd';
 import ReactMapboxGl, {Layer, Feature, Marker} from "react-mapbox-gl";
 
@@ -12,7 +14,7 @@ import ReactMapboxGl, {Layer, Feature, Marker} from "react-mapbox-gl";
 import StreetViewCard from '../../../components/Cards/Store/StreetViewCard/StreetViewCard';
 import GenderPercentCard from '../../../components/Cards/TopLevel/GenderPercentCard/GenderPercentCard';
 
-import CardShrinker from '../CardShrinker';
+import CardLoader from '../../../components/Cards/CardLoader';
 
 import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';
 import StoreMarker from '../../../components/Maps/StoreMap/StoreMarker';
@@ -78,12 +80,12 @@ export default class extends Component {
           <StoreMarker
             coordinates={[-0.2116815, 51.5723582]}
             onClick={this.markerClick.bind(this)}
-            store={{'id': 1, 'coordinates' : [-0.2116815, 51.5285582]}}/>
+            store={{'id': 1}}/>
 
           <StoreMarker
             coordinates={[-0.2179315, 51.5235182]}
             onClick={this.markerClick.bind(this)}
-            store={{'id': 2, 'coordinates' : [-0.2116815, 51.5285582]}}/>
+            store={{'id': 2}}/>
 
         </Map>
 
@@ -112,7 +114,7 @@ export default class extends Component {
               >
                 {list.map((item, i) =>
                   <li key={i}>
-                    <StreetViewCard item={item}/>
+                    <CardLoader card={item}></CardLoader>
                   </li>
                 )
                 }

@@ -16,30 +16,29 @@ export default class extends React.Component {
 
   render() {
 
-    const {item} = this.props;
+    const {data} = this.props;
 
-    const googleMapsApiKey = 'AIzaSyA5mtcRwZ63yYp3CSJNM3CWi5LV9C14-78';
-
-    // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
-    const streetViewPanoramaOptions = {
-      position: {lat: 46.9171876, lng: 17.8951832},
-      pov: {heading: 100, pitch: 0},
-      zoom: 1,
-      linksControl: false,
-    };
-
+    /*return (
+      <Card title="sdfdf" style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
+          i am card
+      </Card>
+    );*/
 
     return (
-      <Card title={`Store ${item.id}`} style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
+      <Card title={`${data.name}`} style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
 
         <Row >
 
           <Col>
+
             <div className={styles.streetviewcard} style={{'height' : '250px'}}>
-              <ReactStreetview
-                apiKey={googleMapsApiKey}
-                streetViewPanoramaOptions={streetViewPanoramaOptions}
-              />
+              <div style={{
+                width: '800px',
+                height: '450px',
+                backgroundColor: '#eeeeee'
+              }}>
+                <img src={`https://maps.googleapis.com/maps/api/streetview?size=250x200&location=${data.coordinates.latitude},${data.coordinates.longitude}&heading=151.78&pitch=-0.76&key=AIzaSyA5mtcRwZ63yYp3CSJNM3CWi5LV9C14-78`} />
+              </div>
             </div>
           </Col>
 
