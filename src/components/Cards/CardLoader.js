@@ -1,39 +1,30 @@
 import React, {Component} from 'react';
 
-export default class extends Component {
+/*This should probaly be dynamic but had big problems with webpack. if its only a few card then maybe it doesnt matter*/
 
-  state = {
-    Card : {default : x => <span>Loading</span>}
-  }
+import StreetViewCard from './Store/StreetViewCard/StreetViewCard';
+import GenderPercentCard from './TopLevel/GenderPercentCard/GenderPercentCard';
+
+export default class extends Component {
 
   constructor(props) {
     super();
   }
 
-  componentDidMount() {
-
-    import('./Store/StreetViewCard/StreetViewCard').then((Card) => {
-      this.setState({ Card });
-    });
-  }
-
   render() {
+
+    /*must update this every time ytou add a new card*/
+    const mappings = {
+      'StreetViewCard' : StreetViewCard,
+      'GenderPercentCard' : GenderPercentCard
+    }
 
     const { card } = this.props;
 
-
-    console.log(card);
-
-    let Card = this.state.Card.default;
+    let Card = mappings[card.component];
 
     return (
-     <div> <Card data={card.data }/></div>
+      <Card data={card.data }/>
     );
   }
-
 }
-
-
-
-
-//model => modelNotExisted(app, model)).map(m => import(`../models/${m}.js`)
