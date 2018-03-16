@@ -51,12 +51,12 @@ def create_app(config_name):
         return make_response(jsonify({'status': 'error', 'type' : 'account', 'currentAuthority': 'guest'})), 200
 
 
-    @app.route('/api/currentUser', methods=['GET'])
+    @app.route('/api/real/currentUser', methods=['GET'])
     def currentUser():
         response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 1, 'notifyCount': 3,})
         return make_response(response), 200
 
-    @app.route('/api/cards', methods=['POST'])
+    @app.route('/api/real/cards', methods=['POST'])
     def list_cards():
 
       type = request.data.get('type', '')
