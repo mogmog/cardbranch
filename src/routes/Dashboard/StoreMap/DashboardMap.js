@@ -25,6 +25,8 @@ import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';
 import StoreMarker from '../../../components/Maps/StoreMap/StoreMarker';
 import styles from './DashboardMap.less';
 
+import HeatMap from './HeatMap';
+
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4cDIzZTcifQ.qlITXIamvfVj-NCTtAGylw"
 });
@@ -42,6 +44,8 @@ class MyMap extends React.Component {
       style: 'mapbox://styles/mapbox/light-v9'
     });
 
+    this.map.dragRotate._pitchWithRotate = false;
+
     // Setup our svg layer that we can manipulate with d3
     var container = this.map.getCanvasContainer()
     var svg = d3.select(container).append("svg")
@@ -52,8 +56,6 @@ class MyMap extends React.Component {
 
     var path = d3.geo.path()
 
-    console.log(points);
-    //console.log(data[0], getLL(data[0]), project(data[0]))
     var dots = svg.selectAll("circle.dot").data(points.features)
 
     dots.enter().append("circle").classed("dot", true)
@@ -89,9 +91,9 @@ class MyMap extends React.Component {
       render(this.map);
     });
 
-    this.map.on("viewreset", function() {
-      render(this.map)
-    })
+    // this.map.on("viewreset", function() {
+    //   render(this.map)
+    // })
 
     // disable map rotation using right click + drag
     this.map.dragRotate.disable();
@@ -107,55 +109,22 @@ class MyMap extends React.Component {
       var bbox = document.body.getBoundingClientRect();
       var center = map.getCenter();
       var zoom = map.getZoom();
+
+      var bearing = map.getBearing();
+
+      console.log(bearing);
+
       // 512 is hardcoded tile size, might need to be 256 or changed to suit your map config
       var scale = (512) * 0.5 / Math.PI * Math.pow(2, zoom);
 
       var d3projection = d3.geo.mercator()
         .center([center.lng, center.lat])
         .translate([bbox.width / 2, bbox.height / 2])
-        .scale(scale);
+        .scale(scale)
+       // .rotate([0, 90, 0])
 
       return d3projection;
     }
-
-    var url = "http://enjalot.github.io/wwsd/data/UK/london_stations.topojson";
-    d3.json(url, function (err, data) {
-      var points = topojson.feature(data, data.objects.london_stations)
-      //console.log(data[0], getLL(data[0]), project(data[0]))
-      var dots = svg.selectAll("circle.dot")
-        .data(points.features)
-
-      dots.enter().append("circle").classed("dot", true)
-        .attr("r", 1)
-        .style({
-          fill: "#0082a3",
-          "fill-opacity": 0.6,
-          stroke: "#004d60",
-          "stroke-width": 1
-        })
-        .transition().duration(1000)
-        .attr("r", 6)
-
-
-
-
-
-      //render();
-
-      // // re-render our visualization whenever the view changes
-      // this.map.on("viewreset", function() {
-      //   render()
-      // })
-      //
-      // this.map.on("move", function() {
-      //   render()
-      // })
-
-      // render our initial visualization
-      //render()
-
-    });
-
 
 
 
@@ -173,7 +142,7 @@ class MyMap extends React.Component {
       width: '100%'
     };
 
-    return <div style={style} ref={el => this.mapContainer = el}/>;
+    return (<div style={style} ref={el => this.mapContainer = el}> </div>);
   }
 }
 
@@ -222,7 +191,9 @@ export default class extends Component {
     return (
       <div>
 
-        <MyMap/>
+        <HeatMap/>
+       {/* <MyMap>
+        </MyMap>*/}
 
         {/*<Map
           style="mapbox://styles/mapbox/light-v9"
