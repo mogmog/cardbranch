@@ -8,6 +8,7 @@ import {Motion, spring} from 'react-motion';
 import {Row, Col, Card, Button} from 'antd';
 import ReactMapboxGl, {Layer, Feature, Marker} from "react-mapbox-gl";
 
+import Choropleth from './../Choropleth/Choropleth';
 
 import SmallCellFaultCard from '../../../components/Cards/TopLevel/SmallCellFaultCard/SmallCellFaultCard';
 
@@ -16,6 +17,8 @@ import CardShrinker from '../CardShrinker';
 import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';
 import EventMarker from '../../../components/Maps/EventMap/EventMarker';
 import styles from './CrossFilterMap.less';
+
+
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4cDIzZTcifQ.qlITXIamvfVj-NCTtAGylw"
@@ -70,6 +73,9 @@ export default class extends Component {
   render() {
 
     const {list} = this.props;
+
+
+    return (<Choropleth />)
 
     return (
       <div>

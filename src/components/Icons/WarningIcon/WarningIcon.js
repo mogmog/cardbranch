@@ -3,7 +3,7 @@ import React from 'react';
 export default ({}) => {
 
   const Warning = (
-    <svg xmlns="http://www.w3.org/2000/svg" height="146" viewBox="0 0 96 26">
+    <svg xmlns="http://www.w3.org/2000/svg" height="146" width="146" viewBox="0 0 96 26">
       <g id="alert" style={{'fill': '#ff5d00'}}>
         <path id="point" d="M11 16h2v2h-2z"/>
         <path id="stroke" d="M13.516 10h-3L11 15h2z"/>

@@ -64,7 +64,10 @@ export default class extends React.Component {
 
         <Row>
           <Col span={24}>
-            <WarningIcon></WarningIcon>
+
+            <div style={{'height': '100px', 'width': '100px'}}>
+              <WarningIcon></WarningIcon>
+            </div>
           </Col>
         </Row>
 
