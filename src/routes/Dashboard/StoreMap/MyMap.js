@@ -1,6 +1,29 @@
-import React from "react";
-import ReactMapboxGl from "react-mapbox-gl/lib/index";
-import mapboxgl from "mapbox-gl";
+import React, {Component} from 'react';
+import {connect} from 'dva';
+
+
+import d3 from 'd3';
+
+import Transition from 'react-motion-ui-pack';
+import {Motion, spring} from 'react-motion';
+
+
+import ReactStreetview from 'react-streetview';
+
+import {Row, Col, Card, Button} from 'antd';
+import ReactMapboxGl, {Layer, Feature, Marker} from "react-mapbox-gl";
+
+
+import mapboxgl from 'mapbox-gl';
+
+import StreetViewCard from '../../../components/Cards/Store/StreetViewCard/StreetViewCard';
+import GenderPercentCard from '../../../components/Cards/TopLevel/GenderPercentCard/GenderPercentCard';
+
+import CardLoader from '../../../components/Cards/CardLoader';
+
+import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';
+import StoreMarker from '../../../components/Maps/StoreMap/StoreMarker';
+import styles from './DashboardMap.less';
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4cDIzZTcifQ.qlITXIamvfVj-NCTtAGylw"
@@ -12,79 +35,23 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4c
 export default class MyMap extends React.Component {
   componentDidMount() {
 
-    this.map = new mapboxgl.Map({
-      container: this.mapContainer,
+    this.lightmap = new mapboxgl.Map({
+      container: this.afterContainer,
       style: 'mapbox://styles/mapbox/light-v9'
     });
 
-    this.map.dragRotate.disable();
-    this.map.touchZoomRotate.disableRotation();
-    this.map.dragRotate._pitchWithRotate = false;
-
-    // Setup our svg layer that we can manipulate with d3
-    var container = this.map.getCanvasContainer()
-    var svg = d3.select(container).append("svg")
-
-    var points = topojson.feature(data, data.objects.london_stations)
-
-    var d3Projection = getD3(this.map);
-
-    var path = d3.geo.path()
-
-    var dots = svg.selectAll("circle.dot").data(points.features)
-
-    dots.enter().append("circle").classed("dot", true)
-      .attr("r", 1)
-      .style({
-        fill: "#0082a3",
-        "fill-opacity": 0.6,
-        stroke: "#004d60",
-        "stroke-width": 1
-      })
-      .transition().duration(1000)
-      .attr("r", 2)
-
-
-    function render(map) {
-      d3Projection = getD3(map);
-      path.projection(d3Projection)
-
-      dots
-        .attr({
-          cx: function(d) {
-            var x = d3Projection(d.geometry.coordinates)[0];
-            return x
-          },
-          cy: function(d) {
-            var y = d3Projection(d.geometry.coordinates)[1];
-            return y
-          },
-        })
-    }
-
-    this.map.on('move', () => {
-      render(this.map);
+    this.darkmap = new mapboxgl.Map({
+      container : this.beforeContainer,
+      style: 'mapbox://styles/mapbox/dark-v9'
     });
 
-    function getD3(map) {
-      var bbox = document.body.getBoundingClientRect();
-      var center = map.getCenter();
-      var zoom = map.getZoom();
 
-      var bearing = map.getBearing();
+    console.log(mapboxgl);
 
-      // 512 is hardcoded tile size, might need to be 256 or changed to suit your map config
-      var scale = (512) * 0.5 / Math.PI * Math.pow(2, zoom);
-
-      var d3projection = d3.geo.mercator()
-        .center([center.lng, center.lat])
-        .translate([bbox.width / 2, bbox.height / 2])
-        .scale(scale)
-      // .rotate([0, 90, 0])
-
-      return d3projection;
-    }
-
+    /*var map = new mapboxgl.Compare(this.lightmap, this.darkmap, {
+      // Set this to enable comparing two maps by mouse movement:
+      // mousemove: true
+    });*/
 
 
   }
@@ -97,10 +64,11 @@ export default class MyMap extends React.Component {
   render() {
     const style = {
       position: 'absolute',
-      height:'100%',
+      top: 0,
+      bottom: 0,
       width: '100%'
     };
 
-    return (<div style={style} ref={el => this.mapContainer = el}> </div>);
+    return <div><div style={style} ref={el => this.afterContainer = el}/><div style={style} ref={el => this.beforeContainer = el}/></div>;
   }
 }

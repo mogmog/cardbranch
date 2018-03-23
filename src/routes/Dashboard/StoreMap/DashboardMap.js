@@ -30,6 +30,10 @@ import MyMap from './MyMap';
 
 import LucaMapSVG from './LucaMapSVG';
 
+const Map = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4cDIzZTcifQ.qlITXIamvfVj-NCTtAGylw"
+});
+
 
 
 /*when the api calls have finished, put the results into the props */
@@ -77,13 +81,20 @@ export default class extends Component {
       <div>
 
        {/* <HeatMap/>*/}
-        <MyMap>
+
+        {/*<MyMap/>*/}
+
+        {/*<LucaMapSVG>
+          <circle cx={100} cy={100} r={100}></circle>
+        </LucaMapSVG>*/}
+       {/* <HeatMap/>*/}
+       {/* <MyMap>
 
           <LucaMapSVG></LucaMapSVG>
 
-        </MyMap>
+        </MyMap>*/}
 
-        {/*<Map
+        <Map
           style="mapbox://styles/mapbox/light-v9"
           ref={(map) => {this.map = map}}
           containerStyle={{
@@ -102,7 +113,7 @@ export default class extends Component {
             onClick={this.markerClick.bind(this)}
             store={{'id': 2}}/>
 
-        </Map>*/}
+        </Map>
 
 
         <LucaSideBar open={this.state.sidebaropen} width={30}>

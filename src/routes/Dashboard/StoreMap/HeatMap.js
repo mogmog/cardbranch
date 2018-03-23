@@ -1,10 +1,29 @@
 import React from 'react';
+import {Button, DatePicker } from 'antd';
+
+const { RangePicker, MonthPicker } = DatePicker;
+
+
 import d3 from 'd3';
 import ReactMapboxGl, {Layer, Source, Feature, Marker} from "react-mapbox-gl";
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoibW9nbW9nIiwiYSI6ImNpZmI2eTZuZTAwNjJ0Y2x4a2g4cDIzZTcifQ.qlITXIamvfVj-NCTtAGylw"
 });
+
+const data = {
+  "type": "FeatureCollection",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    { "type": "Feature", "properties": { "id": "ak16994521", "mag": 6, "time": 1507425650893, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [  -1.257677, 51.752982, 100 ] } },
+    { "type": "Feature", "properties": { "id": "ak16994521", "mag": 6, "time": 1507425650893, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [  -1.257347, 51.752712, 100 ] } },
+    { "type": "Feature", "properties": { "id": "ak16994521", "mag": 6, "time": 1507425650893, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [  -1.257217, 51.752222, 100 ] } },
+    { "type": "Feature", "properties": { "id": "ak16994521", "mag": 6, "time": 1507425650893, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [  -1.257887, 51.752762, 100 ] } },
+    { "type": "Feature", "properties": { "id": "ak16994521", "mag": 6, "time": 1507425650893, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [  -1.257447, 51.752232, 100 ] } },
+
+
+  ]
+};
 
 export default class HeatMap extends React.Component {
 
@@ -14,31 +33,32 @@ export default class HeatMap extends React.Component {
     this.state = {hasAddedSource: false};
   }
 
+  panToA() {
+    this.map.flyTo({center : [-1.257677, 51.752982]});
+  }
+
+  panToB() {
+    this.map.flyTo({center : [-1.957677, 50.752982]});
+  }
+
+
   render() {
 
-    const data = {
-      "type": "FeatureCollection",
-      "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
-      "features": [
-        {
-          "type": "Feature",
-          "properties": {"id": "hackney", "mag": 5.3},
-          "geometry": {"type": "Point", "coordinates": [-0.05233, 51.55893, 0.0]}
-        },
 
-
-        {
-          "type": "Feature",
-          "properties": {"id": "islington", "mag": 2.3},
-          "geometry": {"type": "Point", "coordinates": [-0.10152, 51.52106, 0.0]}
-        },
-
-
-      ]
-    };
 
     return (
+      <div>
+
+        <Button onClick={this.panToA.bind(this)}> West Gate </Button>
+
+        <Button onClick={this.panToB.bind(this)}> Grafton CEntre </Button>
+
+        <RangePicker renderExtraFooter={() => 'extra footer'} />
+
+
       <Map
+        center={[-1.257677, 51.752982]}
+        zoom={[15]}
         onStyleLoad={(map) => {
 
           this.map = map;
@@ -58,7 +78,7 @@ export default class HeatMap extends React.Component {
           this.setState({'hasAddedSource': true});
 
         }}
-        style="mapbox://styles/mapbox/light-v9"
+        style="mapbox://styles/mapbox/satellite-v9"
         containerStyle={{
           height: "100vh",
           width: "100vw"
@@ -69,7 +89,7 @@ export default class HeatMap extends React.Component {
           this.state.hasAddedSource &&
           <Layer
             sourceId="earthquakes"
-            type="heatmap"
+            type= "heatmap"
             sourceId="earthquakes"
             paint={{
               // Increase the heatmap weight based on frequency and property magnitude
@@ -108,23 +128,24 @@ export default class HeatMap extends React.Component {
                 "interpolate",
                 ["linear"],
                 ["zoom"],
-                0, 16,
-                9, 40
+                0, 2,
+                9, 20
               ],
-              // // Transition from heatmap to circle layer by zoom level
-              // "heatmap-opacity": [
-              //   "interpolate",
-              //   ["linear"],
-              //   ["zoom"],
-              //   7, 1,
-              //   9, 0
-              // ],
+              // Transition from heatmap to circle layer by zoom level
+              "heatmap-opacity": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                7, 1,
+                9, 1
+              ],
             }}
           />
         }
 
 
       </Map>
+      </div>
     )
   }
 }

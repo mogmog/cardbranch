@@ -77,12 +77,20 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/Home')),
     },
 
+    '/dashboard/crossfiltermap': {
+      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/CrossFilterMap/CrossFilterMap')),
+    },
+
     '/dashboard/storemap': {
       component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/StoreMap/DashboardMap')),
     },
 
     '/dashboard/eventmap': {
       component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/EventMap/EventMap')),
+    },
+
+    '/stores/list': {
+      component: dynamicWrapper(app, ['store'], () => import('../routes/Admin/Stores/List/StoreList')),
     },
 
     '/exception/403': {
