@@ -44,7 +44,6 @@ function checkStatus(response) {
  */
 export default function request(url, options) {
 
-  console.log(newOptions);
   const defaultOptions = {
     credentials: 'include',
   };
