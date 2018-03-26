@@ -47,7 +47,7 @@ export default class extends React.Component {
   }
 
   panToA() {
-    this.map.flyTo({center: [-77.01967540856717, 38.951906907656614]});
+    this.map.flyTo({center: [-121.478851, 38.575764]});
   }
 
   panToB() {
@@ -94,16 +94,6 @@ export default class extends React.Component {
             map.addSource('county_geo_data', {
               'type': 'vector',
               'url': 'mapbox://stamen.cccc8kgi'
-            });
-
-            map.addSource('tract_geo_data', {
-              'type': 'vector',
-              'url': 'mapbox://stamen.42zqg3sk'
-            });
-
-            map.addSource('block_geo_data', {
-              'type': 'vector',
-              'url': 'mapbox://stamen.0ujdjkh2'
             });
 
             map.addLayer({
