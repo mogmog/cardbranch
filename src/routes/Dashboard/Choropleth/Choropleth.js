@@ -23,7 +23,7 @@ export default class extends React.Component {
 
   constructor() {
     super();
-    this.state = {hasAddedSource: false, hoveredZone: null};
+    this.state = {selectedStore : null};
   }
 
   panToA() {
@@ -34,22 +34,21 @@ export default class extends React.Component {
     this.map.flyTo({center: [-77.014576, 38.899396]});
   }
 
-  show() {
-
+  markerClick(store) {
     const {dispatch} = this.props;
 
+    this.setState({selectedStore : store});
+
+    /*get the district chorograph for the clicked on store*/
     dispatch({
       type: 'district/fetch',
       payload: {'id': 1}
     });
-  }
 
-  markerClick() {
-    const {dispatch} = this.props;
-
+    /*get the cards for the clicked on store*/
     dispatch({
       type: 'card/fetchcards',
-      payload: {'type': 'store', 'store_id': 1}
+      payload: {'type': 'store', 'store_id': store.id}
     });
   }
 
@@ -104,7 +103,7 @@ export default class extends React.Component {
                         [BREAKS[4], COLORS[4]],
                         [BREAKS[5], COLORS[5]]]
                     },
-                    "fill-opacity": 0.7,
+                    "fill-opacity": 0.4,
                     "fill-outline-color": "#ffffff"
                   }
                 })
@@ -116,13 +115,13 @@ export default class extends React.Component {
                 width: "100vw"
               }}>
 
-              <StoreMarker onClick={this.show.bind(this)} coordinates={[-0.27179632, 51.5073509]} store={{'id': 1}}/>
+              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 1} onClick={this.markerClick.bind(this)} coordinates={[-0.27179632, 51.5073509]} store={{'id': 1}}/>
 
-              <StoreMarker onClick={this.show.bind(this)} coordinates={[-0.17563939, 51.55516]} store={{'id': 2}}/>
+              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 2} onClick={this.markerClick.bind(this)} coordinates={[-0.17563939, 51.55516]} store={{'id': 2}}/>
 
-              <StoreMarker onClick={this.show.bind(this)} coordinates={[-0.2125, 51.5721]} store={{'id': 3}}/>
+              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 3} onClick={this.markerClick.bind(this)} coordinates={[-0.2125, 51.5721]} store={{'id': 3}}/>
 
-              <StoreMarker onClick={this.show.bind(this)} coordinates={[-0.2168115, 51.5723821]} store={{'id': 4}}/>
+              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 4} onClick={this.markerClick.bind(this)} coordinates={[-0.2168115, 51.5723821]} store={{'id': 4}}/>
 
             </Map>
 

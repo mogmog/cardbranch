@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {Marker} from "react-mapbox-gl";
 
+import styles from './StoreMarker.less';
+
 export default class extends Component {
 
   render() {
 
-    const { onClick, store, coordinates } = this.props;
+    const { onClick, store, selected, coordinates } = this.props;
 
     return (
       <Marker
@@ -14,7 +16,8 @@ export default class extends Component {
           onClick(store);
         }}
         anchor="bottom">
-        <img alt="Store" style={{'width': '50px'}} src={require('./../../../assets/mapping/markers/3d-house.svg')} />
+        {selected ? <img alt="Store" className={styles.storeMarker} src={require('./../../../assets/mapping/markers/3d-house-selected.svg')} /> : <img alt="Store"  className={styles.storeMarker} src={require('./../../../assets/mapping/markers/3d-house.svg')} /> }
+
       </Marker>
     );
   }
