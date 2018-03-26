@@ -19,7 +19,7 @@ export default class extends React.Component {
       <div style={{'zoom': zoom}}>
 
         <Row>
-          <Col span={12}>
+          <Col span={18}>
             <h2> {d3.format('.1%')(amount / total)} {change} </h2>
 
             <h3> {label}</h3>
@@ -27,8 +27,10 @@ export default class extends React.Component {
             <h4> {total} {domain} </h4>
           </Col>
 
-          <Col span={12}>
+          <Col span={6}>
+            <div style={{'height'  : '60px'}}>
             {icon}
+            </div>
           </Col>
         </Row>
 
