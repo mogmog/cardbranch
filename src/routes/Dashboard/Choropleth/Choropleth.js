@@ -120,7 +120,7 @@ export default class extends React.Component {
                   }
                 })
 
-                map.on('click', 'districtfill', function (e) {
+                map.on('mousedown', 'districtfill', function (e) {
 
                   const {dispatch} = that.props;
 
@@ -130,7 +130,29 @@ export default class extends React.Component {
                   });
 
                 });
+
+
+                map.addLayer({
+                  "id": "state-fills-hover",
+                  "type": "line",
+                  "source": "districts",
+                  "layout": {},
+                  "paint": {
+                    "line-color": "#627BC1",
+                  },
+                  "filter": ["==", "name", ""]
+                });
+
+
+                map.on("mousemove", "districtfill", function(e) {
+                  map.setFilter("state-fills-hover", ["==", "name", e.features[0].properties.name]);
+                });
+
+
               }}
+
+
+
 
               style="mapbox://styles/mapbox/light-v9"
               containerStyle={{

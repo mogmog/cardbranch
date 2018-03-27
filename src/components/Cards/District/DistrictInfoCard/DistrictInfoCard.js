@@ -5,9 +5,19 @@ import {
   Card
 } from 'antd';
 
+import DistrictThumbnail from './../../../Maps/DistrictThumbnail/DistrictThumbnail';
+
 export default class extends React.Component {
   constructor() {
     super();
+  }
+
+  _getTitle(data) {
+    return (
+      <span>{data.name}
+        <DistrictThumbnail geojson={data.geojson}/>
+      </span>
+    )
   }
 
   render() {
@@ -15,11 +25,13 @@ export default class extends React.Component {
     const {data} = this.props;
 
     return (
-      <Card title={data.name} style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
+      <Card title={this._getTitle(data) } style={{'height' : '100%', 'overflow': 'hidden', 'backgroundColor' : 'rgba(255,255,255,1)'}}>
 
         <Row >
 
           <Col>
+
+
 
             <p>Population : {data.Something}</p>
             <p>Postcode : {data.postcode}</p>
