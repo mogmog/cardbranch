@@ -120,7 +120,7 @@ export default class extends React.Component {
                   }
                 })
 
-                map.on('mousedown', 'districtfill', function (e) {
+                map.on('mousemove', 'districtfill', function (e) {
 
                   const {dispatch} = that.props;
 

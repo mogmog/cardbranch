@@ -21,6 +21,30 @@
 
   <style>
 
+    #map-background,
+    #map-container,
+    #map-overlay,
+    #content {
+      width: 100%;
+      min-height: 100%;
+      position: absolute;
+    }
+    #map-background {
+      z-index: 1;
+    }
+    #map-container {
+      z-index: 0;
+    }
+    #map-overlay {
+      z-index: 1;
+      background: none;
+    }
+    #content {
+      z-index: 3;
+      pointer-events:none;
+    }
+
+
     #map {
       position:absolute;
       width: 100%;
