@@ -12,7 +12,7 @@ export default class extends Component {
   }
 
   componentDidUpdate() {
-    if (this.map) this.map.panTo(this.props.geojson.geometry.coordinates[0][0]);
+    if (this.map) this.map.jumpTo(this.props.geojson.geometry.coordinates[0][0]);
   }
 
   render() {
@@ -34,8 +34,8 @@ export default class extends Component {
           style="mapbox://styles/mapbox/light-v9"
           zoom={[7]}
           containerStyle={{
-            height: "100px",
-            width: "60px"
+            height: "60px",
+            width: "140px"
           }}>
 
           <GeoJSONLayer

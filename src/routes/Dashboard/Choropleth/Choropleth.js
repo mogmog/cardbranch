@@ -136,7 +136,6 @@ export default class extends React.Component {
                   "id": "state-fills-hover",
                   "type": "line",
                   "source": "districts",
-                  "layout": {},
                   "paint": {
                     "line-color": "#627BC1",
                   },
@@ -156,6 +155,7 @@ export default class extends React.Component {
 
               style="mapbox://styles/mapbox/light-v9"
               containerStyle={{
+
                 height: "100vh",
                 width: "100vw"
               }}>
