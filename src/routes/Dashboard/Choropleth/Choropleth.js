@@ -9,6 +9,7 @@ import styles from './Cloropleth.less';
 import ReactMapboxGl, {Layer, Source, Feature, Marker, Popup} from "react-mapbox-gl";
 import {connect} from "dva";
 
+import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';
 import StoreMarker from '../../../components/Maps/StoreMap/StoreMarker';
 
 const Map = ReactMapboxGl({
@@ -17,27 +18,23 @@ const Map = ReactMapboxGl({
 
 /*when the api calls have finished, put the results into the props */
 @connect((namespaces) => {
-  return {districts: namespaces.district.geojson};
+  return {
+    storecards: namespaces.card.list,
+    districtcards: namespaces.card.districtcardllist,
+    districts: namespaces.district.geojson
+  };
 })
 export default class extends React.Component {
 
   constructor() {
     super();
-    this.state = {selectedStore : null};
-  }
-
-  panToA() {
-    this.map.flyTo({center: [-121.478851, 38.575764]});
-  }
-
-  panToB() {
-    this.map.flyTo({center: [-77.014576, 38.899396]});
+    this.state = {selectedStore: null};
   }
 
   markerClick(store) {
     const {dispatch} = this.props;
 
-    this.setState({selectedStore : store});
+    this.setState({selectedStore: store});
 
     /*get the district chorograph for the clicked on store*/
     dispatch({
@@ -56,26 +53,32 @@ export default class extends React.Component {
 
     var COLORS = ['#8c510a', '#d8b365', '#f6e8c3', '#c7eae5', '#5ab4ac', '#01665e'], BREAKS = [0, 1, 5, 10, 15, 20];
 
-    const {districts} = this.props;
-
+    const {districts, storecards, districtcards} = this.props;
+    const that = this;
 
     if (this.map) {
       this.map.getSource('districts').setData(districts);
     }
 
-    const {station, point} = this.state;
-
-    const that = this;
-
     return (
       <div>
 
-        <Button onClick={this.panToA.bind(this)}> West </Button>
-
-        <Button onClick={this.panToB.bind(this)}> East </Button>
-
         <Row>
           <Col>
+
+            <LucaSideBar right={false} open={true} width={25}>
+              <ul>
+
+                {
+                  storecards && storecards.map((item, i) =>
+                    <li key={i}>
+                      <CardLoader card={item}></CardLoader>
+                    </li>)
+                }
+
+
+              </ul>
+            </LucaSideBar>
 
             <Map
 
@@ -103,10 +106,30 @@ export default class extends React.Component {
                         [BREAKS[4], COLORS[4]],
                         [BREAKS[5], COLORS[5]]]
                     },
-                    "fill-opacity": 0.4,
+                    "fill-opacity": {
+                      property: 'frequency',
+                      stops: [
+                        [BREAKS[0], 0],
+                        [BREAKS[1], 0.1],
+                        [BREAKS[2], 0.2],
+                        [BREAKS[3], 0.3],
+                        [BREAKS[4], 0.4],
+                        [BREAKS[5], 0.6]]
+                    },
                     "fill-outline-color": "#ffffff"
                   }
                 })
+
+                map.on('click', 'districtfill', function (e) {
+
+                  const {dispatch} = that.props;
+
+                  dispatch({
+                    type: 'card/fetchdistrictcards',
+                    payload: {'type': 'district', 'district_name': e.features[0].properties.name}
+                  });
+
+                });
               }}
 
               style="mapbox://styles/mapbox/light-v9"
@@ -115,21 +138,36 @@ export default class extends React.Component {
                 width: "100vw"
               }}>
 
-              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 1} onClick={this.markerClick.bind(this)} coordinates={[-0.27179632, 51.5073509]} store={{'id': 1}}/>
+              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 1}
+                           onClick={this.markerClick.bind(this)} coordinates={[-0.27179632, 51.5073509]}
+                           store={{'id': 1}}/>
 
-              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 2} onClick={this.markerClick.bind(this)} coordinates={[-0.17563939, 51.55516]} store={{'id': 2}}/>
+              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 2}
+                           onClick={this.markerClick.bind(this)} coordinates={[-0.17563939, 51.55516]}
+                           store={{'id': 2}}/>
 
-              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 3} onClick={this.markerClick.bind(this)} coordinates={[-0.2125, 51.5721]} store={{'id': 3}}/>
 
-              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 4} onClick={this.markerClick.bind(this)} coordinates={[-0.2168115, 51.5723821]} store={{'id': 4}}/>
 
             </Map>
 
+            <LucaSideBar right={true} open={true} width={25}>
+              <ul>
+
+                {
+                  districtcards && districtcards.map((item, i) =>
+                    <li key={i}>
+                      <CardLoader card={item}></CardLoader>
+                    </li>)
+                }
+
+
+              </ul>
+            </LucaSideBar>
+
+
           </Col>
 
-          <Row>
-            A table
-          </Row>
+
         </Row>
 
 

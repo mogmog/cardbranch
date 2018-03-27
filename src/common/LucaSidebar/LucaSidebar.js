@@ -14,7 +14,7 @@ export default class extends Component {
 
   render() {
 
-    const { children, open, width } = this.props;
+    const { children, right=true, open, width } = this.props;
 
     return (
 
@@ -24,7 +24,7 @@ export default class extends Component {
           {
             ({tween}) => (
 
-              <div className={styles.sidebar} style={{'width': `${tween}%` }}>
+              <div className={`${styles.sidebar} ${(right) ? styles.right : styles.left}`} style={{'width': `${tween}%` }}>
                 {children}
               </div>
             )}

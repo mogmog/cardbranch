@@ -5,6 +5,9 @@ import React, {Component} from 'react';
 import StreetViewCard from './Store/StreetViewCard/StreetViewCard';
 import GenderPercentCard from './TopLevel/GenderPercentCard/GenderPercentCard';
 
+import DistrictInfoCard from './District/DistrictInfoCard/DistrictInfoCard';
+import MostSimilarDistrictCard from './District/MostSimilarDistrictCard/MostSimilarDistrictCard';
+
 export default class extends Component {
 
   constructor(props) {
@@ -16,7 +19,9 @@ export default class extends Component {
     /*must update this every time ytou add a new card*/
     const mappings = {
       'StreetViewCard' : StreetViewCard,
-      'GenderPercentCard' : GenderPercentCard
+      'GenderPercentCard' : GenderPercentCard,
+      'DistrictInfoCard' : DistrictInfoCard,
+      'MostSimilarDistrictCard' : MostSimilarDistrictCard
     }
 
     const { card } = this.props;

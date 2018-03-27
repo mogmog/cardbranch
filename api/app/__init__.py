@@ -60,9 +60,14 @@ def create_app(config_name):
     def list_cards():
 
       type = request.data.get('type', '')
-      store_id    = request.data.get('store_id', '')
 
-      cards   = Card.get_all().filter(Card.key["type"].astext == "store").filter(Card.key["store_id"].astext == str(store_id))
+      if type == 'store':
+        store_id    = request.data.get('store_id', '')
+        cards   = Card.get_all().filter(Card.key["type"].astext == "store").filter(Card.key["store_id"].astext == str(store_id))
+
+      if type == 'district':
+              district_name = request.data.get('district_name', '')
+              cards   = Card.get_all().filter(Card.key["type"].astext == "district").filter(Card.key["district_name"].astext == str(district_name))
 
       results = []
       for card in cards:
