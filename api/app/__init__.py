@@ -36,7 +36,7 @@ def create_app(config_name):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
-    @app.route('/api/login/account', methods=['POST'])
+    @app.route('/api/real/login/account', methods=['POST'])
     def login():
 
         password = request.data.get('password', '')

@@ -1,4 +1,4 @@
-import { queryCards } from '../services/card/api';
+import { queryStores } from '../services/store/api';
 
 export default {
   namespace: 'store',
@@ -9,17 +9,18 @@ export default {
 
   effects: {
 
-    * fetchcards({payload}, {call, put}) {
-      const response = yield call(queryCards, payload);
+    * fetch({payload}, {call, put}) {
+      const response = yield call(queryStores, payload);
       yield put({
-        type: 'querycards',
+        type: 'querystores',
         payload: response,
       });
     }
   },
 
   reducers: {
-    querycards(state, action) {
+    querystores(state, action) {
+
       return {
         ...state,
         list: action.payload && typeof(action.payload.list === 'Array') ? action.payload.list : [],
