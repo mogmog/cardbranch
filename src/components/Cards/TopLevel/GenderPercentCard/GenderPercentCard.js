@@ -1,5 +1,8 @@
 import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+
 import {
+  Button,
   Row,
   Col,
   Card
@@ -11,6 +14,7 @@ import localeData from './translations';
 import PercentHeadlineWithIcon from './../../Widgets/PercentHeadlineWithIcon/PercentHeadlineWithIcon';
 import LucaCard from '../../LucaCard';
 import GenderIcon from './../../../Icons/GenderIcon/GenderIcon';
+import NotFound from "../../../../routes/Exception/404";
 
 const schema        = require('json-loader!./schema.json');
 const sample        = require('json-loader!./sample.json');

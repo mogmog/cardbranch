@@ -39,7 +39,7 @@ export default class Home extends Component {
           measured
           {...gridProps}
         >
-          <li style={{'width' : '250px'}} key={1}><GenderPercentCard/></li>
+          <li style={{'width' : '250px'}} key={1}><GenderPercentCard history={this.props.history}/></li>
 
           {/*<li key={2}><GenderPercentCard/></li>
           <li key={3}><GenderPercentCard/></li>*/}

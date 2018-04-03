@@ -27,9 +27,6 @@ export default class extends Component {
 
     const {geojson} = this.props;
 
-
-    console.log(geojson);
-
     return (
       <div>
 
@@ -68,7 +65,8 @@ export default class extends Component {
 
           }}
           containerStyle={{
-            height: "200px",
+            width: "300px",
+            height : '300px'
           }}>
 
           <GeoJSONLayer

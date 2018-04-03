@@ -8,6 +8,8 @@ import GenderPercentCard from './TopLevel/GenderPercentCard/GenderPercentCard';
 import DistrictInfoCard from './District/DistrictInfoCard/DistrictInfoCard';
 import MostSimilarDistrictCard from './District/MostSimilarDistrictCard/MostSimilarDistrictCard';
 
+import DistrictTimeCard from './District/DistrictTimeCard/DistrictTimeCard';
+
 export default class extends Component {
 
   constructor(props) {
@@ -21,7 +23,8 @@ export default class extends Component {
       'StreetViewCard' : StreetViewCard,
       'GenderPercentCard' : GenderPercentCard,
       'DistrictInfoCard' : DistrictInfoCard,
-      'MostSimilarDistrictCard' : MostSimilarDistrictCard
+      'MostSimilarDistrictCard' : MostSimilarDistrictCard,
+      'DistrictTimeCard' : DistrictTimeCard
     }
 
     const { card } = this.props;

@@ -27,7 +27,7 @@ export default class extends React.Component {
     const {data} = this.props;
 
     return (
-      <Card xtitle={this._getTitle(data) } style={{'height' : '300px'}}>
+      <Card style={{'height' : '350px'}}>
 
         <div id="content"  style={{'zIndex' : 3}}>
 

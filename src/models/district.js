@@ -21,7 +21,7 @@ export default {
   reducers: {
     save(state, action) {
 
-      action.payload.features.map(x => {x.properties.frequency = Math.floor(Math.random() * 20) + 1  ; return x})
+      action.payload.features.map(x => {x.properties.frequency = Math.floor(Math.random() * 20) + 5  ; return x})
 
       return {
         ...state,

@@ -57,7 +57,12 @@ export default class extends React.Component {
 
         <div>
 
-          <Card title={`The most similar district is ${data.name}`}>
+          <Card style={{'height' : '350px'}}>
+
+            <h1>
+              The most similar district is {data.name}
+            </h1>
+
             <a onClick={this.showModal.bind(this)}>
               How did we measure this
             </a>
