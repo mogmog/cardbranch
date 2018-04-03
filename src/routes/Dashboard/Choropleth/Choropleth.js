@@ -85,9 +85,9 @@ export default class extends React.Component {
     this.setState({'sidebarOpen': false, 'compareLeft': this.props.districtcards});
     if (this.map) this.map.setZoom(11);
 
-   /* dispatch({
-      type: 'district/clear',
-    })*/
+    /* dispatch({
+       type: 'district/clear',
+     })*/
   }
 
   sendRight() {
@@ -97,9 +97,9 @@ export default class extends React.Component {
     this.setState({'sidebarOpen': false, 'compareRight': this.props.districtcards});
     if (this.map) this.map.setZoom(11);
 
-   /* dispatch({
-      type: 'district/clear',
-    });*/
+    /* dispatch({
+       type: 'district/clear',
+     });*/
 
   }
 
@@ -164,19 +164,17 @@ export default class extends React.Component {
 
     if (that.map) {
       that.map.getSource('districts').setData(districts);
-
-      that.map.setPaintProperty('districtfill', 'fill-color', {
-        'property': 'frequency',
-        'stops': STOPS,
-      });
+      that.map.setPaintProperty('districtfill', 'fill-color', { 'property': 'frequency', 'stops': STOPS });
     }
 
-    const extra = (<span>
-                      <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
-                        type={'home'}> </Icon></Button>
-                      <Button title='View where visitors work' onClick={this.showDistricts.bind(this)}><Icon
-                        type={'database'}> </Icon></Button>
-                    </span>);
+    const extras = {
+      'StreetViewCard': (<span>
+                            <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
+                              type={'home'}> </Icon></Button>
+                            <Button title='View where visitors work' onClick={this.showDistricts.bind(this)}><Icon
+                              type={'database'}> </Icon></Button>
+                         </span>)
+    };
 
     return (
       <div>
@@ -195,7 +193,7 @@ export default class extends React.Component {
                     {
                       storecards && storecards.map((item, i) =>
                         (<li key={i}>
-                          <CardLoader extra={item.component ==='StreetViewCard' ? extra : <span></span>} card={item}></CardLoader>
+                          <CardLoader extra={extras[item.component] || <span></span>} card={item}></CardLoader>
                         </li>))
                     }
 
@@ -205,11 +203,13 @@ export default class extends React.Component {
                 </TabPane>
                 <TabPane tab="Selected District" key="1">
 
-                  <Popconfirm title="Select which side" okText="Right" cancelText="Left"
-                              onConfirm={this.sendRight.bind(this)} onCancel={this.sendLeft.bind(this)}>
+                  <Popconfirm title="Select which side"
+                              okText="Right"
+                              cancelText="Left"
+                              onConfirm={this.sendRight.bind(this)}
+                              onCancel={this.sendLeft.bind(this)}>
                     <a href="#">Compare</a>
                   </Popconfirm>
-
 
                   <ul className={styles.sidebar}>
                     {
@@ -257,7 +257,7 @@ export default class extends React.Component {
 
                 map.on('click', 'districtfill', function (e) {
 
-                  that.setState({sidebarOpen : true, activeTab: '1'});
+                  that.setState({sidebarOpen: true, activeTab: '1'});
 
                   const clickedOnName = e.features[0].properties.name;
 

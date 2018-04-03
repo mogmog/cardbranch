@@ -63,11 +63,11 @@ def create_app(config_name):
 
       if type == 'store':
         store_id    = request.data.get('store_id', '')
-        cards   = Card.get_all().filter(Card.key["type"].astext == "store").filter(Card.key["store_id"].astext == str(store_id))
+        cards   = Card.get_all().filter(Card.key["type"].astext == "store").filter(Card.key["store_id"].astext == str(store_id)).order_by(Card.order)
 
       if type == 'district':
               district_name = request.data.get('district_name', '')
-              cards   = Card.get_all().filter(Card.key["type"].astext == "district").filter(Card.key["district_name"].astext == str(district_name))
+              cards   = Card.get_all().filter(Card.key["type"].astext == "district").filter(Card.key["district_name"].astext == str(district_name)).order_by(Card.order)
 
       results = []
       for card in cards:

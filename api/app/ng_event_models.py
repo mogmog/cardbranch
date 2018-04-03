@@ -11,6 +11,7 @@ class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user    = db.relationship(User)
+    order = db.Column(db.Integer)
 
     component = db.Column(db.String(255))
 
@@ -48,6 +49,7 @@ class Card(db.Model):
                    'id': self.id,
                    'component' : self.component,
                    'key' : self.key,
-                   'data' : self.data
+                   'data' : self.data,
+                   'order' : self.order
                 }
 
