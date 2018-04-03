@@ -12,11 +12,11 @@ export default class extends Component {
     return (
       <Marker
         coordinates={coordinates}
-        onClick={e => {
+        onClick={() => {
           onClick(store);
         }}
         anchor="bottom">
-        {selected ? <img alt="Store" className={styles.storeMarker} src={require('./../../../assets/mapping/markers/3d-house-selected.svg')} /> : <img alt="Store"  className={styles.storeMarker} src={require('./../../../assets/mapping/markers/3d-house.svg')} /> }
+        {selected ? <img alt="Store" style={{'zoom' : 2}} className={styles.storeMarker} src={require('./../../../assets/mapping/markers/3d-house-selected.svg')} /> : <img alt="Store"  className={styles.storeMarker} src={require('./../../../assets/mapping/markers/3d-house.svg')} /> }
 
       </Marker>
     );

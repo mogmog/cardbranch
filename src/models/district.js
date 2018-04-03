@@ -4,7 +4,7 @@ export default {
   namespace: 'district',
 
   state: {
-    geojson: null,
+    geojson: {type : 'FeatureCollection', features : []},
   },
 
   effects: {
@@ -32,7 +32,7 @@ export default {
 
     clear(state, action) {
 
-      return {geojson : null}
+      return {geojson : {type : 'FeatureCollection', features : []}}
     },
 
   },
