@@ -14,7 +14,7 @@ export default class extends React.Component {
 
   render() {
 
-    const {data} = this.props;
+    const {data, extra} = this.props;
 
     const values = data.data;
     const _data = [];
@@ -43,10 +43,9 @@ export default class extends React.Component {
     }
 
     return (
-      <Card style={{'height' : '350px'}}>
+      <Card title={'The most popular time to visit is 6pm'} style={{'height' : '350px'}} extra={extra}>
 
-        <h1> The most popular time to visit is 6pm </h1>
-        <Chart height={270} data={dv} scale={cols} forceFit>
+        <Chart height={200} data={dv} scale={cols} forceFit>
           <Axis name="value" label={{formatter:val => {if ((val %2)) {return val;} return '';}}}/>
           <Axis name="count" />
           <Tooltip inPlot={false} crosshairs={false} position={'top'} />

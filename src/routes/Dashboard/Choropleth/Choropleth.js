@@ -70,12 +70,20 @@ export default class extends React.Component {
     this.state = {selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen : false};
   }
 
+  componentDidMount() {
+    const {dispatch} = this.props;
+
+    dispatch({
+      type: 'district/clear',
+    });
+  }
+
   sendLeft() {
 
     const {dispatch} = this.props;
 
     this.setState({ 'sidebarOpen' : false, 'compareLeft': this.props.districtcards });
-    this.map.setZoom(11);
+    if (this.map) this.map.setZoom(11);
 
     dispatch({
       type: 'district/clear',
@@ -87,7 +95,7 @@ export default class extends React.Component {
     const {dispatch} = this.props;
 
     this.setState({'sidebarOpen' : false, 'compareRight': this.props.districtcards});
-    this.map.setZoom(11);
+    if (this.map) this.map.setZoom(11);
 
     dispatch({
       type: 'district/clear',
@@ -105,6 +113,8 @@ export default class extends React.Component {
   }
 
   zoomToDistrict(clickedOnName, map) {
+
+    //this.setState({'compareLeft' : [], 'compareRight': []});
 
     var bounds = new mapboxgl.LngLatBounds();
 
@@ -266,7 +276,7 @@ export default class extends React.Component {
               }}>
 
               <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 1}
-                           onClick={this.markerClick.bind(this)} coordinates={[-0.27179632, 51.5073509]}
+                           onClick={this.markerClick.bind(this)} coordinates={[-0.097, 51.53073509]}
                            store={{'id': 1}}/>
 
               <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 2}
