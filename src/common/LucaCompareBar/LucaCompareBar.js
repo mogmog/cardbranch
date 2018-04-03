@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Motion, spring} from 'react-motion';
 import styles from './LucaCompareBar.less';
 import CardLoader from '../../components/Cards/CardLoader';
+import {Row, Col} from 'antd';
 
 export default class extends Component {
 
@@ -15,7 +16,7 @@ export default class extends Component {
 
   render() {
 
-    const {compareLeft, open, height = 50} = this.props;
+    const {compareLeft, compareRight, open, height = 50} = this.props;
 
     return (
 
@@ -27,14 +28,33 @@ export default class extends Component {
 
               <div className={`${styles.comparebar}`} style={{'transform': `translateY(-${tween}%)`}}>
 
-                <ul className={styles.wrapper}>
-                  {
-                    compareLeft && compareLeft.map((item, i) =>
-                      <li key={i} className={styles.box}>
-                        <CardLoader card={item}></CardLoader>
-                      </li>)
-                  }
-                </ul>
+                <Row>
+                  <Col span={8}>
+                    <ul className={styles.wrapper}>
+                      {
+                        compareLeft && compareLeft.map((item, i) =>
+                          <li key={i} className={styles.box}>
+                            <CardLoader card={item}></CardLoader>
+                          </li>)
+                      }
+                    </ul>
+                  </Col>
+
+
+                  <Col span={8} offset={8}>
+                    <ul className={styles.wrapper} style={{'float' : 'right'}}>
+                      {
+                        compareRight && compareRight.map((item, i) =>
+                          <li key={i} className={styles.box}>
+                            <CardLoader card={item}></CardLoader>
+                          </li>)
+                      }
+                    </ul>
+                  </Col>
+
+                </Row>
+
+
               </div>
             )}
         </Motion>

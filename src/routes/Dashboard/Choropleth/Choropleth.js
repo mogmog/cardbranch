@@ -38,12 +38,33 @@ export default class extends React.Component {
   }
 
   sendLeft() {
+
+    const {dispatch} = this.props;
+
     this.setState({ 'sidebarOpen' : false, 'compareLeft': this.props.districtcards });
+    this.map.setZoom(9);
+
+    // dispatch({
+    //   type: 'district/clear',
+    // })
+    //
+    // this.map.getSource('districts').setData([]);
+
   }
 
   sendRight() {
-    this.setState({'compareRight': this.props.districtcards});
-    // alert(this.state.compareLeft.length, this.state.compareRight.length);
+
+    const {dispatch} = this.props;
+
+    this.setState({'sidebarOpen' : false, 'compareRight': this.props.districtcards});
+    this.map.setZoom(9);
+
+    // dispatch({
+    //   type: 'district/clear',
+    // });
+    //
+    // this.map.getSource('districts').setData([]);
+
   }
 
   getDistrictCards(clickedOnName) {
@@ -85,6 +106,8 @@ export default class extends React.Component {
   }
 
   render() {
+
+    console.log(this.props.districts);
 
     var COLORS = ['#8c510a', '#d8b365', '#f6e8c3', '#c7eae5', '#5ab4ac', '#01665e'], BREAKS = [0, 1, 5, 10, 15, 20];
 
@@ -231,9 +254,7 @@ export default class extends React.Component {
 
         </Row>
 
-         <CompareBar open={compareLeft.length && activeTab === '1'} compareLeft={compareLeft}>
-
-        </CompareBar>
+         <CompareBar open={compareLeft.length && activeTab === '1'} compareLeft={compareLeft} compareRight={compareRight}> </CompareBar>
 
       </div>
     )

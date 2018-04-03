@@ -15,7 +15,8 @@ export default {
         type: 'save',
         payload: response,
       });
-    }
+    },
+
   },
 
   reducers: {
@@ -27,6 +28,11 @@ export default {
         ...state,
         geojson: action.payload,
       };
+    },
+
+    clear(state, action) {
+
+      return {geojson : null}
     },
 
   },
