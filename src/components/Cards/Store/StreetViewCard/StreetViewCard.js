@@ -16,7 +16,7 @@ export default class extends React.Component {
 
   render() {
 
-    const {data} = this.props;
+    const {data, extra} = this.props;
 
 /*    return (
       <Card title="sdfdf" style={{'height' : '100%', 'overflow': 'hidden', 'background-color' : 'rgba(255,255,255,1)'}}>
@@ -25,7 +25,7 @@ export default class extends React.Component {
     );*/
 
     return (
-      <Card title={`${data.name}`} style={{'height' : '100%', 'overflow': 'hidden', 'backgroundColor' : 'rgba(255,255,255,1)'}}>
+      <Card title={`${data.name}`} style={{'height' : '100%', 'overflow': 'hidden', 'backgroundColor' : 'rgba(255,255,255,1)'}} extra={extra}>
 
         <Row >
 

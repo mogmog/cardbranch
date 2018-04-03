@@ -43,14 +43,14 @@ export default class extends Component {
       'DistrictTimeCard' : DistrictTimeCard
     }
 
-    const { card } = this.props;
+    const { card, extra } = this.props;
 
     let Card = mappings[card.component];
 
     return (
       <div>
 
-        <Card extra={dropdown} data={card.data }/>
+        <Card extra={extra} data={card.data }/>
       </div>
     );
   }

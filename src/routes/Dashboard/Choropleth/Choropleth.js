@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm, Tabs, Row, Col, Button, DatePicker, Card} from 'antd';
+import {Popconfirm, Tabs, Row, Col, Button, Icon} from 'antd';
 import CardLoader from '../../../components/Cards/CardLoader';
 
 import d3 from 'd3';
@@ -67,7 +67,7 @@ export default class extends React.Component {
 
   constructor() {
     super();
-    this.state = {selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen : false};
+    this.state = {selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen: false};
   }
 
   componentDidMount() {
@@ -82,24 +82,24 @@ export default class extends React.Component {
 
     const {dispatch} = this.props;
 
-    this.setState({ 'sidebarOpen' : false, 'compareLeft': this.props.districtcards });
+    this.setState({'sidebarOpen': false, 'compareLeft': this.props.districtcards});
     if (this.map) this.map.setZoom(11);
 
-    dispatch({
+   /* dispatch({
       type: 'district/clear',
-    })
+    })*/
   }
 
   sendRight() {
 
     const {dispatch} = this.props;
 
-    this.setState({'sidebarOpen' : false, 'compareRight': this.props.districtcards});
+    this.setState({'sidebarOpen': false, 'compareRight': this.props.districtcards});
     if (this.map) this.map.setZoom(11);
 
-    dispatch({
+   /* dispatch({
       type: 'district/clear',
-    });
+    });*/
 
   }
 
@@ -118,7 +118,7 @@ export default class extends React.Component {
 
     var bounds = new mapboxgl.LngLatBounds();
 
-    map.setLayoutProperty('districtfill', 'visibility', 'none');
+    //this.map.setPaintProperty('districtfill', 'opacity', {'property': 'frequency', 'stops' : []});
 
     this.props.districts.features.find(x => x.properties.name === clickedOnName).geometry.coordinates[0].forEach(function (feature) {
       bounds.extend(feature);
@@ -129,7 +129,7 @@ export default class extends React.Component {
 
   showDistricts() {
 
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     let o = dispatch({
       type: 'district/fetch',
@@ -141,9 +141,9 @@ export default class extends React.Component {
   markerClick(store) {
     const {dispatch, districts} = this.props;
 
-    this.map.setLayoutProperty('districtfill', 'visibility', 'visible');
+    //this.map.setPaintProperty('districtfill', 'opacity', {'property': 'frequency', 'stops' : STOPS});
 
-    this.setState({'sidebarOpen' : true, selectedStore: store, activeTab: '0'});
+    this.setState({'sidebarOpen': true, selectedStore: store, activeTab: '0'});
 
     dispatch({
       type: 'district/clear',
@@ -171,7 +171,12 @@ export default class extends React.Component {
       });
     }
 
-
+    const extra = (<span>
+                      <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
+                        type={'home'}> </Icon></Button>
+                      <Button title='View where visitors work' onClick={this.showDistricts.bind(this)}><Icon
+                        type={'database'}> </Icon></Button>
+                    </span>);
 
     return (
       <div>
@@ -184,15 +189,13 @@ export default class extends React.Component {
               <Tabs defaultActiveKey={'0'} activeKey={activeTab}>
                 <TabPane tab="Store" key="0">
 
-                  <Button onClick={this.showDistricts.bind(this)}>Show where this stores visitors live</Button>
-                  <Button onClick={this.showDistricts.bind(this)}>Show where this stores visitors work</Button>
 
                   <ul className={styles.sidebar}>
 
                     {
                       storecards && storecards.map((item, i) =>
                         (<li key={i}>
-                          <CardLoader card={item}></CardLoader>
+                          <CardLoader extra={item.component ==='StreetViewCard' ? extra : <span></span>} card={item}></CardLoader>
                         </li>))
                     }
 
@@ -241,20 +244,20 @@ export default class extends React.Component {
                 });
 
                 map.addLayer({
-                    "id": "state-fills-hover",
-                    "type": "line",
-                    "source": "districts",
-                    "paint": {
-                      "line-color": "#627BC1",
-                    },
-                    "filter": ["==", "name", ""]
-                  });
+                  "id": "state-fills-hover",
+                  "type": "line",
+                  "source": "districts",
+                  "paint": {
+                    "line-color": "#627BC1",
+                  },
+                  "filter": ["==", "name", ""]
+                });
 
                 map.setZoom(11);
 
                 map.on('click', 'districtfill', function (e) {
 
-                  that.setState({activeTab: '1'});
+                  that.setState({sidebarOpen : true, activeTab: '1'});
 
                   const clickedOnName = e.features[0].properties.name;
 
@@ -289,7 +292,8 @@ export default class extends React.Component {
 
         </Row>
 
-         <CompareBar open={compareLeft.length && compareRight.length && activeTab === '1'} compareLeft={compareLeft} compareRight={compareRight}> </CompareBar>
+        <CompareBar open={compareLeft.length && compareRight.length && activeTab === '1'} compareLeft={compareLeft}
+                    compareRight={compareRight}> </CompareBar>
 
       </div>
     )
