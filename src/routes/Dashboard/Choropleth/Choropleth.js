@@ -34,15 +34,11 @@ export default class extends React.Component {
 
   constructor() {
     super();
-    this.state = {selectedStore: null, activeTab: '0', compareLeft: [], compareRight: []};
+    this.state = {selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen : false};
   }
 
   sendLeft() {
-    this.setState({'compareLeft': this.props.districtcards});
-    // console.log(this);
-    // alert(this.state.compareLeft.length, this.state.compareRight.length);
-
-    //this.props.history.push('/home')
+    this.setState({ 'sidebarOpen' : false, 'compareLeft': this.props.districtcards });
   }
 
   sendRight() {
@@ -73,7 +69,7 @@ export default class extends React.Component {
   markerClick(store) {
     const {dispatch} = this.props;
 
-    this.setState({selectedStore: store, activeTab: '0'});
+    this.setState({'sidebarOpen' : true, selectedStore: store, activeTab: '0'});
 
     /*get the district chorograph for the clicked on store*/
     dispatch({
@@ -117,7 +113,7 @@ export default class extends React.Component {
     };
 
     const {districts, storecards, districtcards} = this.props;
-    const {activeTab, compareLeft, compareRight} = this.state;
+    const {activeTab, compareLeft, compareRight, sidebarOpen} = this.state;
     const that = this;
 
     if (this.map) {
@@ -130,7 +126,7 @@ export default class extends React.Component {
         <Row>
           <Col>
 
-            <LucaSideBar right={false} open={true} width={25}>
+            <LucaSideBar right={false} open={sidebarOpen} width={25}>
 
               <Tabs defaultActiveKey={'0'} activeKey={activeTab}>
                 <TabPane tab="Store" key="0">
@@ -235,9 +231,9 @@ export default class extends React.Component {
 
         </Row>
 
-        {/* <CompareBar open={activeTab === '1'} compareLeft={compareLeft}>
+         <CompareBar open={compareLeft.length && activeTab === '1'} compareLeft={compareLeft}>
 
-        </CompareBar>*/}
+        </CompareBar>
 
       </div>
     )
