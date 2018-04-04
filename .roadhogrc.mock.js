@@ -21,7 +21,7 @@ for (let i = 0; i < 100; i++) {
     "type": "Feature",
     "properties": {
       "id": "ak16994521",
-      "mag": getRandomInRange(1, 100, 1),
+      "mag": getRandomInRange(1, 10000, 1),
       "time": 1507425650893,
       "felt": null,
       "tsunami": 0

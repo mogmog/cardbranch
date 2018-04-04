@@ -13,10 +13,6 @@ export default {
 
       const response = yield call(queryHeatmap, payload);
 
-      console.log(response);
-      console.log(response);
-      console.log(response);
-      console.log(response);
       yield put({
         type: 'save',
         payload: response,
@@ -35,7 +31,6 @@ export default {
     },
 
     clear(state, action) {
-
       return {geojson: {type: 'FeatureCollection', features: []}}
     },
 

@@ -42,15 +42,6 @@ const OPACITY_STOPS = [
   [BREAKS[4], 0.55],
   [BREAKS[5], 0.6]];
 
-const OPACITY_STOPS_ZOOMED = [
-  [BREAKS[0], 0.1],
-  [BREAKS[1], 0.1],
-  [BREAKS[2], 0.1],
-  [BREAKS[3], 0.1],
-  [BREAKS[4], 0.1],
-  [BREAKS[5], 0.1]];
-
-
 const HEATMAP = {
   // Increase the heatmap weight based on frequency and property magnitude
   "heatmap-weight": [
@@ -130,7 +121,7 @@ export default class extends React.Component {
 
   constructor() {
     super();
-    this.state = {selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen: false};
+    this.state = {zoomed: false, selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen: false};
   }
 
   componentDidMount() {
@@ -166,7 +157,7 @@ export default class extends React.Component {
   getDistrictCards(clickedOnName) {
     const {dispatch} = this.props;
 
-    message.success(clickedOnName + ' selected');
+    message.info(clickedOnName + ' selected');
 
     this.map.setFilter("districtfill", ["!=", "name", ""]);
 
@@ -174,8 +165,20 @@ export default class extends React.Component {
       type: 'card/fetchdistrictcards',
       payload: {'type': 'district', 'district_name': clickedOnName}
     });
+  }
+
+  clearDistrictCards() {
+    const {dispatch} = this.props;
+
+    dispatch({
+      type: 'card/cleardistrict'
+    });
+  }
 
 
+  zoomOut() {
+   this.map.flyTo({zoom : 11});
+   this.map.setFilter("districtfill", ["!=", "name", ""]);
   }
 
   zoomToDistrict(clickedOnName, map) {
@@ -197,25 +200,25 @@ export default class extends React.Component {
 
     const {dispatch} = this.props;
 
-    if (this.props.heatmap.features.length === 0) {
       dispatch({
         type: 'heatmap/fetch',
         payload: {'id': 1}
       });
+  }
 
-    } else {
-      dispatch({
-        type: 'heatmap/clear'
-      });
-    }
+  hideHeatmap() {
 
+    const {dispatch} = this.props;
 
+    dispatch({
+      type: 'heatmap/clear',
+    });
   }
 
 
   showDistricts() {
 
-    message.success(' Showing visitors by xxxxx');
+    message.info(' Showing visitors by xxxxx');
 
     const {dispatch} = this.props;
 
@@ -228,31 +231,30 @@ export default class extends React.Component {
 
   }
 
-  backToStoreMap() {
-    this.map.flyTo({zoom : 11});
-    this.map.setFilter("districtfill", ["!=", "name", ""]);
-  }
-
   markerClick(store) {
     const {dispatch, districts} = this.props;
 
     this.setState({'sidebarOpen': true, selectedStore: store, activeTab: '0'});
 
-    this.map.flyTo({ center: store.coordinates, speed : 0.2});
-    this.map.setFilter("districtfill", ["!=", "name", ""]);
+    if (!this.state.zoomed) {
+      this.map.flyTo({ center: store.coordinates, speed : 0.2});
+      this.map.setFilter("districtfill", ["!=", "name", ""]);
 
-    dispatch({
-      type: 'district/clear',
-    });
+      dispatch({
+        type: 'district/clear',
+      });
 
-    /*get the cards for the clicked on store*/
-    dispatch({
-      type: 'card/fetchcards',
-      payload: {'type': 'store', 'store_id': store.id}
-    });
+      /*get the cards for the clicked on store*/
+      dispatch({
+        type: 'card/fetchcards',
+        payload: {'type': 'store', 'store_id': store.id}
+      });
+    }
+
   }
 
   render() {
+
 
     const {districts, storecards, districtcards, heatmap} = this.props;
     const {activeTab, compareLeft, compareRight, sidebarOpen} = this.state;
@@ -264,8 +266,6 @@ export default class extends React.Component {
       that.map.setPaintProperty('districtfill', 'fill-color', { 'property': 'frequency', 'stops': STOPS });
     }
 
-    const heatmapbutton = (<Button title='Show heatmap' onClick={this.showHeatmap.bind(this)}><Icon type={'api'}> </Icon></Button>)
-
     const layersbutton = (<span>
                             <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
                               type={'home'}> </Icon></Button>
@@ -276,7 +276,6 @@ export default class extends React.Component {
     /*context specifc buttons for particular cards*/
     const extras = {
       'StreetViewCard': layersbutton,
-      'DistrictInfoCard' : heatmapbutton,
       'DistrictTimeCard' : (<Button>Alert me when this changes</Button>)
     };
 
@@ -314,8 +313,6 @@ export default class extends React.Component {
                     <a href="#">Compare</a>
                   </Popconfirm>
 
-                  <a onClick={this.backToStoreMap.bind(this)}>zoom out</a>
-
                   <ul className={styles.sidebar}>
                     {
                       districtcards && districtcards.map((item, i) =>
@@ -335,6 +332,17 @@ export default class extends React.Component {
               onStyleLoad={(map) => {
 
                 this.map = map;
+
+                var layers = map.getStyle().layers;
+
+                // Find the index of the first symbol layer in the map style
+                var firstSymbolId;
+                for (var i = 0; i < layers.length; i++) {
+                  if (layers[i].type === 'symbol') {
+                    firstSymbolId = layers[i].id;
+                    break;
+                  }
+                }
 
                 map.addSource('districts', {
                   type: 'geojson',
@@ -374,13 +382,20 @@ export default class extends React.Component {
 
                 map.on('click', 'districtfill', function (e) {
 
-                  that.setState({sidebarOpen: true, activeTab: '1', district : e.features[0].properties.name});
+                  that.setState({zoomed : !that.state.zoomed, sidebarOpen: true, activeTab: that.state.zoomed ? '0' : '1'});
 
                   const clickedOnName = e.features[0].properties.name;
 
-                  that.getDistrictCards(clickedOnName);
-                  that.zoomToDistrict(clickedOnName, map);
-                  that.fadeOutOtherDistricts(clickedOnName);
+                  if (that.state.zoomed) {
+                    that.getDistrictCards(clickedOnName);
+                    that.zoomToDistrict(clickedOnName, map);
+                    that.fadeOutOtherDistricts(clickedOnName);
+                    that.showHeatmap();
+                  } else {
+                    that.zoomOut();
+                    that.hideHeatmap();
+                    that.clearDistrictCards();
+                  }
                 });
 
                 map.on("mousemove", "districtfill", function (e) {
@@ -388,7 +403,7 @@ export default class extends React.Component {
                 });
               }}
 
-              style="mapbox://styles/mapbox/light-v9"
+              style="mapbox://styles/mogmog/cjfl7wk44btwu2sqwep298upn"
               containerStyle={{
 
                 height: "100vh",

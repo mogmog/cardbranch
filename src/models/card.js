@@ -39,11 +39,24 @@ export default {
       };
     },
 
+    clear(state, action) {
+      return {
+        ...state,
+        list: [],
+      };
+    },
 
     savedistrictcards(state, action) {
       return {
         ...state,
         districtcardllist: action.payload && typeof(action.payload.list === 'Array') ? action.payload.list : [],
+      };
+    },
+
+    cleardistrict(state, action) {
+      return {
+        ...state,
+        districtcardllist: [],
       };
     },
 
