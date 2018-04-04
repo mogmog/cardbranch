@@ -78,7 +78,7 @@ export const getRouterData = (app) => {
     },
 
     '/dashboard/crossfiltermap': {
-      component: dynamicWrapper(app, ['card', 'district'], () => import('../routes/Dashboard/CrossFilterMap/CrossFilterMap')),
+      component: dynamicWrapper(app, ['card', 'district', 'heatmap'], () => import('../routes/Dashboard/CrossFilterMap/CrossFilterMap')),
     },
 
     '/dashboard/storemap': {

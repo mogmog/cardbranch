@@ -51,6 +51,57 @@ const OPACITY_STOPS_ZOOMED = [
   [BREAKS[5], 0.1]];
 
 
+const HEATMAP = {
+  // Increase the heatmap weight based on frequency and property magnitude
+  "heatmap-weight": [
+    "interpolate",
+    ["linear"],
+    ["get", "mag"],
+    0, 0,
+    6, 1
+  ],
+  // Increase the heatmap color weight weight by zoom level
+  // heatmap-intensity is a multiplier on top of heatmap-weight
+  "heatmap-intensity": [
+    "interpolate",
+    ["linear"],
+    ["zoom"],
+    0, 1,
+    9, 3
+  ],
+  // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+  // Begin color ramp at 0-stop with a 0-transparancy color
+  // to create a blur-like effect.
+  "heatmap-color": [
+    "interpolate",
+    ["linear"],
+    ["heatmap-density"],
+    0, "rgba(33,102,172,0)",
+    0.2, "rgb(103,169,207)",
+    0.4, "rgb(209,229,240)",
+    0.6, "rgb(253,219,199)",
+    0.8, "rgb(239,138,98)",
+    1, "rgb(178,24,43)"
+  ],
+  // Adjust the heatmap radius by zoom level
+  "heatmap-radius": [
+    "interpolate",
+    ["linear"],
+    ["zoom"],
+    0, 2,
+    9, 20
+  ],
+  // Transition from heatmap to circle layer by zoom level
+  "heatmap-opacity": [
+    "interpolate",
+    ["linear"],
+    ["zoom"],
+    7, 1,
+    9, 1
+  ],
+}
+
+
 const CHORO = {
   "fill-color": {
     property: 'frequency',
@@ -71,7 +122,8 @@ const CHORO = {
   return {
     storecards: namespaces.card.list,
     districtcards: namespaces.card.districtcardllist,
-    districts: namespaces.district.geojson
+    districts: namespaces.district.geojson,
+    heatmap: namespaces.heatmap.geojson
   };
 })
 export default class extends React.Component {
@@ -114,6 +166,8 @@ export default class extends React.Component {
   getDistrictCards(clickedOnName) {
     const {dispatch} = this.props;
 
+    this.map.setFilter("districtfill", ["!=", "name", ""]);
+
     dispatch({
       type: 'card/fetchdistrictcards',
       payload: {'type': 'district', 'district_name': clickedOnName}
@@ -135,6 +189,26 @@ export default class extends React.Component {
     this.map.setFilter("districtfill", ["==", "name", clickedOnName]);
   }
 
+  showHeatmap() {
+
+    const {dispatch} = this.props;
+
+    if (this.props.heatmap.features.length === 0) {
+      dispatch({
+        type: 'heatmap/fetch',
+        payload: {'id': 1}
+      });
+
+    } else {
+      dispatch({
+        type: 'heatmap/clear'
+      });
+    }
+
+
+  }
+
+
   showDistricts() {
 
     const {dispatch} = this.props;
@@ -149,7 +223,6 @@ export default class extends React.Component {
   backToStoreMap() {
     this.map.setZoom(11);
     this.map.setFilter("districtfill", ["!=", "name", ""]);
-   // this.setState({'activeTab': '0'});
   }
 
   markerClick(store) {
@@ -170,17 +243,21 @@ export default class extends React.Component {
 
   render() {
 
-    const {districts, storecards, districtcards} = this.props;
+    const {districts, storecards, districtcards, heatmap} = this.props;
     const {activeTab, compareLeft, compareRight, sidebarOpen} = this.state;
     const that = this;
 
     if (that.map) {
       that.map.getSource('districts').setData(districts);
+      that.map.getSource('heatmap').setData(heatmap);
       that.map.setPaintProperty('districtfill', 'fill-color', { 'property': 'frequency', 'stops': STOPS });
     }
 
+    /*context specifc buttons for particular cards*/
     const extras = {
       'StreetViewCard': (<span>
+                            <Button title='Show heatmap' onClick={this.showHeatmap.bind(this)}><Icon
+                              type={'api'}> </Icon></Button>
                             <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
                               type={'home'}> </Icon></Button>
                             <Button title='View where visitors work' onClick={this.showDistricts.bind(this)}><Icon
@@ -250,11 +327,23 @@ export default class extends React.Component {
                   data: districts,
                 });
 
+                map.addSource('heatmap', {
+                  "type": "geojson",
+                  "data": heatmap
+                });
+
                 map.addLayer({
                   id: 'districtfill',
                   type: 'fill',
                   source: 'districts',
                   paint: CHORO
+                });
+
+                map.addLayer({
+                  id: 'heatmap',
+                  type:'heatmap',
+                  source : 'heatmap',
+                  paint: HEATMAP
                 });
 
                 map.addLayer({
@@ -278,7 +367,6 @@ export default class extends React.Component {
                   that.getDistrictCards(clickedOnName);
                   that.zoomToDistrict(clickedOnName, map);
                   that.fadeOutOtherDistricts(clickedOnName);
-
                 });
 
                 map.on("mousemove", "districtfill", function (e) {
@@ -307,8 +395,7 @@ export default class extends React.Component {
 
         </Row>
 
-        <CompareBar open={compareLeft.length && compareRight.length && activeTab === '1'} compareLeft={compareLeft}
-                    compareRight={compareRight}> </CompareBar>
+        <CompareBar open={compareLeft.length && compareRight.length && activeTab === '1'} compareLeft={compareLeft} compareRight={compareRight}> </CompareBar>
 
       </div>
     )
