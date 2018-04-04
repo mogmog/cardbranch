@@ -27,11 +27,10 @@ export default class extends React.Component {
     const {data, extra} = this.props;
 
     return (
-      <Card style={{'height' : '350px'}} extra={extra}>
+      <Card title={data.name} style={{'height' : '350px'}} extra={extra}>
 
         <div id="content"  style={{'zIndex' : 3}}>
 
-          <h1> {data.name} </h1>
           <p>Population : {data.Something}</p>
           <p>Postcode : {data.postcode}</p>
         </div>

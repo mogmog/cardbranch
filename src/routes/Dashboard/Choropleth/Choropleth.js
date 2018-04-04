@@ -229,7 +229,7 @@ export default class extends React.Component {
   }
 
   backToStoreMap() {
-    this.map.setZoom(11);
+    this.map.flyTo({zoom : 11});
     this.map.setFilter("districtfill", ["!=", "name", ""]);
   }
 
@@ -238,6 +238,7 @@ export default class extends React.Component {
 
     this.setState({'sidebarOpen': true, selectedStore: store, activeTab: '0'});
 
+    this.map.flyTo({ center: store.coordinates, speed : 0.2});
     this.map.setFilter("districtfill", ["!=", "name", ""]);
 
     dispatch({
@@ -396,11 +397,11 @@ export default class extends React.Component {
 
               <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 1}
                            onClick={this.markerClick.bind(this)} coordinates={[-0.097, 51.53073509]}
-                           store={{'id': 1}}/>
+                           store={{'id': 1, coordinates : [-0.097, 51.53073509]}}/>
 
               <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 2}
                            onClick={this.markerClick.bind(this)} coordinates={[-0.17563939, 51.55516]}
-                           store={{'id': 2}}/>
+                           store={{'id': 2, 'coordinates' : [-0.17563939, 51.55516]}}/>
 
             </Map>
 
