@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm, Tabs, Row, Col, Button, Icon} from 'antd';
+import {Popconfirm, Tabs, Row, Col, Button, Icon, message} from 'antd';
 import CardLoader from '../../../components/Cards/CardLoader';
 
 import d3 from 'd3';
@@ -166,12 +166,16 @@ export default class extends React.Component {
   getDistrictCards(clickedOnName) {
     const {dispatch} = this.props;
 
+    message.success(clickedOnName + ' selected');
+
     this.map.setFilter("districtfill", ["!=", "name", ""]);
 
     dispatch({
       type: 'card/fetchdistrictcards',
       payload: {'type': 'district', 'district_name': clickedOnName}
     });
+
+
   }
 
   zoomToDistrict(clickedOnName, map) {
@@ -211,12 +215,16 @@ export default class extends React.Component {
 
   showDistricts() {
 
+    message.success(' Showing visitors by xxxxx');
+
     const {dispatch} = this.props;
 
     let o = dispatch({
       type: 'district/fetch',
       payload: {'id': 1}
     });
+
+
 
   }
 
@@ -229,6 +237,8 @@ export default class extends React.Component {
     const {dispatch, districts} = this.props;
 
     this.setState({'sidebarOpen': true, selectedStore: store, activeTab: '0'});
+
+    this.map.setFilter("districtfill", ["!=", "name", ""]);
 
     dispatch({
       type: 'district/clear',
@@ -253,16 +263,19 @@ export default class extends React.Component {
       that.map.setPaintProperty('districtfill', 'fill-color', { 'property': 'frequency', 'stops': STOPS });
     }
 
-    /*context specifc buttons for particular cards*/
-    const extras = {
-      'StreetViewCard': (<span>
-                            <Button title='Show heatmap' onClick={this.showHeatmap.bind(this)}><Icon
-                              type={'api'}> </Icon></Button>
+    const heatmapbutton = (<Button title='Show heatmap' onClick={this.showHeatmap.bind(this)}><Icon type={'api'}> </Icon></Button>)
+
+    const layersbutton = (<span>
                             <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
                               type={'home'}> </Icon></Button>
                             <Button title='View where visitors work' onClick={this.showDistricts.bind(this)}><Icon
                               type={'database'}> </Icon></Button>
-                         </span>),
+                         </span>);
+
+    /*context specifc buttons for particular cards*/
+    const extras = {
+      'StreetViewCard': layersbutton,
+      'DistrictInfoCard' : heatmapbutton,
       'DistrictTimeCard' : (<Button>Alert me when this changes</Button>)
     };
 

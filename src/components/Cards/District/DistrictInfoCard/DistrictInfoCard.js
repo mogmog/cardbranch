@@ -24,10 +24,10 @@ export default class extends React.Component {
 
   render() {
 
-    const {data} = this.props;
+    const {data, extra} = this.props;
 
     return (
-      <Card style={{'height' : '350px'}}>
+      <Card style={{'height' : '350px'}} extra={extra}>
 
         <div id="content"  style={{'zIndex' : 3}}>
 
