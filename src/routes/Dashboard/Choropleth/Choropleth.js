@@ -12,6 +12,7 @@ import mapboxgl from 'mapbox-gl';
 import ReactMapboxGl, {Layer, Source, Feature, Marker, Popup} from "react-mapbox-gl";
 import {connect} from "dva";
 
+import HeatMapControl from '../../../components/Maps/HeatmapControl/HeatmapControl';
 import CompareBar from '../../../common/LucaCompareBar/LucaCompareBar';
 import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';
 import StoreMarker from '../../../components/Maps/StoreMap/StoreMarker';
@@ -204,6 +205,7 @@ export default class extends React.Component {
         type: 'heatmap/fetch',
         payload: {'id': 1}
       });
+
   }
 
   hideHeatmap() {
@@ -257,7 +259,7 @@ export default class extends React.Component {
 
 
     const {districts, storecards, districtcards, heatmap} = this.props;
-    const {activeTab, compareLeft, compareRight, sidebarOpen} = this.state;
+    const {activeTab, compareLeft, compareRight, sidebarOpen, zoomed} = this.state;
     const that = this;
 
     if (that.map) {
@@ -275,12 +277,15 @@ export default class extends React.Component {
 
     /*context specifc buttons for particular cards*/
     const extras = {
-      'StreetViewCard': layersbutton,
-      'DistrictTimeCard' : (<Button>Alert me when this changes</Button>)
+      'StreetViewCard': layersbutton
     };
 
     return (
       <div>
+
+        <div>
+          {zoomed &&  <HeatMapControl onChange={this.showHeatmap.bind(this)}></HeatMapControl> }
+        </div>
 
         <Row>
           <Col>
