@@ -10,13 +10,13 @@ virtualenv -p python3 venv
 pip install autoenv
 
 
-cd <where ever>
+cd <where ever your dev environment is>
 
 git clone https://github.com/jameswykes/luca-card-demo.git
 
+cd luca-card-demo
 
 cd api
-
 
 pip install -r requirements.txt
 
@@ -62,10 +62,6 @@ sudo apt-get install -y nodejs
 
 
 npm install
-
-
-
-chmod 777 start.sh
 
 ./start.sh to run the app
 
