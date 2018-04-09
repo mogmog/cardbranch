@@ -230,11 +230,11 @@ export default class LucaSideMenu extends PureComponent {
 
           <Menu.Item className={styles.menuItem}>
             <Link to="/dashboard/crossfiltermap">
-              <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>New Map</div>
+              <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Store Map</div>
             </Link>
           </Menu.Item>
 
-          <Menu.Item className={styles.menuItem}>
+        {/*  <Menu.Item className={styles.menuItem}>
             <Link to="/dashboard/storemap">
               <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Store Map</div>
             </Link>
@@ -244,7 +244,7 @@ export default class LucaSideMenu extends PureComponent {
             <Link to="/dashboard/eventmap">
               <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Event Map</div>
             </Link>
-          </Menu.Item>
+          </Menu.Item>*/}
 
 
          {/* <Menu.Item className={styles.menuItem}>
