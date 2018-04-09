@@ -3,7 +3,7 @@ import request from '../../utils/request';
 
 export async function queryHeatmap(params) {
 
-  return request('/api/heatmap', {
+  return request('/api/real/heatmap', {
     method: 'POST',
     body: {
       ...params,

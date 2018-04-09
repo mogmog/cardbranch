@@ -58,7 +58,7 @@ export default class extends Component {
     }));
 
     dispatch({
-      type: 'card/fetchcards',
+      type: 'card/fetchstorecards',
       payload: {'type': 'store', 'store_id': marker.id}
     });
 

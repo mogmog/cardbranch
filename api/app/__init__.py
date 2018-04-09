@@ -1,6 +1,7 @@
 # app/__init__.py
 import json
 import jsonschema
+import random
 from flask_api import FlaskAPI, status
 import graphene
 from graphene import relay
@@ -8,6 +9,7 @@ from graphene_sqlalchemy import SQLAlchemyConnectionField, SQLAlchemyObjectType
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, Text, Integer
 from flask import request, jsonify, abort, make_response
+from shapely.geometry import shape, Point
 
 from flask_graphql import GraphQLView
 
@@ -75,4 +77,45 @@ def create_app(config_name):
 
       return make_response(jsonify({ 'list' : results })), 200
 
+
+    @app.route('/api/real/heatmap', methods=['POST'])
+
+    def get_heatmap():
+
+
+      def generate_random_data(lat, lon, num_rows):
+              llist = []
+              for _ in range(num_rows):
+                  dec_lat = random.random()/1
+                  dec_lon = random.random()/1
+                  llist.append((lon-dec_lon, lat+dec_lat))
+
+              return llist
+
+      district = request.data.get('district', {})
+      #print (district)
+
+      area_polygon = shape(district['geometry'])
+
+      latitude = 51.507879
+      longitude = 0
+
+      random_latlongs_male    = (generate_random_data(latitude, longitude, 15000))
+      random_latlongs_female  = (generate_random_data(latitude, longitude, 15000))
+
+      features_male = []
+      features_female = []
+
+      for _ in random_latlongs_male:
+        if (area_polygon.contains(Point(_[0], _[1]))):
+          features_male.append({'type' : 'Feature', 'geometry' : {'type' : 'Point', 'coordinates' : [_[0], _[1]]}, 'properties' : {'mag' : random.randint(1,100) }})
+
+      for _ in random_latlongs_female:
+        if (area_polygon.contains(Point(_[0], _[1]))):
+          features_female.append({'type' : 'Feature', 'geometry' : {'type' : 'Point', 'coordinates' : [_[0], _[1]]}, 'properties' : {'mag' : random.randint(1,100) }})
+
+      return make_response(jsonify({'male' : { 'type' : 'FeatureCollection', 'features' : features_male }, 'female' : { 'type' : 'FeatureCollection', 'features' : features_female }})), 200
+
     return app
+
+

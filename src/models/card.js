@@ -4,17 +4,17 @@ export default {
   namespace: 'card',
 
   state: {
-    list: [],
+    storecardlist: [],
     districtcardllist: []
   },
 
   /*TODO rename fetchcards to store cards */
   effects: {
 
-    * fetchcards({payload}, {call, put}) {
+    * fetchstorecards({payload}, {call, put}) {
       const response = yield call(queryCards, payload);
       yield put({
-        type: 'savecards',
+        type: 'savestorecards',
         payload: response,
       });
     },
@@ -26,23 +26,21 @@ export default {
         type: 'savedistrictcards',
         payload: response,
       });
-    }
-
-
+    },
   },
 
   reducers: {
-    savecards(state, action) {
+    savestorecards(state, action) {
       return {
         ...state,
-        list: action.payload && typeof(action.payload.list === 'Array') ? action.payload.list : [],
+        storecardlist: action.payload && typeof(action.payload.list === 'Array') ? action.payload.list : [],
       };
     },
 
-    clear(state, action) {
+    clearstorecards(state, action) {
       return {
         ...state,
-        list: [],
+        storecardlist: [],
       };
     },
 
@@ -53,7 +51,7 @@ export default {
       };
     },
 
-    cleardistrict(state, action) {
+    cleardistrictcards(state, action) {
       return {
         ...state,
         districtcardllist: [],

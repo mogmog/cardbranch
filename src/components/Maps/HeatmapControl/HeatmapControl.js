@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import styles from './HeatmapControl.less';
-import {Card, Radio} from 'antd';
+import {Card, Checkbox} from 'antd';
 
-const RadioGroup = Radio.Group;
-
+const CheckboxGroup = Checkbox.Group;
 export default class extends Component {
 
 
@@ -11,22 +10,20 @@ export default class extends Component {
 
     const {onChange} = this.props;
 
-
-    const radioStyle = {
-      display: 'block',
-      height: '30px',
-      lineHeight: '30px',
-    };
+    const options = [
+      { label: 'Males', value: 'heatmap_male' },
+      { label: 'Females', value: 'heatmap_female' },
+    ];
 
     return (
       <div className={styles.heatmapcontrol}>
         <div className={styles.box}>
               <Card>
-                <RadioGroup onChange={onChange}>
-                  <Radio style={radioStyle} value={1}>Show males</Radio>
-                  <Radio style={radioStyle} value={2}>Show females</Radio>
-                  <Radio style={radioStyle} value={3}>Show something</Radio>
-                </RadioGroup>
+
+                <div>
+                  <CheckboxGroup options={options} defaultValue={['heatmap_male', 'heatmap_female']} onChange={onChange} />
+                </div>
+
               </Card>
         </div>
       </div>

@@ -45,54 +45,19 @@ const OPACITY_STOPS = [
 
 const HEATMAP = {
   // Increase the heatmap weight based on frequency and property magnitude
-  "heatmap-weight": [
-    "interpolate",
-    ["linear"],
-    ["get", "mag"],
-    0, 0,
-    6, 1
-  ],
-  // Increase the heatmap color weight weight by zoom level
-  // heatmap-intensity is a multiplier on top of heatmap-weight
-  "heatmap-intensity": [
-    "interpolate",
-    ["linear"],
-    ["zoom"],
-    0, 1,
-    9, 3
-  ],
-  // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-  // Begin color ramp at 0-stop with a 0-transparancy color
-  // to create a blur-like effect.
-  "heatmap-color": [
-    "interpolate",
-    ["linear"],
-    ["heatmap-density"],
-    0, "rgba(33,102,172,0)",
-    0.2, "rgb(103,169,207)",
-    0.4, "rgb(209,229,240)",
-    0.6, "rgb(253,219,199)",
-    0.8, "rgb(239,138,98)",
-    1, "rgb(178,24,43)"
-  ],
-  // Adjust the heatmap radius by zoom level
-  "heatmap-radius": [
-    "interpolate",
-    ["linear"],
-    ["zoom"],
-    0, 2,
-    9, 20
-  ],
-  // Transition from heatmap to circle layer by zoom level
-  "heatmap-opacity": [
-    "interpolate",
-    ["linear"],
-    ["zoom"],
-    7, 1,
-    9, 1
-  ],
+  "heatmap-weight": {
+    "type": "identity",
+    "property": "mag",
+  }
 }
 
+const HEATMAP_DIFFERENT = {
+  // Increase the heatmap weight based on frequency and property magnitude
+  "heatmap-weight": {
+    "type": "identity",
+    "property": "different",
+  },
+}
 
 const CHORO = {
   "fill-color": {
@@ -112,10 +77,10 @@ const CHORO = {
   //console.log(namespaces);
 
   return {
-    storecards: namespaces.card.list,
+    storecards: namespaces.card.storecardlist,
     districtcards: namespaces.card.districtcardllist,
     districts: namespaces.district.geojson,
-    heatmap: namespaces.heatmap.geojson
+    heatmap: namespaces.heatmap
   };
 })
 export default class extends React.Component {
@@ -129,7 +94,7 @@ export default class extends React.Component {
     const {dispatch} = this.props;
 
     dispatch({
-      type: 'district/clear',
+      type: 'district/cleardistrictcards',
     });
   }
 
@@ -172,7 +137,7 @@ export default class extends React.Component {
     const {dispatch} = this.props;
 
     dispatch({
-      type: 'card/cleardistrict'
+      type: 'card/cleardistrict',
     });
   }
 
@@ -199,13 +164,24 @@ export default class extends React.Component {
 
   showHeatmap() {
 
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
+    const { district } = this.state;
 
       dispatch({
         type: 'heatmap/fetch',
-        payload: {'id': 1}
+        payload: {'district': district}
       });
 
+  }
+
+  changeHeatmapLayers(items) {
+
+    this.map.setLayoutProperty('heatmap_male', 'visibility', 'none');
+    this.map.setLayoutProperty('heatmap_female', 'visibility', 'none');
+
+    items.forEach(item => {
+      this.map.setLayoutProperty(item, 'visibility', 'visible');
+    });
   }
 
   hideHeatmap() {
@@ -243,12 +219,12 @@ export default class extends React.Component {
       this.map.setFilter("districtfill", ["!=", "name", ""]);
 
       dispatch({
-        type: 'district/clear',
+        type: 'district/clearstorecards',
       });
 
       /*get the cards for the clicked on store*/
       dispatch({
-        type: 'card/fetchcards',
+        type: 'card/fetchstorecards',
         payload: {'type': 'store', 'store_id': store.id}
       });
     }
@@ -257,6 +233,7 @@ export default class extends React.Component {
 
   render() {
 
+    console.log(this.props.heatmap);
 
     const {districts, storecards, districtcards, heatmap} = this.props;
     const {activeTab, compareLeft, compareRight, sidebarOpen, zoomed} = this.state;
@@ -264,7 +241,8 @@ export default class extends React.Component {
 
     if (that.map) {
       that.map.getSource('districts').setData(districts);
-      that.map.getSource('heatmap').setData(heatmap);
+      that.map.getSource('heatmap_male').setData(heatmap.male);
+      that.map.getSource('heatmap_female').setData(heatmap.female);
       that.map.setPaintProperty('districtfill', 'fill-color', { 'property': 'frequency', 'stops': STOPS });
     }
 
@@ -284,7 +262,7 @@ export default class extends React.Component {
       <div>
 
         <div>
-          {zoomed &&  <HeatMapControl onChange={this.showHeatmap.bind(this)}></HeatMapControl> }
+          {zoomed &&  <HeatMapControl onChange={this.changeHeatmapLayers.bind(this)}></HeatMapControl> }
         </div>
 
         <Row>
@@ -338,25 +316,19 @@ export default class extends React.Component {
 
                 this.map = map;
 
-                var layers = map.getStyle().layers;
-
-                // Find the index of the first symbol layer in the map style
-                var firstSymbolId;
-                for (var i = 0; i < layers.length; i++) {
-                  if (layers[i].type === 'symbol') {
-                    firstSymbolId = layers[i].id;
-                    break;
-                  }
-                }
-
                 map.addSource('districts', {
                   type: 'geojson',
                   data: districts,
                 });
 
-                map.addSource('heatmap', {
+                map.addSource('heatmap_male', {
                   "type": "geojson",
-                  "data": heatmap
+                  "data": heatmap.male
+                });
+
+                map.addSource('heatmap_female', {
+                  "type": "geojson",
+                  "data": heatmap.female
                 });
 
                 map.addLayer({
@@ -367,11 +339,113 @@ export default class extends React.Component {
                 });
 
                 map.addLayer({
-                  id: 'heatmap',
-                  type:'heatmap',
-                  source : 'heatmap',
-                  paint: HEATMAP
+                  id: 'heatmap_male',
+                  type: 'heatmap',
+                  source: 'heatmap_male',
+                  maxzoom: 15,
+                  paint: {
+                    // increase weight as diameter breast height increases
+                    'heatmap-weight': {
+                      property: 'mag',
+                      type: 'exponential',
+                      stops: [
+                        [1, 0],
+                        [100, 1]
+                      ]
+                    },
+                    // increase intensity as zoom level increases
+                    'heatmap-intensity': {
+                      stops: [
+                        [11, 1],
+                        [15, 3]
+                      ]
+                    },
+                    // assign color values be applied to points depending on their density
+                    'heatmap-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['heatmap-density'],
+                      0, 'rgba(236,0,30,0)',
+                      0.2, 'rgb(208,0,30)',
+                      0.4, 'rgb(166,0,30)',
+                      0.6, 'rgb(103,0,30)',
+                      0.8, 'rgb(28,0,30)'
+                    ],
+                    // increase radius as zoom increases
+                    'heatmap-radius': {
+                      stops: [
+                        [11, 15],
+                        [15, 20]
+                      ]
+                    },
+                    // decrease opacity to transition into the circle layer
+                    'heatmap-opacity': {
+                      default: 0.5,
+                      stops: [
+                        [1, 0.8],
+                        [15, 0.5]
+                      ]
+                    },
+                  }
                 });
+
+                map.addLayer({
+                  id: 'heatmap_female',
+                  type: 'heatmap',
+                  source: 'heatmap_female',
+                  maxzoom: 15,
+                  paint: {
+                    // increase weight as diameter breast height increases
+                    'heatmap-weight': {
+                      property: 'mag',
+                      type: 'exponential',
+                      stops: [
+                        [1, 0],
+                        [62, 1]
+                      ]
+                    },
+                    // increase intensity as zoom level increases
+                    'heatmap-intensity': {
+                      stops: [
+                        [11, 1],
+                        [15, 3]
+                      ]
+                    },
+                    // assign color values be applied to points depending on their density
+                    'heatmap-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['heatmap-density'],
+                      0, 'rgba(136,22,249,0)',
+                      0.2, 'rgb(108,29,240)',
+                      0.4, 'rgb(066,89,249)',
+                      0.6, 'rgb(03,69,247)',
+                      0.8, 'rgb(18,44,183)'
+                    ],
+                    // increase radius as zoom increases
+                    'heatmap-radius': {
+                      stops: [
+                        [11, 15],
+                        [15, 20]
+                      ]
+                    },
+                    // decrease opacity to transition into the circle layer
+                    'heatmap-opacity': {
+                      default: 0.5,
+                      stops: [
+                        [1, 0.8],
+                        [15, 0.5]
+                      ]
+                    },
+                  }
+                });
+
+
+
+
+
+
+
 
                 map.addLayer({
                   id: "state-fills-hover",
@@ -392,11 +466,13 @@ export default class extends React.Component {
                   const clickedOnName = e.features[0].properties.name;
 
                   if (that.state.zoomed) {
+                    that.setState({'district' : e.features[0]});
                     that.getDistrictCards(clickedOnName);
                     that.zoomToDistrict(clickedOnName, map);
                     that.fadeOutOtherDistricts(clickedOnName);
                     that.showHeatmap();
                   } else {
+                    that.setState({'district' : null});
                     that.zoomOut();
                     that.hideHeatmap();
                     that.clearDistrictCards();

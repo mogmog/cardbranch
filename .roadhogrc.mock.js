@@ -12,26 +12,23 @@ const getRandomInRange = function (from, to, fixed) {
 
 const data = {
   "type": "FeatureCollection",
-  "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
   "features": []
 };
 
-for (let i = 0; i < 100; i++) {
+data.features.push({"type":"Feature","properties":{"mag":6416.5},"geometry":{"type":"Point","coordinates":[-0.17614,51.52138]}});
+
+/*for (let i = 0; i < 100; i++) {
   data.features.push({
     "type": "Feature",
     "properties": {
-      "id": "ak16994521",
       "mag": getRandomInRange(1, 10000, 1),
-      "time": 1507425650893,
-      "felt": null,
-      "tsunami": 0
     },
     "geometry": {
       "type": "Point",
       "coordinates": [getRandomInRange(-0.1, -0.2, 5), getRandomInRange(51.5, 51.63292, 5)]
     }
   })
-}
+}*/
 
 const proxy = {
     'GET /api/real/currentUser': {

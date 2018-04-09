@@ -4,7 +4,8 @@ export default {
   namespace: 'heatmap',
 
   state: {
-    geojson: {type: 'FeatureCollection', features: []},
+    male: { type: 'FeatureCollection', features: []},
+    female: {type: 'FeatureCollection', features: []},
   },
 
   effects: {
@@ -26,12 +27,16 @@ export default {
 
       return {
         ...state,
-        geojson: action.payload,
+        male: action.payload.male,
+        female: action.payload.female,
       };
     },
 
     clear(state, action) {
-      return {geojson: {type: 'FeatureCollection', features: []}}
+      return {
+        male: { type: 'FeatureCollection', features: []},
+        female: {type: 'FeatureCollection', features: []},
+      }
     },
 
   },
