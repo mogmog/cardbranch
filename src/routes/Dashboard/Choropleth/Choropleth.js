@@ -94,7 +94,7 @@ export default class extends React.Component {
     const {dispatch} = this.props;
 
     dispatch({
-      type: 'district/cleardistrictcards',
+      type: 'district/clear',
     });
   }
 
@@ -137,7 +137,7 @@ export default class extends React.Component {
     const {dispatch} = this.props;
 
     dispatch({
-      type: 'card/cleardistrict',
+      type: 'card/cleardistrictcards',
     });
   }
 
@@ -219,7 +219,7 @@ export default class extends React.Component {
       this.map.setFilter("districtfill", ["!=", "name", ""]);
 
       dispatch({
-        type: 'district/clearstorecards',
+        type: 'district/clear',
       });
 
       /*get the cards for the clicked on store*/
