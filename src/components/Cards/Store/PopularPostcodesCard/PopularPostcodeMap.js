@@ -19,8 +19,16 @@ export default class extends React.Component {
   }
 
   componentWillReceiveProps(newprops) {
-    const { postcodeToHighlight } = newprops;
-    if (this.map) this.map.setFilter('postcodehighlight', ['==', 'Name', (postcodeToHighlight ? postcodeToHighlight : '')]);
+    const { postcodeToHighlight, visible } = newprops;
+    if (this.map) {
+      this.map.setFilter('postcodehighlight', ['==', 'Name', (postcodeToHighlight ? postcodeToHighlight : '')]);
+      if (visible) {
+        this.map.fitBounds(geojsonExtent(postcodes), {
+          padding: 20,
+          duration: 0
+        });
+      }
+    }
   }
 
   render() {
@@ -58,11 +66,6 @@ export default class extends React.Component {
               'fill-color': '#088',
               'fill-opacity': 0.7,
             },
-          });
-
-          map.fitBounds(geojsonExtent(postcodes), {
-            padding: 20,
-            duration: 0
           });
 
         }}

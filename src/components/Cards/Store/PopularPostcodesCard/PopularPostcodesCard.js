@@ -22,9 +22,9 @@ export default class extends React.Component {
   constructor() {
     super();
     this.state = {
-      visible : false,
+      visible: false,
       isFlipped: false,
-      postcode : null
+      postcode: null
     };
   }
 
@@ -102,7 +102,7 @@ export default class extends React.Component {
             </Col>
 
             <Col span={14} push={2}>
-              <PopularPostcodeMap postcodeToHighlight={postcode}/>
+              <PopularPostcodeMap visible={visible} postcodeToHighlight={postcode}/>
             </Col>
           </Row>
 
