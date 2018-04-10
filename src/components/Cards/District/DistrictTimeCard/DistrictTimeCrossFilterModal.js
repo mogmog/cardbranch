@@ -29,6 +29,13 @@ class CrossfilterContext {
 
     this.days = this.data.dimension(d => d.date);
 
+    this.dayOfWeekDimension = this.data.dimension((d) => {
+      var day = d.date.getDay();
+      return `${day}`;
+    });
+
+    this.dayOfWeekGroup = this.dayOfWeekDimension.group();
+
     this.minDate = this.days.bottom(1)[0].date;
     this.maxDate = this.days.top(1)[0].date;
 
@@ -87,18 +94,18 @@ export default class extends React.Component {
 
       <div>
 
-        {/*<Button onClick={this.testFilter.bind(this)}>Show Completed</Button>
+        <Button onClick={this.testFilter.bind(this)}>Show Completed</Button>
         <Button onClick={this.testFilter2.bind(this)}>Show assigned</Button>
 
-        <Button onClick={this.testFilter3.bind(this)}>Clear</Button>*/}
+        <Button onClick={this.testFilter3.bind(this)}>Clear</Button>
 
 
         <ChartContainer className="container" crossfilterContext={this.crossfilterContext}>
 
           <Row>
-            <Col>
+            <Col span={18}>
 
-              <div style={{'height': '200px'}}>
+              <div style={{'height': '400px'}}>
 
                 <LineChart
                   dimension={ctx => ctx.days}
@@ -106,8 +113,8 @@ export default class extends React.Component {
                   stack={ctx => [ctx.lineValues, 'assigned', (d) => { return d.value.assigned || 0; }]}
                   valueAccessor={d => d.value.completed || 0}
                   turnOnControls={true}
-                  width={340}
-                  height={180}
+                  width={740}
+                  height={380}
                   elasticY={true}
                   renderArea={true}
                   x={d3.time.scale().domain([new Date('19 May 2016'), new Date('1 June 2016')])}
@@ -116,27 +123,34 @@ export default class extends React.Component {
 
               </div>
             </Col>
-          </Row>
 
-          {/*<Row>
-            <Col>
-
+            <Col span={6}>
               <div style={{'height': '200px'}}>
-
-                 <PieChart
-                    dimension={ctx => ctx.categories}
-                    group={ctx => ctx.categories.group()}
-                    width={180} height={180}
-                    radius={80}
-                  />
-
+                <PieChart
+                  dimension={ctx => ctx.categories}
+                  group={ctx => ctx.categories.group()}
+                  width={180} height={180}
+                  radius={80}
+                />
               </div>
 
+              <div style={{'height': '200px'}}>
+                <RowChart
+                  dimension={ctx => ctx.dayOfWeekDimension}
+                  group={ctx => ctx.dayOfWeekGroup}
+                  width={180} height={180}
+                  elasticX={true}
+                  margins={{top: 20, left: 10, right: 10, bottom: 20}}
+                  label={d => d.key}
+                  title={d => d.value}
+                  xAxis={axis => axis.ticks(4)}
+                />
+
+              </div>
             </Col>
-          </Row>*/}
+          </Row>
 
         </ChartContainer>
-
 
       </div>
 

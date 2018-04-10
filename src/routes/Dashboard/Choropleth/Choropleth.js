@@ -91,11 +91,18 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
+
     const {dispatch} = this.props;
 
     dispatch({
       type: 'district/clear',
     });
+
+    dispatch({
+      type: 'heatmap/clear',
+    });
+
+
   }
 
   sendLeft() {
@@ -136,9 +143,9 @@ export default class extends React.Component {
   clearDistrictCards() {
     const {dispatch} = this.props;
 
-   /* dispatch({
+    dispatch({
       type: 'card/cleardistrictcards',
-    });*/
+    });
   }
 
 

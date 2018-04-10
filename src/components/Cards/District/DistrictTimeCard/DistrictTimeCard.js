@@ -1,41 +1,108 @@
 import React from 'react';
+import DistrictTimeCrossFilter from './DistrictTimeCrossFilter';
+import DistrictTimeCrossFilterModal from './DistrictTimeCrossFilterModal';
+
 import {
   Row,
   Col,
-  Card
+  Icon,
+  Card,
+  Tabs,
+  Modal,
+  Table,
+  Radio,
+  DatePicker,
+  Menu,
+  Dropdown,
 } from 'antd';
 
-
-import DistrictTimeCrossFilter from './DistrictTimeCrossFilter';
-
+import ReactCardFlip from 'react-card-flip';
 
 export default class extends React.Component {
   constructor() {
     super();
+    this.state = {
+      visible: false,
+      isFlipped: false,
+      postcode: null
+    };
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    this.setState({isFlipped: !this.state.isFlipped});
+  }
+
+  updatePostcode(postcode) {
+    this.setState({postcode : postcode});
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
   }
 
   render() {
 
-    const {data, extra} = this.props;
+    const { data } = this.props;
+    const {visible, postcode} = this.state;
 
     return (
-      <Card title={'More males than females'} style={{'height' : '600px'}} extra={extra}>
 
-        <DistrictTimeCrossFilter data={data}/>
+      <div style={{'height' : '400px'}}>
+
+        <ReactCardFlip isFlipped={this.state.isFlipped} >
+
+          <div key="front">
+            <Card title={'Visits per month'}>
+
+              <div style={{'width' : '250px'}}>
+                <DistrictTimeCrossFilter data={data}/>
+              </div>
+
+              <button type="primary" onClick={this.showModal.bind(this)}>
+                Modal
+              </button>
+
+            </Card>
+          </div>
+
+          <div key="back">
+            <Card>
+              back
+              <pre>
+                  {JSON.stringify(data)}
+                </pre>
+            </Card>
+          </div>
 
 
+        </ReactCardFlip>
 
+        <Modal
+          visible={visible}
+          width={1000}
+          bodyStyle={{'height' : '60vh' }}
+          title="Blah"
+          onCancel={this.handleCancel}
+          footer={[]}
+        >
 
-        {/*<Chart height={200} data={dv} scale={cols} forceFit>
-          <Axis name="value" label={{formatter:val => {if ((val %2)) {return val;} return '';}}}/>
-          <Axis name="count" />
-          <Tooltip inPlot={false} crosshairs={false} position={'top'} />
-          <Geom type='interval' position="value*count" />
-        </Chart>*/}
+          <Row>
+            <Col span={24}>
+              <DistrictTimeCrossFilterModal data={data}/>
+            </Col>
+          </Row>
 
+        </Modal>
 
-      </Card>
-    );
+      </div>
+    )
   }
 }
 

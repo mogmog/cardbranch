@@ -22,8 +22,6 @@ export default {
   reducers: {
     save(state, action) {
 
-      action.payload.features.map(x => {x.properties.frequency = Math.floor(Math.random() * 20) + 5  ; return x})
-
       return {
         ...state,
         geojson: action.payload,
@@ -31,7 +29,6 @@ export default {
     },
 
     clear(state, action) {
-
       return {geojson : {type : 'FeatureCollection', features : []}}
     },
 

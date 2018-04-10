@@ -66,7 +66,7 @@ export default class extends Component {
           }}
           containerStyle={{
             width: "300px",
-            height : '300px'
+            height : '280px'
           }}>
 
           <GeoJSONLayer
