@@ -5,11 +5,9 @@ import {
   Card
 } from 'antd';
 
-import Dashboard from '../../../../common/DC/dashboard';
-import Crossfilter from '../../../../common/DC/crossfilter';
 
+import DistrictTimeCrossFilter from './DistrictTimeCrossFilter';
 
-import { Chart, Axis, Geom, Tooltip } from 'bizcharts';
 
 export default class extends React.Component {
   constructor() {
@@ -20,29 +18,11 @@ export default class extends React.Component {
 
     const {data, extra} = this.props;
 
-    const attributes = [
-      {
-        type     : 'linear',
-        name     : 'Age',
-        dimension: row => +row.age
-      },
-
-      {
-        type     : 'ordinal',
-        name     : 'Gender',
-        dimension: row => row.sex
-      },
-
-    ];
-
-
     return (
       <Card title={'More males than females'} style={{'height' : '600px'}} extra={extra}>
 
+        <DistrictTimeCrossFilter data={data}/>
 
-        <Crossfilter data={data.data} attributes={attributes}>
-          <Dashboard />
-        </Crossfilter>
 
 
 

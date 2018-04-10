@@ -136,9 +136,9 @@ export default class extends React.Component {
   clearDistrictCards() {
     const {dispatch} = this.props;
 
-    dispatch({
+   /* dispatch({
       type: 'card/cleardistrictcards',
-    });
+    });*/
   }
 
 
@@ -232,8 +232,6 @@ export default class extends React.Component {
   }
 
   render() {
-
-    console.log(this.props.heatmap);
 
     const {districts, storecards, districtcards, heatmap} = this.props;
     const {activeTab, compareLeft, compareRight, sidebarOpen, zoomed} = this.state;

@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import { Icon } from 'antd';
 import LucaGrid from './../../components/Grid/LucaGrid';
-
 import CardLoader from '../../components/Cards/CardLoader';
-import SmallCellFaultCard from '../../components/Cards/TopLevel/SmallCellFaultCard/SmallCellFaultCard';
-import GenderPercentCard from '../../components/Cards/TopLevel/GenderPercentCard/GenderPercentCard';
 
-import PopularPostcodesCard from '../../components/Cards/Store/PopularPostcodesCard/PopularPostcodesCard';
+
+
+
+
 
 /*when the api calls have finished, put the results into the props */
 @connect((namespaces) => {
@@ -52,6 +52,8 @@ export default class Home extends Component {
 
     return (
       <div>
+
+
 
         <LucaGrid
           itemHeight={300}
