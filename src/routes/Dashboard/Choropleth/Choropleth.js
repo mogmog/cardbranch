@@ -466,20 +466,25 @@ export default class extends React.Component {
                   if (that.state.zoomed) {
                     that.setState({'district' : e.features[0]});
                     that.getDistrictCards(clickedOnName);
-                    that.zoomToDistrict(clickedOnName, map);
                     that.fadeOutOtherDistricts(clickedOnName);
+                    that.zoomToDistrict(clickedOnName, map);
                     that.showHeatmap();
+
                   } else {
                     that.setState({'district' : null});
+                    that.clearDistrictCards();
                     that.zoomOut();
                     that.hideHeatmap();
-                    that.clearDistrictCards();
+
                   }
                 });
 
                 map.on("mousemove", "districtfill", function (e) {
                   map.setFilter("state-fills-hover", ["==", "name", e.features[0].properties.name]);
                 });
+
+
+
               }}
 
               style="mapbox://styles/mogmog/cjfl7wk44btwu2sqwep298upn"

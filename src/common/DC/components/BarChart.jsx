@@ -16,15 +16,19 @@ class BarChart extends Component {
     filterPrinter: PropTypes.func
   };
 
+  componentDidUpdate (prevProps) {
+    this.chart.redraw();
+  }
+
   loadChart = (container) => {
     if (!container) return;
-    const chart = dc.barChart(container);
-    const helper = this.props.chartHelper(this, chart);
+    this.chart = dc.barChart(container);
+    const helper = this.props.chartHelper(this, this.chart);
     helper.setProperties('elasticY', 'centerBar', 'gap', 'round',
                          'alwaysUseRounding', 'x', 'renderHorizontalGridLines',
                          'filterPrinter');
 
-    chart.render();
+    this.chart.render();
   };
 
   render() {

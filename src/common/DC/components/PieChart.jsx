@@ -12,11 +12,11 @@ class PieChart extends Component {
 
   loadChart = (container) => {
     if (!container) return;
-    const chart = dc.pieChart(container);
-    const helper = this.props.chartHelper(this, chart);
+    this.chart = dc.pieChart(container);
+    const helper = this.props.chartHelper(this, this.chart);
     helper.setProperties('radius', 'innerRadius');
 
-    chart.render();
+    this.chart.render();
   };
 
   render() {
