@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon, message } from 'antd';
+import { Layout, Icon, message, Modal } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { Route, Redirect, Switch, routerRedux } from 'dva/router';
@@ -10,8 +10,9 @@ import { enquireScreen } from 'enquire-js';
 import GlobalHeader from '../components/GlobalHeader';
 import GlobalFooter from '../components/GlobalFooter';
 
+
+import AddCardModal from '../components/Admin/AddCardModal/AddCardModal';
 import LucaSideMenu from '../common/LucaSideMenu/LucaSideMenu';
-import LucaHeader from '../common/LucaHeader/LucaHeader';
 
 import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
@@ -73,7 +74,8 @@ class BasicLayout extends React.PureComponent {
     breadcrumbNameMap: PropTypes.object,
   }
   state = {
-    isMobile,
+    isMobile : isMobile,
+    showAddCard : true
   };
   getChildContext() {
     const { location, routerData } = this.props;
@@ -147,16 +149,23 @@ class BasicLayout extends React.PureComponent {
       });
     }
   }
+
+  handleOnAddCardClick = () => {
+    this.setState({showAddCard : true});
+  }
+
   render() {
     const {
       currentUser, collapsed, fetchingNotices, notices, routerData, match, location,
     } = this.props;
 
-    console.log(this.props);
+    const { showAddCard } = this.state;
+
 
     const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>
+
         <LucaSideMenu
           logo={logo}
           // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
@@ -179,6 +188,7 @@ class BasicLayout extends React.PureComponent {
               notices={notices}
               collapsed={collapsed}
               isMobile={this.state.isMobile}
+              onAddCardClick={this.handleOnAddCardClick}
               onNoticeClear={this.handleNoticeClear}
               onCollapse={this.handleMenuCollapse}
               onMenuClick={this.handleMenuClick}
@@ -187,6 +197,9 @@ class BasicLayout extends React.PureComponent {
           </Header>
 
           <Content style={{ margin: '0px 0px 0 0px', height: '100%' }}>
+
+            {true && showAddCard && (<AddCardModal />) }
+
             <Switch>
               {
                 redirectData.map(item =>

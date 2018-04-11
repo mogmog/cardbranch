@@ -56,7 +56,7 @@ def create_app(config_name):
 
     @app.route('/api/real/currentUser', methods=['GET'])
     def currentUser():
-        response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 1, 'notifyCount': 3,})
+        response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 1, 'notifyCount': 3, 'isAdmin' : True})
         return make_response(response), 200
 
 
