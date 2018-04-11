@@ -75,7 +75,7 @@ class BasicLayout extends React.PureComponent {
   }
   state = {
     isMobile : isMobile,
-    showAddCard : true
+    showAddCard : false
   };
   getChildContext() {
     const { location, routerData } = this.props;
@@ -181,7 +181,7 @@ class BasicLayout extends React.PureComponent {
         <Layout>
 
           <Header style={{ padding: 0 }}>
-            <GlobalHeader
+            {currentUser && <GlobalHeader
               logo={logo}
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
@@ -194,6 +194,7 @@ class BasicLayout extends React.PureComponent {
               onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
             />
+            }
           </Header>
 
           <Content style={{ margin: '0px 0px 0 0px', height: '100%' }}>

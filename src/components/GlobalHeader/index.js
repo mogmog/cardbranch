@@ -93,7 +93,7 @@ export default class GlobalHeader extends PureComponent {
         />
         <div className={styles.right}>
 
-          <Button onClick={onAddCardClick}>Add card to this view</Button>
+          <Button onClick={onAddCardClick}>Change my cards</Button>
 
           <NoticeIcon
             className={styles.action}

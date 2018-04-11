@@ -5,15 +5,38 @@ from sqlalchemy import Text
 
 from sqlalchemy.dialects.postgresql import JSON, JSONB
 
-PageCard = db.Table('pagecard',
-    db.Column('id', db.Integer, primary_key=True),
-    db.Column('pageId', db.Integer, db.ForeignKey('page.id')),
-    db.Column('component', db.String))
+
+
+class PageCard(db.Model):
+    __tablename__ = 'pagecard'
+    id =  db.Column('id', db.Integer, primary_key=True)
+    pageId = db.Column('pageId', db.Integer, db.ForeignKey('page.id'))
+    component = db.Column('component', db.String)
+    enabled = db.Column('enabled', db.String)
+
+    def save(self):
+      db.session.add(self)
+      db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return PageCard.query
+
+    def serialise(self):
+        return  { 'id': self.id, 'component': self.component, 'enabled' : self.enabled }
 
 class Page(db.Model):
     __tablename__ = 'page'
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(255))
+
+    def save(self):
+      db.session.add(self)
+      db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Page.query
 
     def serialise(self):
 

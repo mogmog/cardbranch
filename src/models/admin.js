@@ -1,4 +1,4 @@
-import {queryPageCardMappings} from '../services/admin/pagecard/api';
+import { queryPageCardMappings, updatePageCardMapping } from '../services/admin/pagecard/api';
 
 export default {
   namespace: 'admin',
@@ -9,13 +9,22 @@ export default {
 
   effects: {
 
-    * fetchcardmappings({payload}, {call, put}) {
+    * fetchcardmappings({payload}, { call, put }) {
       const response = yield call(queryPageCardMappings, payload);
       yield put({
         type: 'save',
         payload: response,
       });
     },
+
+    * updatecardmapping({payload}, {call, put}) {
+      const response = yield call(updatePageCardMapping, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+    },
+
   },
 
   reducers: {
@@ -25,6 +34,5 @@ export default {
         cardmappings: action.payload && typeof(action.payload.list === 'Array') ? action.payload.list : [],
       };
     },
-
   },
 };

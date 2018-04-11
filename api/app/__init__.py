@@ -26,7 +26,7 @@ from flask_bcrypt import Bcrypt
 # initialize db
 db = SQLAlchemy()
 
-from app.ng_event_models import Card, Page
+from app.ng_event_models import Card, Page, PageCard
 from app.user_models import User
 
 def create_app(config_name):
@@ -71,6 +71,41 @@ def create_app(config_name):
 
       return make_response(jsonify({ 'list' : results })), 200
 
+    @app.route('/api/real/admin/cardmappings', methods=['POST'])
+    def list_cardmappings():
+
+      url = request.data.get('url', '')
+      page = Page.get_all().filter(Page.url == url).one()
+
+      mappings = PageCard.get_all().filter(PageCard.pageId == page.id).order_by(PageCard.id).all()
+
+      print (mappings)
+
+      results = []
+      for mapping in mappings:
+       results.append(mapping.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
+    @app.route('/api/real/admin/cardmappings/<id>', methods=['POST'])
+    def update_cardmapping(id):
+
+      enabled = request.data.get('enabled', 'N')
+      url = request.data.get('url', '')
+
+      mapping = PageCard.get_all().filter(PageCard.id == id).one()
+      mapping.enabled = enabled
+      mapping.save();
+
+      page = Page.get_all().filter(Page.url == url).one()
+      mappings = PageCard.get_all().filter(PageCard.pageId == page.id).order_by(PageCard.id).all()
+
+      results = []
+      for mapping in mappings:
+       results.append(mapping.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
     @app.route('/api/real/cards', methods=['POST'])
     def list_cards():
 
@@ -78,7 +113,7 @@ def create_app(config_name):
       type = request.data.get('type', '')
       id   = str(request.data.get('id', ''))
 
-      sql = text('select id from cards where component IN ( SELECT component FROM pagecard JOIN page ON pagecard.\"pageId\" = page.id WHERE url = \'' + url + '\') and key->> \'type\' = \'' + type + '\' and key->>\'id\' = \'' + id + '\'')
+      sql = text('select id from cards where component IN ( SELECT component FROM pagecard JOIN page ON (pagecard.\"pageId\" = page.id AND pagecard.enabled = \'Y\') WHERE url = \'' + url + '\') and key->> \'type\' = \'' + type + '\' and key->>\'id\' = \'' + id + '\'')
       print (sql)
       result = db.engine.execute(sql)
 

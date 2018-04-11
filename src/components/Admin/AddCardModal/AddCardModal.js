@@ -3,8 +3,15 @@ import {
   Row,
   Col,
   Card,
-  Modal
+  Modal,
+  Table,
+  Icon,
+  Divider,
+  Switch
 } from 'antd';
+
+const { Column, ColumnGroup } = Table;
+
 import {connect} from "dva";
 
 
@@ -39,6 +46,20 @@ export default class extends React.Component {
     alert("cancel");
   }
 
+  onChange(event, mapping) {
+
+    const {dispatch} = this.props;
+
+    mapping.enabled = event ? 'Y' : 'N';
+
+    dispatch({
+      type: 'admin/updatecardmapping',
+      payload : mapping
+    });
+
+    //alert(`switch to ${checked.id}`);
+  }
+
   render() {
 
     const { cardmappings } = this.props;
@@ -53,9 +74,23 @@ export default class extends React.Component {
         onCancel={this.handleCancel}
       >
 
-        <pre>
-          {JSON.stringify(cardmappings)}
-        </pre>
+        <Table dataSource={cardmappings} pagination={false} >
+
+          <Column
+            title="Key"
+            dataIndex="component"
+            key="component"
+          />
+          <Column
+            title="Action"
+            key="action"
+            render={(mapping) => (
+              <span>
+                  <Switch checked={mapping.enabled === 'Y'} onChange={(e) => {this.onChange(e, mapping)}} />
+              </span>
+            )}
+          />
+        </Table>
 
       </Modal>
     );
