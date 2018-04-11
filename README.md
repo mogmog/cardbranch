@@ -43,13 +43,13 @@ ctl D to get out of psql
 
 
 
-
+python manage.py db init
 python manage.py db migrate
+python manage.py db upgrade
 
 
 
-psql -U postgres -d thing -a -f thing.sql -h localhost
-
+cat thing_public_user.sql thing_public_page.sql thing_public_cards.sql thing_public_pagecard.sql  | psql -1 -f - -U postgres -d thing -h localhost
 
 
 
