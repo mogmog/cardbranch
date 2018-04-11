@@ -30,7 +30,7 @@ export default class Home extends Component {
     /*for testing purposes, we just get cards for a store. This would actually be replaceds with some kind of 'my cards dashboard'  that contextually returns cards of interest*/
     dispatch({
       type: 'card/fetchstorecards',
-      payload: {'type': 'store', 'store_id': 1}
+      payload: {'type': 'store', 'id': '1'}
     });
   }
 
@@ -46,7 +46,7 @@ export default class Home extends Component {
 
     /*context specifc buttons for particular cards - hacked this in for demo purposes*/
     const extras = {
-      'StreetViewCard': newstore,
+      'StoreStreetViewCard': newstore,
     };
 
 

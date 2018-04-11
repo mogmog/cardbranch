@@ -55,7 +55,11 @@ export default function request(url, options) {
         'Content-Type': 'application/json; charset=utf-8',
         ...newOptions.headers,
       };
+
+      //put the url in the json for card mapping purposes
+      newOptions.body.url = window.location.hash.replace('#', '');
       newOptions.body = JSON.stringify(newOptions.body);
+
     } else {
       // newOptions.body is FormData
       newOptions.headers = {

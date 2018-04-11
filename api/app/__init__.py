@@ -10,6 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, Text, Integer
 from flask import request, jsonify, abort, make_response
 from shapely.geometry import shape, Point
+from sqlalchemy import text
 
 from flask_graphql import GraphQLView
 
@@ -25,7 +26,7 @@ from flask_bcrypt import Bcrypt
 # initialize db
 db = SQLAlchemy()
 
-from app.ng_event_models import Card
+from app.ng_event_models import Card, Page
 from app.user_models import User
 
 def create_app(config_name):
@@ -58,13 +59,58 @@ def create_app(config_name):
         response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 1, 'notifyCount': 3,})
         return make_response(response), 200
 
+
+    @app.route('/api/real/pages', methods=['GET'])
+    def getPages():
+
+      pages = Page.query.filter(Page.url == "dashboard/crossfiltermap")
+
+      results = []
+      for page in pages:
+        results.append(page.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
     @app.route('/api/real/cards', methods=['POST'])
     def list_cards():
+
+      url = request.data.get('url', '')
+      type = request.data.get('type', '')
+      id   = str(request.data.get('id', ''))
+
+      sql = text('select id from cards where component IN ( SELECT component FROM pagecard JOIN page ON pagecard.\"pageId\" = page.id WHERE url = \'' + url + '\') and key->> \'type\' = \'' + type + '\' and key->>\'id\' = \'' + id + '\'')
+      print (sql)
+      result = db.engine.execute(sql)
+
+      cardids = []
+      for row in result:
+          cardids.append(row[0])
+
+      cards = Card.get_all().filter(Card.id.in_(cardids)).order_by(Card.order).all()
+
+      results = []
+      for card in cards:
+         results.append(card.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
+
+
+    @app.route('/api/real/cardsold', methods=['POST'])
+    def list_cardsold():
 
       type = request.data.get('type', '')
 
       if type == 'store':
         store_id    = request.data.get('store_id', '')
+
+        page = request.data.get('page', '')
+
+        #page.filter by page url
+        #then by key
+
+        #{page : 'crossfiltermap',  type : store, id : 1 }
+
         cards   = Card.get_all().filter(Card.key["type"].astext == "store").filter(Card.key["store_id"].astext == str(store_id)).order_by(Card.order)
 
       if type == 'district':

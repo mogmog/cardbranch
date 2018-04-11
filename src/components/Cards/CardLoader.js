@@ -22,12 +22,13 @@ export default class extends Component {
 
     /*must update this every time you add a new card*/
     const mappings = {
-      'StreetViewCard' : StreetViewCard,
-      'GenderPercentCard' : GenderPercentCard,
+      'StoreStreetViewCard' : StreetViewCard,
+      'StoreGenderPercentCard' : GenderPercentCard,
+      'StorePopularPostcodesCard' : PopularPostcodesCard,
       'DistrictInfoCard' : DistrictInfoCard,
-      'MostSimilarDistrictCard' : MostSimilarDistrictCard,
+      'DistrictMostSimilarCard' : MostSimilarDistrictCard,
       'DistrictTimeCard' : DistrictTimeCard,
-      'PopularPostcodesCard' : PopularPostcodesCard
+
     }
 
     const { card, extra } = this.props;

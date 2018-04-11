@@ -136,7 +136,7 @@ export default class extends React.Component {
 
     dispatch({
       type: 'card/fetchdistrictcards',
-      payload: {'type': 'district', 'district_name': clickedOnName}
+      payload: {'type': 'district', 'id': clickedOnName}
     });
   }
 
@@ -232,7 +232,7 @@ export default class extends React.Component {
       /*get the cards for the clicked on store*/
       dispatch({
         type: 'card/fetchstorecards',
-        payload: {'type': 'store', 'store_id': store.id}
+        payload: {'type': 'store', 'id': store.id}
       });
     }
 
@@ -251,7 +251,7 @@ export default class extends React.Component {
       that.map.setPaintProperty('districtfill', 'fill-color', { 'property': 'frequency', 'stops': STOPS });
     }
 
-    const layersbutton = (<span>
+    const showDistricts = (<span>
                             <Button title='View where visitors live' onClick={this.showDistricts.bind(this)}><Icon
                               type={'home'}> </Icon></Button>
                             <Button title='View where visitors work' onClick={this.showDistricts.bind(this)}><Icon
@@ -260,7 +260,7 @@ export default class extends React.Component {
 
     /*context specifc buttons for particular cards*/
     const extras = {
-      'StreetViewCard': layersbutton
+      'StoreStreetViewCard': showDistricts
     };
 
     return (

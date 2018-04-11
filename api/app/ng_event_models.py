@@ -5,12 +5,35 @@ from sqlalchemy import Text
 
 from sqlalchemy.dialects.postgresql import JSON, JSONB
 
+PageCard = db.Table('pagecard',
+    db.Column('id', db.Integer, primary_key=True),
+    db.Column('pageId', db.Integer, db.ForeignKey('page.id')),
+    db.Column('component', db.String))
+
+class Page(db.Model):
+    __tablename__ = 'page'
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(255))
+
+    def serialise(self):
+
+        cards_json = []
+        cards = self.cards
+
+        for _ in cards:
+                cards_json.append(_.serialise())
+
+        return  {
+                   'id': self.id,
+                   'url' : self.url,
+                   'cards' : cards_json
+                }
+
+
 class Card(db.Model):
     __tablename__ = 'cards'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user    = db.relationship(User)
     order = db.Column(db.Integer)
 
     component = db.Column(db.String(255))
