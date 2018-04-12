@@ -59,10 +59,15 @@ def create_app(config_name):
         response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 1, 'notifyCount': 3, 'isAdmin' : True})
         return make_response(response), 200
 
-    @app.route('/api/real/stores', methods=['GET'])
+    @app.route('/api/real/stores', methods=['POST'])
     def getStores():
 
-      stores = Store.query.all()
+      type = request.data.get('type', '')
+
+      if len(type) :
+        stores = Store.query.filter(Store.type == type).all()
+      else :
+        stores = Store.query.all()
 
       results = []
       for store in stores:

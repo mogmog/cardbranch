@@ -1,6 +1,8 @@
 import React from 'react';
-import {Popconfirm, Tabs, Row, Col, Button, Icon, message} from 'antd';
+import { Popconfirm, Tabs, Row, Col, Button, Icon, message, Radio, Input , Card} from 'antd';
 import CardLoader from '../../../components/Cards/CardLoader';
+
+const RadioGroup = Radio.Group;
 
 import d3 from 'd3';
 import Slider from 'react-slick'
@@ -43,22 +45,6 @@ const OPACITY_STOPS = [
   [BREAKS[4], 0.55],
   [BREAKS[5], 0.6]];
 
-const HEATMAP = {
-  // Increase the heatmap weight based on frequency and property magnitude
-  "heatmap-weight": {
-    "type": "identity",
-    "property": "mag",
-  }
-}
-
-const HEATMAP_DIFFERENT = {
-  // Increase the heatmap weight based on frequency and property magnitude
-  "heatmap-weight": {
-    "type": "identity",
-    "property": "different",
-  },
-}
-
 const CHORO = {
   "fill-color": {
     property: 'frequency',
@@ -89,7 +75,7 @@ export default class extends React.Component {
 
   constructor() {
     super();
-    this.state = {zoomed: false, selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen: false};
+    this.state = {zoomed: false, selectedStore: null, activeTab: '0', compareLeft: [], compareRight: [], sidebarOpen: false, storeChooserOpen : true};
   }
 
   componentDidMount() {
@@ -107,8 +93,27 @@ export default class extends React.Component {
     dispatch({
       type: 'heatmap/clear',
     });
+  }
 
+  componentWillUnmount() {
 
+    const {dispatch} = this.props;
+
+    if (this.map) {
+      this.map.removeLayer('districtfill');
+      this.map.removeLayer('heatmap_male');
+      this.map.removeLayer('heatmap_female');
+      this.map.removeLayer('state-fills-hover');
+
+      dispatch({
+        type: 'district/clear',
+      });
+
+      dispatch({
+        type: 'heatmap/clear',
+      });
+
+    }
   }
 
   sendLeft() {
@@ -217,10 +222,18 @@ export default class extends React.Component {
     });
   }
 
+  changeStoreFilters(event) {
+
+    const {dispatch} = this.props;
+
+    dispatch({
+      type: 'store/fetch',
+      payload: {'type': event.target.value }
+    });
+
+  }
 
   showDistricts() {
-
-    message.info(' Showing visitors by xxxxx');
 
     const {dispatch} = this.props;
 
@@ -257,16 +270,15 @@ export default class extends React.Component {
 
   render() {
 
+    const radioStyle = {
+      display: 'block',
+      height: '30px',
+      lineHeight: '30px',
+    };
+
     const { districts, storecards, districtcards, heatmap, stores } = this.props;
-    const {activeTab, compareLeft, compareRight, sidebarOpen, zoomed} = this.state;
+    const {activeTab, compareLeft, compareRight, sidebarOpen, storeChooserOpen, zoomed } = this.state;
     const that = this;
-
-
-    console.log("stores");
-    console.log(stores);
-    console.log(stores);
-    console.log(stores);
-
 
     if (that.map) {
       that.map.getSource('districts').setData(districts);
@@ -296,6 +308,24 @@ export default class extends React.Component {
 
         <Row>
           <Col>
+
+            {storeChooserOpen && <LucaSideBar right={true} open={storeChooserOpen} width={15}>
+
+              <Card title={'Store Filter'} extra={<a onClick={(e) => {this.setState({storeChooserOpen : false})}}>Close</a>}>
+
+                <RadioGroup onChange={this.changeStoreFilters.bind(this)}>
+                  <Radio style={radioStyle} value={'superstore'}>Super Stores</Radio>
+                  <Radio style={radioStyle} value={'convenience'}>Convenience Stores</Radio>
+                  <Radio style={radioStyle} value={'hyper'}>Hyper Stores</Radio>
+
+                  <Radio style={radioStyle} value={''}>All</Radio>
+
+                </RadioGroup>
+
+              </Card>
+
+            </LucaSideBar>
+            }
 
             <LucaSideBar right={false} open={sidebarOpen} width={25}>
 
@@ -469,13 +499,6 @@ export default class extends React.Component {
                   }
                 });
 
-
-
-
-
-
-
-
                 map.addLayer({
                   id: "state-fills-hover",
                   type: "line",
@@ -495,7 +518,7 @@ export default class extends React.Component {
                   const clickedOnName = e.features[0].properties.name;
 
                   if (that.state.zoomed) {
-                    that.setState({'district' : e.features[0]});
+                    that.setState({'district' : e.features[0], 'storeChooserOpen' : false});
                     that.getDistrictCards(clickedOnName);
                     that.fadeOutOtherDistricts(clickedOnName);
                     that.zoomToDistrict(clickedOnName, map);
@@ -526,7 +549,7 @@ export default class extends React.Component {
               }}>
 
               {
-                stores.map((store) => <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === store.id}
+                stores.map((store, i) => <StoreMarker key={i} selected={this.state.selectedStore && this.state.selectedStore.id === store.id}
                                                    onClick={this.markerClick.bind(this)} coordinates={[store.longitude, store.latitude]}
                                                    store={store}/>)
               }
@@ -540,7 +563,7 @@ export default class extends React.Component {
 
         </Row>
 
-        <CompareBar open={compareLeft.length && compareRight.length && activeTab === '1'} compareLeft={compareLeft} compareRight={compareRight}> </CompareBar>
+       {/* <CompareBar open={compareLeft.length && compareRight.length && activeTab === '1'} compareLeft={compareLeft} compareRight={compareRight}> </CompareBar>*/}
 
       </div>
     )
