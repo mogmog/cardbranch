@@ -5,5 +5,5 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('/api/real/currentUser');
+  return request('/api/real/currentUser/' + localStorage.getItem('LucauserID'));
 }

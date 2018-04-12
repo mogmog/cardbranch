@@ -28,6 +28,7 @@ export default {
         // get location pathname
         const urlParams = new URL(window.location.href);
         const pathname = yield select(state => state.routing.location.pathname);
+        localStorage.removeItem('LucauserID')
         // add the parameters in the url
         urlParams.searchParams.set('redirect', pathname);
         window.history.replaceState(null, 'login', urlParams.href);
@@ -48,6 +49,9 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
+
+      localStorage.setItem('LucauserID', payload.userId)
+
       return {
         ...state,
         status: payload.status,

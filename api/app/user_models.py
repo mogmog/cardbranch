@@ -32,7 +32,9 @@ class User(db.Model):
     def serialise(self):
 
         return  {
-                   'id': self.id,
-                   'userName' : self.userName,
+                   'userid': self.id,
+                   'notifyCount': 3,
+                   'isAdmin' : True,
+                   'name' : self.userName,
+                   'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
                 }
-

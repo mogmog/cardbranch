@@ -48,15 +48,17 @@ def create_app(config_name):
         user = User.get_all().filter(User.userName == userName).first()
 
         if user is not None:
-          response = jsonify({'status' : 'ok', 'type' : 'account', 'currentAuthority': 'admin'})
+          response = jsonify({'status' : 'ok', 'type' : 'account', 'userId' : user.id, 'currentAuthority': 'admin'})
           return make_response(response), 200
 
         return make_response(jsonify({'status': 'error', 'type' : 'account', 'currentAuthority': 'guest'})), 200
 
 
-    @app.route('/api/real/currentUser', methods=['GET'])
-    def currentUser():
-        response = jsonify({'name': 'Graham', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 2, 'notifyCount': 3, 'isAdmin' : True})
+    @app.route('/api/real/currentUser/<userId>', methods=['GET'])
+    def currentUser(userId):
+
+        user = User.get_all().filter(User.id == userId).one()
+        response = jsonify(user.serialise())
         return make_response(response), 200
 
     @app.route('/api/real/stores', methods=['POST'])
