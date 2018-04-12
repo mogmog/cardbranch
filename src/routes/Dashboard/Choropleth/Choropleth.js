@@ -184,12 +184,23 @@ export default class extends React.Component {
 
   changeHeatmapLayers(items) {
 
+    /*hide all layers*/
     this.map.setLayoutProperty('heatmap_male', 'visibility', 'none');
     this.map.setLayoutProperty('heatmap_female', 'visibility', 'none');
 
+    /*add the ones that are ticked*/
     items.forEach(item => {
       this.map.setLayoutProperty(item, 'visibility', 'visible');
     });
+  }
+
+  changeRange(e) {
+
+    let data = this.map.getSource('heatmap_male')._data;
+    data.features.splice(Math.floor(Math.random() * data.features.length), 1);
+
+    this.map.getSource('heatmap_male').setData(data);
+
   }
 
   hideHeatmap() {
@@ -268,7 +279,7 @@ export default class extends React.Component {
       <div>
 
         <div>
-          {zoomed &&  <HeatMapControl onChange={this.changeHeatmapLayers.bind(this)}></HeatMapControl> }
+          {zoomed &&  <HeatMapControl onRangeChange={this.changeRange.bind(this)} onLayerChange={this.changeHeatmapLayers.bind(this)}></HeatMapControl> }
         </div>
 
         <Row>

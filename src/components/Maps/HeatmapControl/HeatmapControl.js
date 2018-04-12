@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import styles from './HeatmapControl.less';
-import {Card, Checkbox} from 'antd';
+import {Card, Checkbox, Slider} from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 export default class extends Component {
 
+  handleDisabledChange = (disabled) => {
+    this.setState({ disabled });
+  }
 
   render() {
 
-    const {onChange} = this.props;
+    const {onLayerChange, onRangeChange} = this.props;
 
     const options = [
       { label: 'Males', value: 'heatmap_male' },
@@ -21,8 +24,10 @@ export default class extends Component {
               <Card>
 
                 <div>
-                  <CheckboxGroup options={options} defaultValue={['heatmap_male', 'heatmap_female']} onChange={onChange} />
+                  <CheckboxGroup options={options} defaultValue={['heatmap_male', 'heatmap_female']} onChange={onLayerChange} />
                 </div>
+
+                <Slider range defaultValue={[20, 50]} onChange={onRangeChange} />
 
               </Card>
         </div>

@@ -182,8 +182,8 @@ def create_app(config_name):
       latitude = 51.507879
       longitude = 0
 
-      random_latlongs_male    = (generate_random_data(latitude, longitude, 1500))
-      random_latlongs_female  = (generate_random_data(latitude, longitude, 1500))
+      random_latlongs_male    = (generate_random_data(latitude, longitude, 15000))
+      random_latlongs_female  = (generate_random_data(latitude, longitude, 15000))
 
       features_male = []
       features_female = []
