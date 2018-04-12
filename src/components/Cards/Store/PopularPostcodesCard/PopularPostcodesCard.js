@@ -76,7 +76,7 @@ export default class extends React.Component {
            <Card>
              back
                 <pre>
-                  {JSON.stringify(data)}
+                 {/* {JSON.stringify(data)}*/}
                 </pre>
            </Card>
           </div>
