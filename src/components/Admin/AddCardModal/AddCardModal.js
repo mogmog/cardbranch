@@ -20,6 +20,7 @@ import {connect} from "dva";
 
   return {
     cardmappings : namespaces.admin.cardmappings,
+    currentUser: namespaces.user.currentUser,
   };
 })
 
@@ -31,10 +32,11 @@ export default class extends React.Component {
 
   componentDidMount() {
 
-    const {dispatch} = this.props;
+    const {dispatch, currentUser} = this.props;
 
     dispatch({
       type: 'admin/fetchcardmappings',
+      payload : {userId : currentUser.userid}
     });
   }
 

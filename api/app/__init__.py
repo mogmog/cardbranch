@@ -56,7 +56,7 @@ def create_app(config_name):
 
     @app.route('/api/real/currentUser', methods=['GET'])
     def currentUser():
-        response = jsonify({'name': 'Daniel Garcia', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 1, 'notifyCount': 3, 'isAdmin' : True})
+        response = jsonify({'name': 'Graham', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'userid': 2, 'notifyCount': 3, 'isAdmin' : True})
         return make_response(response), 200
 
     @app.route('/api/real/stores', methods=['POST'])
@@ -91,11 +91,10 @@ def create_app(config_name):
     def list_cardmappings():
 
       url = request.data.get('url', '')
+      userId = request.data.get('userId', 0)
       page = Page.get_all().filter(Page.url == url).one()
 
-      mappings = PageCard.get_all().filter(PageCard.pageId == page.id).order_by(PageCard.id).all()
-
-      print (mappings)
+      mappings = PageCard.get_all().filter(PageCard.pageId == page.id).filter(PageCard.userId == userId).order_by(PageCard.id).all()
 
       results = []
       for mapping in mappings:
