@@ -80,7 +80,8 @@ const CHORO = {
     storecards: namespaces.card.storecardlist,
     districtcards: namespaces.card.districtcardllist,
     districts: namespaces.district.geojson,
-    heatmap: namespaces.heatmap
+    heatmap: namespaces.heatmap,
+    currentUser: namespaces.user.currentUser,
   };
 })
 export default class extends React.Component {
@@ -128,7 +129,7 @@ export default class extends React.Component {
   }
 
   getDistrictCards(clickedOnName) {
-    const {dispatch} = this.props;
+    const {dispatch, currentUser} = this.props;
 
     message.info(clickedOnName + ' selected');
 
@@ -136,7 +137,7 @@ export default class extends React.Component {
 
     dispatch({
       type: 'card/fetchdistrictcards',
-      payload: {'type': 'district', 'id': clickedOnName}
+      payload: {'type': 'district', 'id': clickedOnName, userid: currentUser.userid}
     });
   }
 
@@ -217,7 +218,7 @@ export default class extends React.Component {
   }
 
   markerClick(store) {
-    const {dispatch, districts} = this.props;
+    const {dispatch, districts, currentUser} = this.props;
 
     this.setState({'sidebarOpen': true, selectedStore: store, activeTab: '0'});
 
@@ -232,7 +233,7 @@ export default class extends React.Component {
       /*get the cards for the clicked on store*/
       dispatch({
         type: 'card/fetchstorecards',
-        payload: {'type': 'store', 'id': store.id}
+        payload: {'type': 'store', 'id': store.id, userid: currentUser.userid}
       });
     }
 

@@ -62,7 +62,7 @@ export default class extends React.Component {
             <Card title={'Visits per month'}>
 
               <div style={{'width' : '250px'}}>
-                <DistrictTimeCrossFilter data={data}/>
+                <DistrictTimeCrossFilter brush={false} data={data}/>
               </div>
 
               <button type="primary" onClick={this.showModal.bind(this)}>
@@ -76,7 +76,7 @@ export default class extends React.Component {
             <Card>
               back
               <pre>
-                  {JSON.stringify(data)}
+                 {/* {JSON.stringify(data)}*/}
                 </pre>
             </Card>
           </div>

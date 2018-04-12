@@ -87,12 +87,6 @@ export default class extends React.Component {
 
       <div>
 
-        {/*<Button onClick={this.testFilter.bind(this)}>Show Completed</Button>
-        <Button onClick={this.testFilter2.bind(this)}>Show assigned</Button>
-
-        <Button onClick={this.testFilter3.bind(this)}>Clear</Button>*/}
-
-
         <ChartContainer className="container" crossfilterContext={this.crossfilterContext}>
 
           <Row>
@@ -109,6 +103,7 @@ export default class extends React.Component {
                   width={340}
                   height={180}
                   elasticY={true}
+                  brushOn={false}
                   renderArea={true}
                   x={d3.time.scale().domain([new Date('19 May 2016'), new Date('1 June 2016')])}
                   ordinalColors={colorScale}
@@ -117,23 +112,6 @@ export default class extends React.Component {
               </div>
             </Col>
           </Row>
-
-          {/*<Row>
-            <Col>
-
-              <div style={{'height': '200px'}}>
-
-                 <PieChart
-                    dimension={ctx => ctx.categories}
-                    group={ctx => ctx.categories.group()}
-                    width={180} height={180}
-                    radius={80}
-                  />
-
-              </div>
-
-            </Col>
-          </Row>*/}
 
         </ChartContainer>
 

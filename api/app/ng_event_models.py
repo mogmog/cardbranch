@@ -11,6 +11,11 @@ class PageCard(db.Model):
     __tablename__ = 'pagecard'
     id =  db.Column('id', db.Integer, primary_key=True)
     pageId = db.Column('pageId', db.Integer, db.ForeignKey('page.id'))
+    page = db.relationship("Page")
+
+    userId = db.Column('userId', db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User")
+
     component = db.Column('component', db.String)
     enabled = db.Column('enabled', db.String)
 
@@ -23,7 +28,7 @@ class PageCard(db.Model):
         return PageCard.query
 
     def serialise(self):
-        return  { 'id': self.id, 'component': self.component, 'enabled' : self.enabled }
+        return  { 'id': self.id, 'component': self.component, 'enabled' : self.enabled, 'user' : self.user.serialise() }
 
 class Page(db.Model):
     __tablename__ = 'page'

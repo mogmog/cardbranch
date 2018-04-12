@@ -199,9 +199,9 @@ class BasicLayout extends React.PureComponent {
 
           <Content style={{ margin: '0px 0px 0 0px', height: '100%' }}>
 
-            {true && showAddCard && (<AddCardModal />) }
+            { showAddCard && (<AddCardModal />) }
 
-            <Switch>
+            {currentUser.name && <Switch>
               {
                 redirectData.map(item =>
                   <Redirect key={item.from} exact from={item.from} to={item.to} />
@@ -223,7 +223,7 @@ class BasicLayout extends React.PureComponent {
               }
               <Redirect exact from="/" to={bashRedirect} />
               <Route render={NotFound} />
-            </Switch>
+            </Switch>}
           </Content>
           {/*<Footer style={{ padding: 0 }}>
             <GlobalFooter

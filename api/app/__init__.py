@@ -109,11 +109,12 @@ def create_app(config_name):
     @app.route('/api/real/cards', methods=['POST'])
     def list_cards():
 
+      userid = request.data.get('userid', '0')
       url = request.data.get('url', '')
       type = request.data.get('type', '')
       id   = str(request.data.get('id', ''))
 
-      sql = text('select id from cards where component IN ( SELECT component FROM pagecard JOIN page ON (pagecard.\"pageId\" = page.id AND pagecard.enabled = \'Y\') WHERE url = \'' + url + '\') and key->> \'type\' = \'' + type + '\' and key->>\'id\' = \'' + id + '\'')
+      sql = text('select id from cards where component IN ( SELECT component FROM pagecard JOIN page ON (pagecard.\"pageId\" = page.id AND pagecard.\"userId\" = ' + str(userid) + ' AND pagecard.enabled = \'Y\') WHERE url = \'' + url + '\') and key->> \'type\' = \'' + type + '\' and key->>\'id\' = \'' + id + '\'')
       print (sql)
       result = db.engine.execute(sql)
 

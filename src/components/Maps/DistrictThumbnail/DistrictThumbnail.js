@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactMapboxGl, {GeoJSONLayer, Layer, Source, Feature, Marker, Popup} from "react-mapbox-gl";
 import mapboxgl from 'mapbox-gl';
+import geojsonExtent from 'geojson-extent';
 
 
 const Map = ReactMapboxGl({
@@ -35,15 +36,9 @@ export default class extends Component {
           onStyleLoad={(map) => {
            this.map = map;
 
-            var coordinates = this.props.geojson.geometry.coordinates[0];
-
-            var bounds = coordinates.reduce(function(bounds, coord) {
-              return bounds.extend(coord);
-            }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-            map.fitBounds(bounds, {
-              linear: true,
-              padding : 20
+            map.fitBounds(geojsonExtent(this.props.geojson), {
+              padding: 20,
+              duration: 0
             });
 
           } }
@@ -66,7 +61,7 @@ export default class extends Component {
           }}
           containerStyle={{
             width: "300px",
-            height : '280px'
+            height : '260px'
           }}>
 
           <GeoJSONLayer

@@ -11,7 +11,12 @@ import CardLoader from '../../components/Cards/CardLoader';
 
 /*when the api calls have finished, put the results into the props */
 @connect((namespaces) => {
-  return {storecardlist: namespaces.card.storecardlist};
+
+  return {
+    storecardlist: namespaces.card.storecardlist,
+    currentUser: namespaces.user.currentUser,
+  };
+
 })
 export default class Home extends Component {
 
@@ -25,13 +30,14 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    const {dispatch} = this.props;
+    const {dispatch, currentUser } = this.props;
 
     /*for testing purposes, we just get cards for a store. This would actually be replaceds with some kind of 'my cards dashboard'  that contextually returns cards of interest*/
     dispatch({
       type: 'card/fetchstorecards',
-      payload: {'type': 'store', 'id': '1'}
+      payload: {'type': 'store', 'id': '1', userid: currentUser.userid }
     });
+
   }
 
   render() {
