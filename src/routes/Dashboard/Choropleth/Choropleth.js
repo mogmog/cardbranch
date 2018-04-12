@@ -82,6 +82,7 @@ const CHORO = {
     districts: namespaces.district.geojson,
     heatmap: namespaces.heatmap,
     currentUser: namespaces.user.currentUser,
+    stores : namespaces.store.list
   };
 })
 export default class extends React.Component {
@@ -94,6 +95,10 @@ export default class extends React.Component {
   componentDidMount() {
 
     const {dispatch} = this.props;
+
+    dispatch({
+      type: 'store/fetch',
+    });
 
     dispatch({
       type: 'district/clear',
@@ -252,9 +257,16 @@ export default class extends React.Component {
 
   render() {
 
-    const {districts, storecards, districtcards, heatmap} = this.props;
+    const { districts, storecards, districtcards, heatmap, stores } = this.props;
     const {activeTab, compareLeft, compareRight, sidebarOpen, zoomed} = this.state;
     const that = this;
+
+
+    console.log("stores");
+    console.log(stores);
+    console.log(stores);
+    console.log(stores);
+
 
     if (that.map) {
       that.map.getSource('districts').setData(districts);
@@ -513,13 +525,14 @@ export default class extends React.Component {
                 width: "100vw"
               }}>
 
-              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 1}
-                           onClick={this.markerClick.bind(this)} coordinates={[-0.097, 51.53073509]}
-                           store={{'id': 1, coordinates : [-0.097, 51.53073509]}}/>
+              {
+                stores.map((store) => <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === store.id}
+                                                   onClick={this.markerClick.bind(this)} coordinates={[store.longitude, store.latitude]}
+                                                   store={store}/>)
+              }
 
-              <StoreMarker selected={this.state.selectedStore && this.state.selectedStore.id === 2}
-                           onClick={this.markerClick.bind(this)} coordinates={[-0.17563939, 51.55516]}
-                           store={{'id': 2, 'coordinates' : [-0.17563939, 51.55516]}}/>
+
+
 
             </Map>
 

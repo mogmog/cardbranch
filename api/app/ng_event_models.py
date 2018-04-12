@@ -5,7 +5,23 @@ from sqlalchemy import Text
 
 from sqlalchemy.dialects.postgresql import JSON, JSONB
 
+class Store(db.Model):
+    __tablename__ = 'store'
+    id =  db.Column('id', db.Integer, primary_key=True)
+    name = db.Column('name', db.String)
+    longitude = db.Column('longitude', db.Float)
+    latitude = db.Column('latitude', db.Float)
 
+    def save(self):
+      db.session.add(self)
+      db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Store.query
+
+    def serialise(self):
+        return  { 'id': self.id, 'name' : self.name, 'longitude' : self.longitude, 'latitude' : self.latitude }
 
 class PageCard(db.Model):
     __tablename__ = 'pagecard'
