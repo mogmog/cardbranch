@@ -50,9 +50,10 @@ export default class extends React.Component {
 
   onChange(event, mapping) {
 
-    const {dispatch} = this.props;
+    const {dispatch, currentUser} = this.props;
 
     mapping.enabled = event ? 'Y' : 'N';
+    mapping.userId  = currentUser.userid;
 
     dispatch({
       type: 'admin/updatecardmapping',

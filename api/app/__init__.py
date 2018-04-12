@@ -109,13 +109,14 @@ def create_app(config_name):
 
       enabled = request.data.get('enabled', 'N')
       url = request.data.get('url', '')
+      userId = request.data.get('userId', 0)
 
       mapping = PageCard.get_all().filter(PageCard.id == id).one()
       mapping.enabled = enabled
       mapping.save();
 
       page = Page.get_all().filter(Page.url == url).one()
-      mappings = PageCard.get_all().filter(PageCard.pageId == page.id).order_by(PageCard.id).all()
+      mappings = PageCard.get_all().filter(PageCard.userId == userId).filter(PageCard.pageId == page.id).order_by(PageCard.id).all()
 
       results = []
       for mapping in mappings:
