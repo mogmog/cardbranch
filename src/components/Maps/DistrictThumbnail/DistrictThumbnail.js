@@ -37,7 +37,7 @@ export default class extends Component {
            this.map = map;
 
             map.fitBounds(geojsonExtent(this.props.geojson), {
-              padding: 20,
+              padding: 10,
               duration: 0
             });
 
@@ -60,8 +60,8 @@ export default class extends Component {
 
           }}
           containerStyle={{
-            width: "300px",
-            height : '260px'
+            width : '300px',
+            height : '100px'
           }}>
 
           <GeoJSONLayer

@@ -57,11 +57,11 @@ export default class extends React.Component {
 
         <div>
 
-          <Card style={{'height' : '350px'}}>
+          <Card style={{'height' : '80px'}}>
 
-            <h1>
+            <h3>
               The most similar district is {data.name}
-            </h1>
+            </h3>
 
             <a onClick={this.showModal.bind(this)}>
               How did we measure this

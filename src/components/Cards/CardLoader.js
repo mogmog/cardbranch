@@ -10,6 +10,7 @@ import GenderPercentCard from './TopLevel/GenderPercentCard/GenderPercentCard';
 import DistrictInfoCard from './District/DistrictInfoCard/DistrictInfoCard';
 import MostSimilarDistrictCard from './District/MostSimilarDistrictCard/MostSimilarDistrictCard';
 
+import DistrictTimeLineCard from './District/DistrictTimelineCard/DistrictTimelineCard';
 import DistrictTimeCard from './District/DistrictTimeCard/DistrictTimeCard';
 
 export default class extends Component {
@@ -28,6 +29,7 @@ export default class extends Component {
       'DistrictInfoCard' : DistrictInfoCard,
       'DistrictMostSimilarCard' : MostSimilarDistrictCard,
       'DistrictTimeCard' : DistrictTimeCard,
+      'DistrictTimeLineCard' : DistrictTimeLineCard
 
     }
 
