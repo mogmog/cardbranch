@@ -74,19 +74,11 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['user', 'login', 'admin'], () => import('../layouts/BasicLayout')),
     },
     '/dashboard/home': {
-      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/Home')),
-    },
-
-    '/dashboard/crossfiltermap': {
-      component: dynamicWrapper(app, ['card', 'district', 'store', 'heatmap'], () => import('../routes/Dashboard/CrossFilterMap/CrossFilterMap')),
+      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/Home/Home')),
     },
 
     '/dashboard/storemap': {
-      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/StoreMap/DashboardMap')),
-    },
-
-    '/dashboard/eventmap': {
-      component: dynamicWrapper(app, ['card'], () => import('../routes/Dashboard/EventMap/EventMap')),
+      component: dynamicWrapper(app, ['card', 'district', 'store', 'heatmap'], () => import('../routes/Dashboard/StoreMap/StoreMap')),
     },
 
     '/stores/list': {

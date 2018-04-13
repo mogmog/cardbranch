@@ -7,7 +7,7 @@ const RadioGroup = Radio.Group;
 import d3 from 'd3';
 import Slider from 'react-slick'
 
-import styles from './Cloropleth.less';
+import styles from './StoreMap.less';
 
 import mapboxgl from 'mapbox-gl';
 

@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import { Icon } from 'antd';
-import LucaGrid from './../../components/Grid/LucaGrid';
-import CardLoader from '../../components/Cards/CardLoader';
-
-
-
-
-
+import LucaGrid from './../../../components/Grid/LucaGrid';
+import CardLoader from '../../../components/Cards/CardLoader';
 
 /*when the api calls have finished, put the results into the props */
 @connect((namespaces) => {

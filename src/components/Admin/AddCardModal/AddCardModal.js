@@ -45,7 +45,7 @@ export default class extends React.Component {
   }
 
   handleCancel() {
-    alert("cancel");
+    window.location.reload();
   }
 
   onChange(event, mapping) {
