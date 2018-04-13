@@ -209,10 +209,49 @@ export default class LucaSideMenu extends PureComponent {
         breakpoint="lg"
         onCollapse={onCollapse}
         className={styles.sider}
-        style={{ minWidth: '50px', maxWidth: '50px' }}
       >
 
         <Menu
+          key="Menu"
+          theme="light"
+          mode="inline"
+          {...menuProps}
+          onOpenChange={this.handleOpenChange}
+          selectedKeys={selectedKeys}
+          style={{ padding: '16px 0', width: '100%' }}
+        >
+          <Menu.Item key="1">
+            <Link to="/dashboard/home">
+              <Icon type="home" />
+              <span>Home</span>
+            </Link>
+          </Menu.Item>
+
+          <Menu.Item key="2">
+            <Link to="/dashboard/storemap">
+              <Icon type="shopping-cart" />
+              <span>Store Map</span>
+            </Link>
+          </Menu.Item>
+
+          <Menu.Item key="3">
+            <Link to="/dashboard/battleground">
+              <Icon type="compass" />
+              <span>Battleground</span>
+            </Link>
+          </Menu.Item>
+
+          <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
+            <Menu.Item key="9">Option 9</Menu.Item>
+            <Menu.Item key="10">Option 10</Menu.Item>
+            <SubMenu key="sub3" title="Submenu">
+              <Menu.Item key="11">Option 11</Menu.Item>
+              <Menu.Item key="12">Option 12</Menu.Item>
+            </SubMenu>
+          </SubMenu>
+        </Menu>
+
+        {/*<Menu
           key="Menu"
           theme="light"
           mode="inline"
@@ -229,12 +268,18 @@ export default class LucaSideMenu extends PureComponent {
           </Menu.Item>
 
           <Menu.Item className={styles.menuItem}>
-            <Link to="/dashboard/crossfiltermap">
+            <Link to="/dashboard/storemap">
               <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Store Map</div>
             </Link>
           </Menu.Item>
 
-        {/*  <Menu.Item className={styles.menuItem}>
+          <Menu.Item className={styles.menuItem}>
+            <Link to="/dashboard/battleground">
+              <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Battleground</div>
+            </Link>
+          </Menu.Item>
+
+          <Menu.Item className={styles.menuItem}>
             <Link to="/dashboard/storemap">
               <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Store Map</div>
             </Link>
@@ -244,10 +289,10 @@ export default class LucaSideMenu extends PureComponent {
             <Link to="/dashboard/eventmap">
               <div className={['icon', styles.icon, styles.icBagStore].join(' ')}>Event Map</div>
             </Link>
-          </Menu.Item>*/}
+          </Menu.Item>
 
 
-         {/* <Menu.Item className={styles.menuItem}>
+          <Menu.Item className={styles.menuItem}>
             <Link to="/dashboard/list">
               <div className={['icon', styles.icon, styles.icBagStore].join(' ')} />
               <span>Home</span>
@@ -262,10 +307,10 @@ export default class LucaSideMenu extends PureComponent {
               <span>Create card </span>
             </Link>
           </Menu.Item>
-*/}
 
 
-        </Menu>
+
+        </Menu>*/}
 
         {/*<Menu
           key="Menu"

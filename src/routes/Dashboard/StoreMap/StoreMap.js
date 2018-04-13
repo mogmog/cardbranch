@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popconfirm, Tabs, Row, Col, Button, Icon, message, Radio, Input , Card} from 'antd';
-import CardLoader from '../../../components/Cards/CardLoader';
+
 
 const RadioGroup = Radio.Group;
 
@@ -14,6 +14,7 @@ import mapboxgl from 'mapbox-gl';
 import ReactMapboxGl, {Layer, Source, Feature, Marker, Popup} from "react-mapbox-gl";
 import {connect} from "dva";
 
+import CardLoader from '../../../components/Cards/CardLoader';
 import HeatMapControl from '../../../components/Maps/HeatmapControl/HeatmapControl';
 import CompareBar from '../../../common/LucaCompareBar/LucaCompareBar';
 import LucaSideBar from '../../../common/LucaSidebar/LucaSidebar';

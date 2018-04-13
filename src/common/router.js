@@ -81,6 +81,10 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['card', 'district', 'store', 'heatmap'], () => import('../routes/Dashboard/StoreMap/StoreMap')),
     },
 
+    '/dashboard/battleground': {
+      component: dynamicWrapper(app, ['battleground', 'district'], () => import('../routes/Dashboard/Battleground/Battleground')),
+    },
+
     '/stores/list': {
       component: dynamicWrapper(app, ['store'], () => import('../routes/Admin/Stores/List/StoreList')),
     },
