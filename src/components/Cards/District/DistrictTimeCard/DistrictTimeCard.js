@@ -10,6 +10,7 @@ import {
   Tabs,
   Modal,
   Table,
+  Button,
   Radio,
   DatePicker,
   Menu,
@@ -54,7 +55,7 @@ export default class extends React.Component {
 
     return (
 
-      <div style={{'height' : '400px'}}>
+      <div style={{'height' : '230px'}}>
 
         <ReactCardFlip isFlipped={this.state.isFlipped} >
 
@@ -65,9 +66,9 @@ export default class extends React.Component {
                 <DistrictTimeCrossFilter brush={false} data={data}/>
               </div>
 
-              <button type="primary" onClick={this.showModal.bind(this)}>
-                Modal
-              </button>
+              <Button type="primary" onClick={this.showModal.bind(this)}>
+                View visits
+              </Button>
 
             </Card>
           </div>
