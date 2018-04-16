@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
-import { Icon } from 'antd';
+import { Button, Icon } from 'antd';
 import LucaGrid from './../../../components/Grid/LucaGrid';
 import CardLoader from '../../../components/Cards/CardLoader';
+
+import styles from './Home.less';
 
 /*when the api calls have finished, put the results into the props */
 @connect((namespaces) => {
@@ -27,6 +29,10 @@ export default class Home extends Component {
   componentDidMount() {
     const {dispatch, currentUser } = this.props;
 
+    dispatch({
+      type: 'user/fetchCurrent',
+    });
+
     /*for testing purposes, we just get cards for a store. This would actually be replaceds with some kind of 'my cards dashboard'  that contextually returns cards of interest*/
     dispatch({
       type: 'card/fetchstorecards',
@@ -35,9 +41,24 @@ export default class Home extends Component {
 
   }
 
+  clearFavourites() {
+
+    const {dispatch, currentUser } = this.props;
+
+    dispatch({
+      type: 'favourite/clear',
+      payload: {userId : currentUser.userid}
+    });
+    /*is this safe? it is async so not guarentied*/
+    dispatch({
+      type: 'user/fetchCurrent',
+    });
+
+  }
+
   render() {
 
-    const {storecardlist} = this.props;
+    const {storecardlist, currentUser} = this.props;
     const {...gridProps} = this.state;
 
 
@@ -54,8 +75,6 @@ export default class Home extends Component {
     return (
       <div>
 
-
-
         <LucaGrid
           itemHeight={300}
           measured
@@ -69,6 +88,19 @@ export default class Home extends Component {
           )}
 
         </LucaGrid>
+
+
+        <h2>My favourite cards</h2>
+        <Button type='primary' onClick={this.clearFavourites.bind(this)}>clear</Button>
+        <ul className={styles.favourites}>
+
+          {currentUser.favourites.map((card, i) =>
+            (<li>
+              <CardLoader extra={<span></span>} card={card}></CardLoader>
+            </li>)
+          )}
+
+        </ul>
 
       </div>
     );

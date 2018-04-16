@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Menu, Dropdown, Icon} from 'antd';
+
+import FavouritesWrapper from './Wrappers/Favourites';
 /*This should probaly be dynamic but had big problems with webpack. if its only a few card then maybe it doesnt matter*/
 
 import StreetViewCard from './Store/StreetViewCard/StreetViewCard';
@@ -33,11 +35,18 @@ export default class extends Component {
 
     }
 
-    const { card, extra } = this.props;
+    const { card, extra, favourites } = this.props;
 
     const Card = mappings[card.component];
 
     if (!Card) return (<span> no card defined</span>);
+
+    {/*this shouold be done dynamically by higher order components*/}
+    if (favourites) return (
+      <FavouritesWrapper card={card}>
+        <Card extra={extra} data={card.data }/>
+      </FavouritesWrapper>
+    );
 
     return (
       <div>

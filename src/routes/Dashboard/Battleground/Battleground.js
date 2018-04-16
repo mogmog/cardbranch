@@ -10,6 +10,7 @@ import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
 import districts from './../../../assets/london.json';
 
 import CardLoader from '../../../components/Cards/CardLoader';
+import FavouritesWrapper from '../../../components/Cards/Wrappers/Favourites';
 import BattlegroundCardBar from './BattlegroundCardSideBar';
 
 const Map = ReactMapboxGl({
@@ -110,7 +111,7 @@ export default class extends Component {
             {
               cards_left.map((item, i) =>
                 (<li key={i}>
-                  <CardLoader card={item}></CardLoader>
+                  <CardLoader favourites={true} card={item}></CardLoader>
                 </li>))
             }
 
@@ -123,7 +124,7 @@ export default class extends Component {
             {
               cards_right.map((item, i) =>
                 (<li key={i}>
-                  <CardLoader card={item}></CardLoader>
+                    <CardLoader favourites={true} card={item}></CardLoader>
                 </li>))
             }
           </BattlegroundCardBar>

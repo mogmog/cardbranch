@@ -75,6 +75,9 @@ class Page(db.Model):
                 }
 
 
+
+
+
 class Card(db.Model):
     __tablename__ = 'cards'
 
@@ -120,4 +123,6 @@ class Card(db.Model):
                    'data' : self.data,
                    'order' : self.order
                 }
+
+
 

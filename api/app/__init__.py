@@ -27,7 +27,7 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 
 from app.ng_event_models import Card, Page, PageCard, Store
-from app.user_models import User, Session
+from app.user_models import User, Session, Favourite
 
 loggedinuser = 0
 
@@ -75,8 +75,17 @@ def create_app(config_name):
 
         print (session.userId)
         user = User.get_all().filter(User.id == session.userId).first()
+        print (user.favourites)
 
-        response = jsonify(user.serialise())
+        res = user.serialise()
+
+        res['favourites'] = []
+        for fav in user.favourites:
+         res['favourites'].append(Card.get_all().filter(Card.id == fav.cardId).first().serialise())
+
+
+
+        response = jsonify(res)
         return make_response(response), 200
 
     @app.route('/api/real/stores', methods=['POST'])
@@ -106,6 +115,38 @@ def create_app(config_name):
         results.append(page.serialise())
 
       return make_response(jsonify({ 'list' : results })), 200
+
+
+    @app.route('/api/real/favourites', methods=['GET'])
+    def getFavourites():
+
+      favs = Favourite.query.all()
+
+      results = []
+      for fav in favs:
+        results.append(page.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
+
+    @app.route('/api/real/favourites', methods=['POST'])
+    def create_fav():
+
+      userId = request.data.get('userId', 0)
+      cardId = request.data.get('cardId', 0)
+
+      fav = Favourite(userId, cardId)
+      fav.save()
+
+      favs = Favourite.get_all().all()
+
+      results = []
+      for fav in favs:
+       results.append(fav.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
+
 
     @app.route('/api/real/admin/cardmappings', methods=['POST'])
     def list_cardmappings():
@@ -204,6 +245,15 @@ def create_app(config_name):
           features_female.append({'type' : 'Feature', 'geometry' : {'type' : 'Point', 'coordinates' : [_[0], _[1]]}, 'properties' : {'mag' : random.randint(1,100) }})
 
       return make_response(jsonify({'male' : { 'type' : 'FeatureCollection', 'features' : features_male }, 'female' : { 'type' : 'FeatureCollection', 'features' : features_female }})), 200
+
+
+
+    @app.route('/api/real/favourites/clear', methods=['POST'])
+    def clearfav():
+        userid = request.data.get('userId', '0')
+        Favourite.delete_all(userid)
+        return make_response(jsonify({'status': 'ok'})), 200
+
 
     return app
 

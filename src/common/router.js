@@ -82,7 +82,7 @@ export const getRouterData = (app) => {
     },
 
     '/dashboard/battleground': {
-      component: dynamicWrapper(app, ['battleground', 'district'], () => import('../routes/Dashboard/Battleground/Battleground')),
+      component: dynamicWrapper(app, ['battleground', 'district', 'favourite'], () => import('../routes/Dashboard/Battleground/Battleground')),
     },
 
     '/stores/list': {

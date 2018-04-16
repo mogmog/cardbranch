@@ -55,7 +55,7 @@ export default class extends React.Component {
 
     return (
 
-      <div style={{'height' : '230px'}}>
+      <div style={{'height' : '340px'}}>
 
         <ReactCardFlip isFlipped={this.state.isFlipped} >
 
