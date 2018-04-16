@@ -1,5 +1,42 @@
 from app import db
 
+class Session(db.Model):
+    __tablename__ = 'session'
+
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.String(255))
+
+    def __init__(self, userId):
+        self.userId = userId
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Session.query
+
+    @staticmethod
+    def delete_all():
+        db.session.query(Session).delete()
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return "<Session: {}>".format(self.id)
+
+    def serialise(self):
+
+        return  {
+                   'id': self.id,
+                   'userId': self.userId
+                }
+
+
 class User(db.Model):
     __tablename__ = 'user'
 

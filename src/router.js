@@ -9,7 +9,7 @@ import dynamic from 'dva/dynamic';
 import { getRouterData } from './common/router';
 import Authorized from './utils/Authorized';
 import styles from './index.less';
-
+import { CookiesProvider } from 'react-cookie';
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
 
@@ -27,6 +27,7 @@ function RouterConfig({ history, app }) {
   const BasicLayout = routerData['/'].component;
   return (
     <LocaleProvider locale={en_GB}>
+      <CookiesProvider>
       <IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
       <ConnectedRouter history={history}>
         <Switch>
@@ -43,6 +44,7 @@ function RouterConfig({ history, app }) {
         </Switch>
       </ConnectedRouter>
       </IntlProvider>
+      </CookiesProvider>
     </LocaleProvider>
   );
 }

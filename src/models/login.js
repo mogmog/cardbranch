@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { fakeAccountLogin } from '../services/api';
+import { fakeAccountLogin, fakeAccountLogout } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 
@@ -23,12 +23,13 @@ export default {
         yield put(routerRedux.push('/'));
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { call, put, select }) {
       try {
         // get location pathname
+        const response = yield call(fakeAccountLogout, {});
         const urlParams = new URL(window.location.href);
         const pathname = yield select(state => state.routing.location.pathname);
-        localStorage.removeItem('LucauserID')
+
         // add the parameters in the url
         urlParams.searchParams.set('redirect', pathname);
         window.history.replaceState(null, 'login', urlParams.href);
@@ -49,8 +50,6 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
-
-      localStorage.setItem('LucauserID', payload.userId)
 
       return {
         ...state,

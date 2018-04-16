@@ -27,7 +27,9 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 
 from app.ng_event_models import Card, Page, PageCard, Store
-from app.user_models import User
+from app.user_models import User, Session
+
+loggedinuser = 0
 
 def create_app(config_name):
 
@@ -49,15 +51,31 @@ def create_app(config_name):
 
         if user is not None:
           response = jsonify({'status' : 'ok', 'type' : 'account', 'userId' : user.id, 'currentAuthority': 'admin'})
+          loggedinuser = user.id
+          session = Session(user.id)
+          session.save()
+
+          print ('saved')
           return make_response(response), 200
 
         return make_response(jsonify({'status': 'error', 'type' : 'account', 'currentAuthority': 'guest'})), 200
 
+    @app.route('/api/real/logout', methods=['POST'])
+    def logout():
+        Session.delete_all()
+        return make_response(jsonify({'status': 'ok'})), 200
 
-    @app.route('/api/real/currentUser/<userId>', methods=['GET'])
-    def currentUser(userId):
+    @app.route('/api/real/currentUser', methods=['GET'])
+    def currentUser():
 
-        user = User.get_all().filter(User.id == userId).one()
+        session = Session.get_all().first()
+
+        if session == None:
+          return make_response(jsonify({'status': 'ok', 'type' : 'account', 'currentAuthority': 'guest'})), 200
+
+        print (session.userId)
+        user = User.get_all().filter(User.id == session.userId).first()
+
         response = jsonify(user.serialise())
         return make_response(response), 200
 
