@@ -41,13 +41,6 @@ export default class extends Component {
 
     if (!Card) return (<span> no card defined</span>);
 
-    {/*this shouold be done dynamically by higher order components*/}
-    if (favourites) return (
-      <FavouritesWrapper card={card}>
-        <Card extra={extra} data={card.data }/>
-      </FavouritesWrapper>
-    );
-
     return (
       <div>
         <Card extra={extra} data={card.data }/>

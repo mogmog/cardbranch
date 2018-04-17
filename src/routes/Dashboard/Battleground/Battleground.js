@@ -61,7 +61,7 @@ export default class extends Component {
     cards_left  = this.props.cards_left;
     cards_right  = this.props.cards_right;
 
-    console.log(this.props);
+    const favourite = card => (<FavouritesWrapper card={card}/ >);
 
     const that = this;
     return (
@@ -111,7 +111,7 @@ export default class extends Component {
             {
               cards_left.map((item, i) =>
                 (<li key={i}>
-                  <CardLoader favourites={true} card={item}></CardLoader>
+                  <CardLoader extra={favourite(item)} card={item}></CardLoader>
                 </li>))
             }
 
@@ -124,7 +124,7 @@ export default class extends Component {
             {
               cards_right.map((item, i) =>
                 (<li key={i}>
-                    <CardLoader favourites={true} card={item}></CardLoader>
+                  <CardLoader extra={favourite(item)} card={item}></CardLoader>
                 </li>))
             }
           </BattlegroundCardBar>
