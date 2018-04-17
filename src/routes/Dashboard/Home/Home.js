@@ -90,12 +90,12 @@ export default class Home extends Component {
         </LucaGrid>
 
 
-        <h2>My favourite cards</h2>
-        <Button type='primary' onClick={this.clearFavourites.bind(this)}>clear</Button>
+        <h2>My favourite cards <Button type='primary' onClick={this.clearFavourites.bind(this)}>clear</Button> </h2>
+
         <ul className={styles.favourites}>
 
           {currentUser.favourites.map((card, i) =>
-            (<li>
+            (<li style={{'height' : '350px', 'background' : 'white'}}>
               <CardLoader extra={<span></span>} card={card}></CardLoader>
             </li>)
           )}

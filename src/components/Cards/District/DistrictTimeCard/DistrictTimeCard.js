@@ -50,7 +50,7 @@ export default class extends React.Component {
 
   render() {
 
-    const { data } = this.props;
+    const { data, extra } = this.props;
     const {visible, postcode} = this.state;
 
     return (
@@ -60,7 +60,7 @@ export default class extends React.Component {
         <ReactCardFlip isFlipped={this.state.isFlipped} >
 
           <div key="front">
-            <Card title={'Visits per month'}>
+            <Card title={'Visits per month'} extra={extra}>
 
               <div style={{'width' : '250px'}}>
                 <DistrictTimeCrossFilter brush={false} data={data}/>

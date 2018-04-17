@@ -49,8 +49,10 @@ export default class extends React.Component {
 
   render() {
 
-    const { data } = this.props;
+    const { data, extra } = this.props;
     const {visible, postcode} = this.state;
+
+    const title= (<Button type="primary" onClick={this.showModal.bind(this)}> View timeline </Button>)
 
     return (
 
@@ -59,11 +61,9 @@ export default class extends React.Component {
         <ReactCardFlip isFlipped={this.state.isFlipped} >
 
           <div key="front">
-            <Card>
+            <Card title={title} extra={extra}>
 
-              <Button type="primary" onClick={this.showModal.bind(this)}>
-                View timeline
-              </Button>
+
 
             </Card>
           </div>

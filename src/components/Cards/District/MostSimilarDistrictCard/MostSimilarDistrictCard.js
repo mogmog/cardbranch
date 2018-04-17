@@ -48,7 +48,7 @@ export default class extends React.Component {
   render() {
 
     const {visible} = this.state;
-    const {data} = this.props;
+    const {data, extra} = this.props;
     const loading = false;
 
     return (
@@ -57,11 +57,7 @@ export default class extends React.Component {
 
         <div>
 
-          <Card style={{'height' : '80px'}}>
-
-            <h3>
-              The most similar district is {data.name}
-            </h3>
+          <Card title={`The most similar district is ${data.name}`} style={{'height' : '120px'}} extra={extra}>
 
             <a onClick={this.showModal.bind(this)}>
               How did we measure this

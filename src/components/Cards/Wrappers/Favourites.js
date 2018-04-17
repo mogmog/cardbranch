@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from 'antd';
 import {connect} from "dva";
+import {Motion, spring} from 'react-motion';
 
 @connect((namespaces) => {
   return {
@@ -12,11 +13,12 @@ import {connect} from "dva";
 export default class FavouritesWrapper extends React.Component {
   constructor() {
     super();
+    this.state = {open: false};
   }
 
   addFavourite() {
     const {  card, favourite, dispatch, currentUser } = this.props;
-    console.log(favourite);
+    this.setState({open : true});
 
     dispatch({
       type: 'favourite/add',
@@ -28,10 +30,25 @@ export default class FavouritesWrapper extends React.Component {
   render() {
 
     const { children, card } = this.props;
+    const {open} = this.state;
 
     return (
       <div>
-        <div><Icon onClick={this.addFavourite.bind(this)} type="heart" /></div>
+        <div>
+          <span style={{position: 'absolute', 'color' : 'red','margin-top' : `0%`}}>
+          <Icon onClick={this.addFavourite.bind(this)} type="heart" />
+          </span>
+
+          <Motion style={{offset: spring(open ? -5 : 0), opacity: spring(open ? 0 : 1)}}>
+            {
+              ({ offset, opacity }) => (
+                <span style={{'opacity' : opacity, 'color' : open ? 'red' : 'grey', position: 'absolute', 'margin-top' : offset+`%`}}>
+                <Icon onClick={this.addFavourite.bind(this)} type="heart" />
+                </span>
+              )}
+          </Motion>
+
+        </div>
 
         {children}
       </div>
