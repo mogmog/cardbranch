@@ -12,6 +12,7 @@ import {
   Radio,
   DatePicker,
   Menu,
+  Slider,
   Dropdown,
 } from 'antd';
 
@@ -29,7 +30,26 @@ export default class extends React.Component {
     this.state = {
       visible: false,
       isFlipped: false,
+      hour : 0
     };
+  }
+
+  onChange(value) {
+    this.setState({
+      hour: value,
+    });
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.map) this.map.setFilter('collisions', ['all', ['==', ['number', ['get', 'Hour']], nextState.hour]]);
+  }
+
+  play() {
+    const that = this;
+    let hour = that.state.hour;
+    setInterval(()=> {
+      if (hour < 24) that.setState({'hour': hour++ });
+    }, 400);
   }
 
   handleClick(e) {
@@ -50,7 +70,7 @@ export default class extends React.Component {
   render() {
 
     const { data, extra } = this.props;
-    const {visible, postcode} = this.state;
+    const {visible, hour} = this.state;
 
     const title= (<Button type="primary" onClick={this.showModal.bind(this)}> View timeline </Button>)
 
@@ -62,8 +82,6 @@ export default class extends React.Component {
 
           <div key="front">
             <Card title={title} extra={extra}>
-
-
 
             </Card>
           </div>
@@ -84,7 +102,7 @@ export default class extends React.Component {
           visible={visible}
           width={1000}
           bodyStyle={{'height' : '60vh' }}
-          title="Somethinh to do with timelines"
+          title="Previous days movements"
           onCancel={this.handleCancel}
           footer={[]}
         >
@@ -93,10 +111,20 @@ export default class extends React.Component {
 
             <Col span={24}>
 
-              <div className='session'>
-                <h2>Hour: <label id='active-hour'>12PM</label></h2>
-                <input id='slider' className='row' type='range' min='0' max='23' step='1' value='12' />
-              </div>
+              <Row>
+                <Col span={20}>
+                      <Slider min={1} max={24} onChange={this.onChange.bind(this)} value={hour} />
+                </Col>
+
+                <Col span={4}>
+                 <h2>{hour}:00</h2>
+                </Col>
+
+              </Row>
+
+              <Icon onClick={this.play.bind(this)} type="play-circle" />
+
+
 
               <Map
                 style="mapbox://styles/mapbox/light-v9"
@@ -105,12 +133,13 @@ export default class extends React.Component {
                   width: "100%",
                   position: 'absolute',
                 }}
-                center={ [-74.0059, 40.7128]}
-                zoom={[11]}
+
                 onStyleLoad={(map) => {
 
+                  this.map = map;
+                  this.map.setZoom([11]);
+                  this.map.setCenter([-74.0059, 40.7128]);
                   var filterHour = ['==', ['number',['get', 'Hour']], 12];
-                  var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
 
                   map.addLayer({
                     id: 'collisions',
@@ -143,21 +172,6 @@ export default class extends React.Component {
                     'filter': ['all', filterHour]
                   }, 'admin-2-boundaries-dispute');
 
-
-                  // update hour filter when the slider is dragged
-                  document.getElementById('slider').addEventListener('input', function(e) {
-                    var hour = parseInt(e.target.value);
-                    // update the map
-                    filterHour = ['==', ['number', ['get', 'Hour']], hour];
-                    map.setFilter('collisions', ['all', filterHour]);
-
-                    // converting 0-23 hour to AMPM format
-                    var ampm = hour >= 12 ? 'PM' : 'AM';
-                    var hour12 = hour % 12 ? hour % 12 : 12;
-
-                    // update text in the UI
-                    document.getElementById('active-hour').innerText = hour12 + ampm;
-                  });
                 }}
               >
 
