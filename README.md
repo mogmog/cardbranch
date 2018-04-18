@@ -30,7 +30,7 @@ export DATABASE_URL="postgresql://postgres:postgres@localhost/thing"
 
 sudo apt-get install postgresql postgresql-contrib
 
-< might need to start the server sudo service postgresql start >
+< might need to start the server - sudo service postgresql start >
 
 sudo -u postgres psql
 
@@ -42,7 +42,7 @@ sql > CREATE DATABASE thing;
 
 ctl D to get out of psql
 
-
+cd api
 
 python manage.py db init
 python manage.py db migrate
@@ -64,7 +64,15 @@ npm install
 
 ./start.sh to run the app
 
-
+this uses tmux - useful commands include tmux kill-server to kill everything
+when in tmux press control-b and then hit d to detach from the screen (everythnig will be still running)
 
 ````
+
+
+
+to go to the app navigate to 
+
+http://localhost:3000?redirect=%2Fdashboard%2Fhome#/user/login
+
 
