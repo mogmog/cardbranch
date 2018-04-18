@@ -111,7 +111,7 @@ export default class extends Component {
             {
               cards_left.map((item, i) =>
                 (<li key={i}>
-                  <CardLoader extra={favourite(item)} card={item}></CardLoader>
+                  <CardLoader extra={[favourite(item)]} card={item}></CardLoader>
                 </li>))
             }
 
@@ -124,7 +124,7 @@ export default class extends Component {
             {
               cards_right.map((item, i) =>
                 (<li key={i}>
-                  <CardLoader extra={favourite(item)} card={item}></CardLoader>
+                  <CardLoader extra={[favourite(item)]} card={item}></CardLoader>
                 </li>))
             }
           </BattlegroundCardBar>

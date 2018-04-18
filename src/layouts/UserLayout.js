@@ -31,7 +31,7 @@ class UserLayout extends React.PureComponent {
               <div className={styles.header}>
 
               </div>
-              <div className={styles.desc}>Luca Card</div>
+
             </div>
             <Switch>
               {getRoutes(match.path, routerData).map(item =>

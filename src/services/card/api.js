@@ -9,3 +9,10 @@ export async function queryCards(params) {
     },
   });
 }
+
+
+export async function getCard(params) {
+  return request('/api/real/cards/' + params.id, {
+    method: 'GET',
+  });
+}

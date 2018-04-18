@@ -71,8 +71,14 @@ when in tmux press control-b and then hit d to detach from the screen (everythni
 
 
 
-to go to the app navigate to 
+if you have anyt login ussues try going to the app via 
 
 http://localhost:3000?redirect=%2Fdashboard%2Fhome#/user/login
+
+
+failing that, navigate to http://localhost:3000/#/user/logout followed by http://localhost:3000
+
+
+
 
 

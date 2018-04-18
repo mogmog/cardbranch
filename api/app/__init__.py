@@ -208,6 +208,19 @@ def create_app(config_name):
       return make_response(jsonify({ 'list' : results })), 200
 
 
+    @app.route('/api/real/cards/<id>', methods=['GET'])
+    def get_card(id):
+
+      cards = Card.get_all().filter(Card.id == id).order_by(Card.order).all()
+
+      results = []
+      for card in cards:
+         results.append(card.serialise())
+
+      return make_response(jsonify({ 'list' : results })), 200
+
+
+
     @app.route('/api/real/heatmap', methods=['POST'])
 
     def get_heatmap():

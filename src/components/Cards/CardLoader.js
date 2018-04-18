@@ -42,7 +42,7 @@ export default class extends Component {
     if (!Card) return (<span> no card defined</span>);
 
     return (
-      <div>
+      <div id={'card_' + card.id }>
         <Card extra={extra} data={card.data }/>
       </div>
     );
