@@ -1,4 +1,4 @@
-import {getCard} from '../services/card/api';
+import {getCard, sendCard} from '../services/card/api';
 
 export default {
   namespace: 'email',
@@ -7,11 +7,14 @@ export default {
     cards: [],
   },
 
-  /*TODO rename fetchcards to store cards */
   effects: {
 
+    * send({payload}, {call, put}) {
+       yield call(sendCard, payload);
+    },
+
     * fetchcards({payload}, {call, put}) {
-      console.log(payload);
+
       const response = yield call(getCard, payload);
       yield put({
         type: 'savecards',

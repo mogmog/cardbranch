@@ -16,3 +16,12 @@ export async function getCard(params) {
     method: 'GET',
   });
 }
+
+export async function sendCard(params) {
+  return request('/api/real/send', {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}

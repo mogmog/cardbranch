@@ -15,7 +15,7 @@ import html2canvas from 'html2canvas';
 export default class FavouritesWrapper extends React.Component {
   constructor() {
     super();
-    this.state = {open: false, sendEmailModalVisible : false, email : 'mogmog@gmail.com'};
+    this.state = {open: false, sendEmailModalVisible : false, email : 'graham.bates@telefonica.com'};
   }
 
   sendEmail() {
@@ -24,27 +24,29 @@ export default class FavouritesWrapper extends React.Component {
 
   handleOk() {
 
-    const {  card } = this.props;
+    const {  card , dispatch } = this.props;
 
-    console.log(card);
-
-   /* html2canvas(document.querySelector( ".sendEmailHolder" )).then(canvas => {
-      document.body.appendChild(canvas);
+    html2canvas(document.querySelector( ".sendEmailHolder" )).then(canvas => {
+      dispatch({
+        type: 'email/send',
+        payload: { email : 'graham.bates@telefonica.com', id : card.id, image : canvas.toDataURL() },
+      });
     });
-*/
+
+
   }
 
   handleCancel() {
-    alert("canceled");
+    this.setState({sendEmailModalVisible : false});
   }
 
   addFavourite() {
     const {  card, favourite, dispatch, currentUser } = this.props;
-    this.setState({open : true, email : 'mogmog@gmail.com'});
+    this.setState({open : true});
 
     dispatch({
       type: 'favourite/add',
-      payload: {'userId': currentUser.userid, 'cardId' : card.id}
+      payload: {'userId': currentUser.userid, 'cardId' : card.id, image : 'sdsd'}
     });
 
   }
@@ -71,8 +73,6 @@ export default class FavouritesWrapper extends React.Component {
           </div>
 
           <Input placeholder="Send to" value={this.state.email} />
-
-          <a href={`mailto:${this.state.email}?subject=Graham has sent you an insight from Luca Store&body=Click here: <a>http://localhost:3000/#/user/email/${card.id}</a>`}>Send email hack</a>
 
         </Modal>
 
