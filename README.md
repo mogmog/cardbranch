@@ -30,6 +30,7 @@ export DATABASE_URL="postgresql://postgres:postgres@localhost/thing"
 
 sudo apt-get install postgresql postgresql-contrib
 
+< might need to start the server sudo service postgresql start >
 
 sudo -u postgres psql
 
@@ -48,9 +49,7 @@ python manage.py db migrate
 python manage.py db upgrade
 
 
-
-cat thing_public_user.sql thing_public_page.sql thing_public_cards.sql thing_public_pagecard.sql  | psql -1 -f - -U postgres -d thing -h localhost
-
+see the README in thwe sql direction for populating cards etc
 
 
 cd ..
