@@ -15,7 +15,7 @@ import html2canvas from 'html2canvas';
 export default class FavouritesWrapper extends React.Component {
   constructor() {
     super();
-    this.state = {open: false, sendEmailModalVisible : false, email : 'graham.bates@telefonica.com'};
+    this.state = {open: false, sendEmailModalVisible : false, email : ''};
   }
 
   sendEmail() {
@@ -25,12 +25,15 @@ export default class FavouritesWrapper extends React.Component {
   handleOk() {
 
     const {  card , dispatch } = this.props;
+    const { email } = this.state;
 
     html2canvas(document.querySelector( ".sendEmailHolder" )).then(canvas => {
       dispatch({
         type: 'email/send',
-        payload: { email : 'graham.bates@telefonica.com', id : card.id, image : canvas.toDataURL() },
+        payload: { email : email, id : card.id, image : canvas.toDataURL() },
       });
+
+      this.setState({sendEmailModalVisible : false});
     });
 
 
@@ -46,9 +49,12 @@ export default class FavouritesWrapper extends React.Component {
 
     dispatch({
       type: 'favourite/add',
-      payload: {'userId': currentUser.userid, 'cardId' : card.id, image : 'sdsd'}
+      payload: {'userId': currentUser.userid, 'cardId' : card.id}
     });
+  }
 
+  updateEmail(e) {
+    this.setState({email : e.target.value});
   }
 
   render() {
@@ -72,7 +78,7 @@ export default class FavouritesWrapper extends React.Component {
             <CardLoader card={card}></CardLoader>
           </div>
 
-          <Input placeholder="Send to" value={this.state.email} />
+          <Input placeholder="Send to" onChange={this.updateEmail.bind(this)}  />
 
         </Modal>
 
