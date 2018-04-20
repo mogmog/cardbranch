@@ -26,16 +26,9 @@ app.post('/api/real/send', jsonParser,  function (req, res, next) {
   });
 
   res.send("done");
- // next();
-
 });
 
-
-app.use('/api/real', proxy({target: 'http://localhost:5001', changeOrigin: true}));
-app.use('/api', proxy({target: 'http://localhost:8000', changeOrigin: true}));
-app.use('/', proxy({target: 'http://localhost:8000', changeOrigin: true}));
-//app.use(bodyParser);
-
-
+app.use('/api/real', proxy({target: 'http://0.0.0.0:5001', changeOrigin: true}));
+app.use('/', proxy({target: 'http://0.0.0.0:8000', changeOrigin: true}));
 
 app.listen(3000);

@@ -4,7 +4,7 @@
   "description": "Luca Store Prototype",
   "private": true,
   "scripts": {
-    "start": "cross-env DISABLE_ESLINT=true roadhog dev",
+    "start": "cross-env PORT=8000 HOST=0.0.0.0 NO_PROXY=true ESLINT=none BROWSER=none roadhog dev",
     "start:no-proxy": "cross-env NO_PROXY=true DISABLE_ESLINT=true roadhog dev",
     "build": "cross-env DISABLE_ESLINT=true roadhog build",
     "site": "roadhog-api-doc static && gh-pages -d dist",
@@ -71,7 +71,8 @@
     "react-streetview": "git+https://github.com/elcsiga/react-streetview.git",
     "react-svg": "^2.2.14",
     "react-twitter-widgets": "^1.7.1",
-    "url-polyfill": "^1.0.10"
+    "url-polyfill": "^1.0.10",
+    "webpack": "^3.11.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.1.2",

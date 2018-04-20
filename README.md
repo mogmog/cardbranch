@@ -30,7 +30,10 @@ export DATABASE_URL="postgresql://postgres:postgres@localhost/thing"
 
 sudo apt-get install postgresql postgresql-contrib
 
-< might need to start the server - sudo service postgresql start >
+< might need to start the server - 
+
+
+>
 
 sudo -u postgres psql
 
@@ -43,13 +46,13 @@ sql > CREATE DATABASE thing;
 ctl D to get out of psql
 
 cd api
-
+rm -rf migrations
 python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
 
 
-see the README in thwe sql direction for populating cards etc
+now follow the instruction in the README in thwe sql direction for populating users, cards etc
 
 
 cd ..
@@ -62,14 +65,14 @@ sudo apt-get install -y nodejs
 
 npm install
 
-./start.sh to run the app
+./start.sh to run the app 
 
 this uses tmux - useful commands include tmux kill-server to kill everything
 when in tmux press control-b and then hit d to detach from the screen (everythnig will be still running)
 
 ````
 
-
+The login system isnt really working properly at the moment - so the first time you go to the app you must go vbia the following url:
 
 if you have anyt login ussues try going to the app via 
 
