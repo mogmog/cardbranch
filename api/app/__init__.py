@@ -104,6 +104,15 @@ def create_app(config_name):
 
       return make_response(jsonify({ 'list' : results })), 200
 
+    @app.route('/api/real/district', methods=['POST'])
+    def getDistricts():
+
+      json_data=open('app/districts.json').read()
+
+      data = json.loads(json_data)
+
+      return make_response(jsonify(data)), 200
+
 
     @app.route('/api/real/pages', methods=['GET'])
     def getPages():

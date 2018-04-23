@@ -15,6 +15,8 @@ import MostSimilarDistrictCard from './District/MostSimilarDistrictCard/MostSimi
 import DistrictTimeLineCard from './District/DistrictTimelineCard/DistrictTimelineCard';
 import DistrictTimeCard from './District/DistrictTimeCard/DistrictTimeCard';
 
+import DistrictTestCard from './District/DistrictTestCard/DistrictTestCard';
+
 export default class extends Component {
 
   constructor(props) {
@@ -31,7 +33,8 @@ export default class extends Component {
       'DistrictInfoCard' : DistrictInfoCard,
       'DistrictMostSimilarCard' : MostSimilarDistrictCard,
       'DistrictTimeCard' : DistrictTimeCard,
-      'DistrictTimeLineCard' : DistrictTimeLineCard
+      'DistrictTimeLineCard' : DistrictTimeLineCard,
+      'DistrictTestCard' : DistrictTestCard
 
     }
 

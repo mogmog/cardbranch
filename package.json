@@ -94,6 +94,7 @@
     "gmail-send": "^1.2.14",
     "husky": "^0.14.3",
     "json-loader": "^0.5.7",
+    "less": "^2.7.3",
     "lint-staged": "^6.0.0",
     "mockjs": "^1.0.1-beta3",
     "pro-download": "^1.0.1",
